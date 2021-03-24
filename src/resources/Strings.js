@@ -5,11 +5,15 @@ export const HTTP_METHODS = {
   PATCH: 'PATCH',
 };
 
+export const ScreensRouteName = {
+  MAIN_SCREEN: 'MAIN_SCREEN'
+};
+
 /**
  * return date in the format 'yyyy-mm-ddThours_min_sec_ms'
  * @param {*} date
  */
-export const getFullTimeStringExtension = (date: Date) => {
+export const getFullTimeStringExtension = (date) => {
   let month = date.getMonth() + 1;
   month = month < 10 ? `0${month}` : month;
   let day = date.getDate();

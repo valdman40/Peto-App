@@ -18,14 +18,5 @@
         "react"
     ],
     "rules": {
-        "react/prop-types": 0,
-        "no-unused-vars": "warn",
-        "indent": ["error", 2, { "SwitchCase": 1 }],
-        "quotes": ["error", "double"],
-        "max-len": ["error", { "code": 120 }],
-        "global-require": "off",
-        "require-await": "warn",
-        "no-async-promise-executor": "off",
-        "semi": "off"
     }
 }

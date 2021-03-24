@@ -6,7 +6,7 @@ import { createStore, combineReducers } from "redux";
 const MainScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>maiss</Text>
+      <Text>sof sof</Text>
       <StatusBar style='auto' />
     </View>
   );
