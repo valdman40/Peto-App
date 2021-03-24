@@ -1,22 +1,31 @@
 {
-  "env": {
-    "browser": true,
-    "es2020": true
-  },
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
+    "env": {
+        "browser": true,
+        "es2020": true
     },
-    "ecmaVersion": 11,
-    "sourceType": "module"
-  },
-  "plugins": ["react", "@typescript-eslint"],
-  "rules": {
-    "indent": ["error", 4],
-    "linebreak-style": ["error", "windows"],
-    "quotes": ["error", "double"],
-    "semi": ["error", "always"]
-  }
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "react/prop-types": 0,
+        "no-unused-vars": "warn",
+        "indent": ["error", 2, { "SwitchCase": 1 }],
+        "quotes": ["error", "double"],
+        "max-len": ["error", { "code": 120 }],
+        "global-require": "off",
+        "require-await": "warn",
+        "no-async-promise-executor": "off",
+        "semi": "off"
+    }
 }
