@@ -21,7 +21,6 @@ const mealsReducer = (state = initialState, action) => {
           favoriteMeals: state.favoriteMeals.concat(newFavoriteMeal),
         };
       }
-      break;
     default:
       return state;
   }
