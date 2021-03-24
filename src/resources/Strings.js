@@ -6,7 +6,12 @@ export const HTTP_METHODS = {
 };
 
 export const ScreensRouteName = {
-  MAIN_SCREEN: 'MAIN_SCREEN'
+  MAIN_SCREEN: 'MAIN_SCREEN',
+  SECOND_SCREEN: 'SECOND_SCREEN'
+};
+
+export const ReducersNames = {
+  Meals: 'Meals'
 };
 
 /**
