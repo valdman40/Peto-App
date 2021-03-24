@@ -8,10 +8,8 @@ const renderItem = (item) => {
 
 const SecondScreen = (props) => {
     const availableMeals = useSelector((state) => state.Meals.filteredMeals);
-    console.log(availableMeals);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>second screen</Text>
       <FlatList data={availableMeals} renderItem={renderItem} keyExtractor={(item) => item.toString()} />
     </View>
   );

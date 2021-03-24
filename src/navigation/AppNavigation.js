@@ -1,11 +1,20 @@
 import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator } from "react-navigation-stack";
 import { ScreensRouteName } from "../resources/Strings";
+import Colors from "../resources/Colors";
 
 // screens
-import MainScreen from '../screens/MainScreen';
-import SecondScreen from '../screens/SecondScreen';
+import MainScreen from "../screens/MainScreen";
+import SecondScreen from "../screens/SecondScreen";
 
+
+const defaultNavigationOptions = {
+  headerTitleAlign: "center",
+  headerStyle: {
+    backgroundColor: Colors.blue,
+  },
+  headerTintColor: "white",
+}
 /**
  * creating navigation stack by telling it which screens may be inserted to the stack
  */
@@ -15,9 +24,8 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.SECOND_SCREEN]: SecondScreen,
   },
   {
-    initialRouteName: decideInitialMode(ScreensRouteName.SECOND_SCREEN),
-    header: null,
-    headerMode: "none",
+    initialRouteName: decideInitialMode(ScreensRouteName.MAIN_SCREEN),
+    defaultNavigationOptions
   }
 );
 

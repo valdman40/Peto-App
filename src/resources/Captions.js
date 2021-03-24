@@ -1,3 +1,3 @@
-export default Captions = {
+export default {
   APP_NAME: 'Peto',
 };

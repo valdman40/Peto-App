@@ -1,3 +1,3 @@
-export default Messages = {
+export default {
   WELCOME_MESSGAE: 'Welcome To Peto',
 };
