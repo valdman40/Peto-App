@@ -1,17 +1,18 @@
 export const HTTP_METHODS = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  PATCH: 'PATCH',
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  PATCH: "PATCH",
 };
 
 export const ScreensRouteName = {
-  MAIN_SCREEN: 'MAIN_SCREEN',
-  SECOND_SCREEN: 'SECOND_SCREEN'
+  MAIN_SCREEN: "MAIN_SCREEN",
+  SECOND_SCREEN: "SECOND_SCREEN",
 };
 
 export const ReducersNames = {
-  Meals: 'Meals'
+  Meals: "Meals",
+  User: "User",
 };
 
 /**

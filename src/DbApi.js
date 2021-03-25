@@ -1,3 +1,4 @@
+import { USERS } from "./data/dummy-data";
 export default class DbApi {
   /**
    * try to login
@@ -7,14 +8,13 @@ export default class DbApi {
   static async Login(username, password) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (username === "Roy" && password === "1234") {
-          resolve({
-            name: "roy",
-          });
+        const matchedUsers = USERS.filter((e) => e.Username === username && e.Password === password);
+        if (matchedUsers.length > 0) {
+          resolve(matchedUsers[0]);
         } else {
           reject("username and password doesn't match");
         }
-      }, 3000);
+      }, 1500);
     });
   }
 }

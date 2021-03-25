@@ -1,18 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 
-const renderItem = (item) => {
-  return <Text style={styles.item}>{item.item}</Text>;
-};
-
-const SecondScreen = (props) => {
-    const availableMeals = useSelector((state) => state.Meals.filteredMeals);
-  return (
-    <View style={styles.container}>
-      <FlatList data={availableMeals} renderItem={renderItem} keyExtractor={(item) => item.toString()} />
-    </View>
-  );
+const SecondScreen = () => {
+  const loggedUser = useSelector((state) => state.User.loggedUser);
+  console.log("loggedUser", loggedUser);
+  return <View style={styles.container}></View>;
 };
 const styles = StyleSheet.create({
   container: {

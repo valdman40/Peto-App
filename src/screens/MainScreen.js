@@ -9,16 +9,20 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
 import { ScreensRouteName } from "../resources/Strings";
 import DbApi from "../DbApi";
 import Colors from "../resources/Colors";
+import { saveLoggedUser } from "../store/actions/UsersActions";
 
 const MainScreen = (props) => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("Roy");
+  const [password, setPassword] = useState("1234");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
+
+  const dispatch = useDispatch();
 
   /**
    * displays input with text of description
@@ -49,17 +53,11 @@ const MainScreen = (props) => {
   };
 
   const tryToLogin = async () => {
-    // DbApi.Login(userName, password)
-    //   .then((userDetails) => {
-    //     console.log(userDetails);
-    //   })
-    //   .catch((e) => console.log(e));
     try {
       setWaiting(true);
       setError("");
-      const userDetails = await DbApi.Login(userName, password);
-      console.log(userDetails);
-      // onSuccedLogin(userDetails);
+      const user = await DbApi.Login(userName, password);
+      onSuccedLogin(user);
     } catch (e) {
       setError(e);
     } finally {
@@ -67,11 +65,9 @@ const MainScreen = (props) => {
     }
   };
 
-  const onSuccedLogin = () => {
-    props.navigation.navigate({
-      routeName: ScreensRouteName.SECOND_SCREEN,
-      params: {},
-    });
+  const onSuccedLogin = (user) => {
+    dispatch(saveLoggedUser(user));
+    props.navigation.navigate({ routeName: ScreensRouteName.SECOND_SCREEN });
   };
 
   const LoginButton = () => {
