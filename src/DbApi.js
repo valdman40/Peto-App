@@ -8,7 +8,9 @@ export default class DbApi {
   static async Login(username, password) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const matchedUsers = USERS.filter((e) => e.Username === username && e.Password === password);
+        const matchedUsers = USERS.filter(
+          (user) => username.localeCompare(user.Username) === 0 && password.localeCompare(user.Password) === 0
+        );
         if (matchedUsers.length > 0) {
           resolve(matchedUsers[0]);
         } else {

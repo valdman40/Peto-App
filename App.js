@@ -3,12 +3,10 @@ import AppNavigation from "./src/navigation/AppNavigation";
 import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 
-import mealsReducer from "./src/store/reducers/MealsReducer";
 import userReducer from "./src/store/reducers/UserReducer";
 import { ReducersNames } from "./src/resources/Strings";
 
 const rootReducer = combineReducers({
-  [ReducersNames.Meals]: mealsReducer,
   [ReducersNames.User]: userReducer,
 });
 

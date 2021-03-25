@@ -15,6 +15,7 @@ import { ScreensRouteName } from "../resources/Strings";
 import DbApi from "../DbApi";
 import Colors from "../resources/Colors";
 import { saveLoggedUser } from "../store/actions/UsersActions";
+import Captions from "../resources/Captions";
 
 const MainScreen = (props) => {
   const [userName, setUserName] = useState("Roy");
@@ -41,7 +42,7 @@ const MainScreen = (props) => {
           value={input}
           style={{ width: 200, fontSize: 25 }}
           placeholder={""}
-          placeholderTextColor="grey"
+          placeholderTextColor={Colors.grey}
           maxLength={25}
           underlineColorAndroid="#888"
           secureTextEntry={secret}
@@ -52,6 +53,7 @@ const MainScreen = (props) => {
     );
   };
 
+  // try to login using username + password given
   const tryToLogin = async () => {
     try {
       setWaiting(true);
@@ -65,6 +67,10 @@ const MainScreen = (props) => {
     }
   };
 
+  /**
+   * after login was successful, save the user in store and navigate to next screen
+   * @param {*} user
+   */
   const onSuccedLogin = (user) => {
     dispatch(saveLoggedUser(user));
     props.navigation.navigate({ routeName: ScreensRouteName.SECOND_SCREEN });
@@ -75,24 +81,14 @@ const MainScreen = (props) => {
       <View style={{ opacity: waiting ? 0.8 : 1 }} pointerEvents={waiting ? "none" : "auto"}>
         <TouchableOpacity activeOpacity={0.6} onPress={tryToLogin}>
           <View style={{ borderRadius: 30, backgroundColor: Colors.darkBlue, alignSelf: "center" }}>
-            <Text
-              style={{
-                color: "white",
-                fontSize: 18,
-                textAlign: "center",
-                margin: 10,
-                padding: 5,
-                paddingHorizontal: 30,
-              }}
-            >
-              login
-            </Text>
+            <Text style={styles.loginButton}>Login</Text>
           </View>
         </TouchableOpacity>
       </View>
     );
   };
 
+  // display the error if there is one
   const displayError = () => {
     let retval = null;
     if (error.length > 0) {
@@ -113,29 +109,23 @@ const MainScreen = (props) => {
           source={require("../../assets/tempImage.jpg")}
           style={{ width: "90%", marginVertical: 20 }}
         />
-        {inputWithText(userName, setUserName, "user name")}
-        {inputWithText(password, setPassword, "password", true, true)}
+        {inputWithText(userName, setUserName, Captions.USER_NAME)}
+        {inputWithText(password, setPassword, Captions.PASSWORD, true, true)}
         {LoginButton()}
         {displayError()}
-        {waiting && <ActivityIndicator size={"large"} color="#0000ff" style={{ alignSelf: "center" }} />}
+        {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
       </View>
     </ScrollView>
   );
 };
 
-MainScreen.navigationOptions = {
-  headerTitle: "Login",
-};
+// screen's header
+MainScreen.navigationOptions = { headerTitle: Captions.APP_NAME };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-  },
-  button: {
-    fontSize: 30,
-  },
+  container: { flex: 1, backgroundColor: "#fff", alignItems: "center" },
+  button: { fontSize: 30 },
+  loginButton: { color: "white", fontSize: 18, textAlign: "center", margin: 10, padding: 5, paddingHorizontal: 30 },
 });
 
 export default MainScreen;

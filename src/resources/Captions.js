@@ -1,3 +1,9 @@
 export default {
-  APP_NAME: 'Peto',
+  APP_NAME: "Peto",
+  GOOD_MORNING: "Good morning",
+  GOOD_AFTERNOON: "Good afternoon",
+  GOOD_EVNING: "Good evning",
+  GOOD_NIGHT: "Good night",
+  USER_NAME: "user name",
+  PASSWORD: "password",
 };
