@@ -1,4 +1,4 @@
-import { SAVE_LOGGED_USER } from "../actions/UsersActions";
+import { SAVE_LOGGED_USER } from "../actions/UserActions";
 
 const initialState = {
   loggedUser: {},

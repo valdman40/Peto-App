@@ -1,8 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { useSelector } from "react-redux";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
 import Captions from "../resources/Captions";
+import Colors from "../resources/Colors";
+import { ScreensRouteName } from "../resources/Strings";
+import { saveUserPets } from "../store/actions/PetsActions";
+import DbApi from "../DbApi";
 
 /**
  * returns greeting message with the name given
@@ -24,11 +28,34 @@ const greetingMessage = (name) => {
   return `${message} ${name}`;
 };
 
-const SecondScreen = () => {
+const SecondScreen = (props) => {
+  const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.User.loggedUser);
+  const moveToPets = async () => {
+    try {
+      const userPets = await DbApi.LoadUserPets(loggedUser.id);
+      dispatch(saveUserPets(userPets));
+      props.navigation.navigate({ routeName: ScreensRouteName.PETS_SCREEN });
+    } catch (e) {
+      alert(e);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{greetingMessage(loggedUser.Name)}</Text>
+      <TouchableOpacity
+        style={{
+          borderWidth: 1,
+          borderRadius: 10,
+          backgroundColor: Colors.accentColor,
+          padding: 10,
+          margin: 10,
+        }}
+        onPress={moveToPets}
+      >
+        <Text style={{ fontSize: 20 }}>move to pets screen</Text>
+      </TouchableOpacity>
     </View>
   );
 };

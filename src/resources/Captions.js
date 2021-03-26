@@ -1,5 +1,6 @@
 export default {
   APP_NAME: "Peto",
+  PETS: "PETS",
   GOOD_MORNING: "Good morning",
   GOOD_AFTERNOON: "Good afternoon",
   GOOD_EVNING: "Good evning",

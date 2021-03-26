@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { ScreensRouteName } from "../resources/Strings";
 import DbApi from "../DbApi";
 import Colors from "../resources/Colors";
-import { saveLoggedUser } from "../store/actions/UsersActions";
+import { saveLoggedUser } from "../store/actions/UserActions";
 import Captions from "../resources/Captions";
 
 const MainScreen = (props) => {

@@ -4,10 +4,12 @@ import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 
 import userReducer from "./src/store/reducers/UserReducer";
+import petsReducer from "./src/store/reducers/PetsReducer";
 import { ReducersNames } from "./src/resources/Strings";
 
 const rootReducer = combineReducers({
   [ReducersNames.User]: userReducer,
+  [ReducersNames.Pets]: petsReducer,
 });
 
 // here we store components's states
