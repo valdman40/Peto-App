@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Captions from "../resources/Captions";
 import Colors from "../resources/Colors";
 import { ScreensRouteName } from "../resources/Strings";
-import { saveUserPets } from "../store/actions/PetsActions";
+import { storeUserPets } from "../store/actions/PetsActions";
 import DbApi from "../DbApi";
 
 /**
@@ -34,7 +34,7 @@ const SecondScreen = (props) => {
   const moveToPets = async () => {
     try {
       const userPets = await DbApi.LoadUserPets(loggedUser.id);
-      dispatch(saveUserPets(userPets));
+      dispatch(storeUserPets(userPets));
       props.navigation.navigate({ routeName: ScreensRouteName.PETS_SCREEN });
     } catch (e) {
       alert(e);

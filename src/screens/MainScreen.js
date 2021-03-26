@@ -37,6 +37,7 @@ const MainScreen = (props) => {
     const fun = loginAfter ? tryToLogin : () => {};
     return (
       <View style={{ margin: 10, flexDirection: "row", justifyContent: "space-between", width: "90%", padding: 10 }}>
+        <Text style={{ fontSize: 20 }}>{inputDescription}</Text>
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input}
@@ -48,7 +49,6 @@ const MainScreen = (props) => {
           secureTextEntry={secret}
           onSubmitEditing={fun}
         />
-        <Text style={{ fontSize: 20 }}>{inputDescription}</Text>
       </View>
     );
   };

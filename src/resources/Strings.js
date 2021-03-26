@@ -9,6 +9,7 @@ export const ScreensRouteName = {
   MAIN_SCREEN: "MAIN_SCREEN",
   SECOND_SCREEN: "SECOND_SCREEN",
   PETS_SCREEN: "PETS_SCREEN",
+  PET_DETAILS_SCREEN: "PET_DETAILS_SCREEN",
 };
 
 export const ReducersNames = {

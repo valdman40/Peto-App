@@ -7,6 +7,7 @@ import Colors from "../resources/Colors";
 import MainScreen from "../screens/MainScreen";
 import SecondScreen from "../screens/SecondScreen";
 import PetsScreen from "../screens/PetsScreen";
+import PetDetailsScreen from "../screens/PetDetailsScreen";
 
 
 const defaultNavigationOptions = {
@@ -24,6 +25,7 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.MAIN_SCREEN]: MainScreen,
     [ScreensRouteName.SECOND_SCREEN]: SecondScreen,
     [ScreensRouteName.PETS_SCREEN]: PetsScreen,
+    [ScreensRouteName.PET_DETAILS_SCREEN]: PetDetailsScreen,
   },
   {
     initialRouteName: decideInitialMode(ScreensRouteName.MAIN_SCREEN),
