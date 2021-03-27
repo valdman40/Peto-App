@@ -8,6 +8,7 @@ import Colors from "../resources/Colors";
 import { ScreensRouteName } from "../resources/Strings";
 import { deletePetFromStore } from "../store/actions/PetsActions";
 import { Entypo } from "@expo/vector-icons";
+import DbApi from "../DbApi";
 
 const PetsScreen = (props) => {
   const userPets = useSelector((state) => state.Pets.userPets);
@@ -29,9 +30,12 @@ const PetsScreen = (props) => {
     alert("add pet pressed");
   };
 
-  const deletePet = (petId) => {
-    // first delete from DB!!
-    dispatch(deletePetFromStore(petId));
+  const deletePet = async (petId) => {
+    try {
+      await DbApi.dispatch(deletePetFromStore(petId));
+    } catch (e) {
+      alert(e);
+    }
   };
 
   const deletePressed = (petId) => {
@@ -89,18 +93,8 @@ const PetsScreen = (props) => {
 PetsScreen.navigationOptions = { headerTitle: Captions.PETS };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 30,
-  },
-  item: {
-    fontSize: 20,
-  },
+  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "center" },
+  title: { fontSize: 30 },
   headerAttribute: { fontSize: 20, padding: 10, paddingHorizontal: 50, color: Colors.white },
   listAttribute: { fontSize: 18, padding: 10, paddingHorizontal: 50 },
   petItem: {
