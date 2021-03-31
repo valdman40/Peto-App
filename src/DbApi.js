@@ -7,18 +7,18 @@ export default class DbApi {
    * @param {*} password
    */
   static async Login(username, password) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const matchedUsers = USERS.filter(
-          (user) => username.localeCompare(user.Username) === 0 && password.localeCompare(user.Password) === 0
-        );
-        if (matchedUsers.length > 0) {
-          resolve(matchedUsers[0]);
-        } else {
-          reject(Messages.USERNAME_PASS_NO_MATCH);
-        }
-      }, 1500);
-    });
+    var url = `http://10.0.0.9:5000/users?Username=${username}&Password=${password}`;
+    const response = await fetch(url);
+    let retval = response.json();
+    if (response.status == 200) {
+      return retval;
+    } else {
+      if (response.status == 404) {
+        throw Messages.USERNAME_PASS_NO_MATCH;
+      } else {
+        throw retval;
+      }
+    }
   }
 
   static async Test() {

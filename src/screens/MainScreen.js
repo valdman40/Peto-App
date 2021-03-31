@@ -59,9 +59,10 @@ const MainScreen = (props) => {
       setWaiting(true);
       setError("");
       const user = await DbApi.Login(userName, password);
-      onSuccedLogin(user);
+      console.log(user)
+      // onSuccedLogin(user);
     } catch (e) {
-      setError(e);
+      setError(JSON.stringify(e));
     } finally {
       setWaiting(false);
     }
@@ -134,7 +135,7 @@ const MainScreen = (props) => {
         {inputWithText(userName, setUserName, Captions.USER_NAME)}
         {inputWithText(password, setPassword, Captions.PASSWORD, true, true)}
         {LoginButton()}
-        {TestButton()}
+        {/* {TestButton()} */}
         {displayError()}
         {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
       </View>
