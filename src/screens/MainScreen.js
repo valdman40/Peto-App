@@ -67,6 +67,16 @@ const MainScreen = (props) => {
     }
   };
 
+    // try to login using username + password given
+    const tryTest = async () => {
+      try {
+        const value = await DbApi.Test();
+        alert(JSON.stringify(value));
+      } catch (e) {
+        setError(e);
+      } 
+    };
+
   /**
    * after login was successful, save the user in store and navigate to next screen
    * @param {*} user
@@ -82,6 +92,18 @@ const MainScreen = (props) => {
         <TouchableOpacity activeOpacity={0.6} onPress={tryToLogin}>
           <View style={{ borderRadius: 30, backgroundColor: Colors.darkBlue, alignSelf: "center" }}>
             <Text style={styles.loginButton}>Login</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const TestButton = () => {
+    return (
+      <View style={{ opacity: waiting ? 0.8 : 1 }} pointerEvents={waiting ? "none" : "auto"}>
+        <TouchableOpacity activeOpacity={0.6} onPress={tryTest}>
+          <View style={{ borderRadius: 30, backgroundColor: Colors.darkBlue, alignSelf: "center" }}>
+            <Text style={styles.loginButton}>Test</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -112,6 +134,7 @@ const MainScreen = (props) => {
         {inputWithText(userName, setUserName, Captions.USER_NAME)}
         {inputWithText(password, setPassword, Captions.PASSWORD, true, true)}
         {LoginButton()}
+        {TestButton()}
         {displayError()}
         {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
       </View>

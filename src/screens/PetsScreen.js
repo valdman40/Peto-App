@@ -32,7 +32,8 @@ const PetsScreen = (props) => {
 
   const deletePet = async (petId) => {
     try {
-      await DbApi.dispatch(deletePetFromStore(petId));
+      // await DbApi.
+      dispatch(deletePetFromStore(petId));
     } catch (e) {
       alert(e);
     }

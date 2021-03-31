@@ -21,6 +21,13 @@ export default class DbApi {
     });
   }
 
+  static async Test() {
+    const url = "http://10.0.0.9:5000/video/2";
+    const retval = await fetch(url);
+    let object = await retval.json();
+    return object;
+  }
+
   /**
    * insert pet to db
    * insert petId and userId to table that connects them
@@ -46,8 +53,10 @@ export default class DbApi {
       setTimeout(() => {
         // filter leaves us with userToPet relevant rows
         // map leaves us with only property of petId
-        const PetsIds = USER_TO_PET.filter((userToPet) => userId === userToPet.userId).map(userToPet => userToPet.petId);
-        const pets = PETS.filter((pet)=> PetsIds.includes(pet.id));
+        const PetsIds = USER_TO_PET.filter((userToPet) => userId === userToPet.userId).map(
+          (userToPet) => userToPet.petId
+        );
+        const pets = PETS.filter((pet) => PetsIds.includes(pet.id));
         if (pets.length > 0) {
           resolve(pets);
         } else {
