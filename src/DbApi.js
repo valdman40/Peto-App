@@ -1,14 +1,23 @@
+import React from "react";
 import { USERS, PETS, USER_TO_PET } from "./data/dummy-data";
 import Messages from "./resources/Messages";
-export default class DbApi {
+import { RestApiExtensions } from "../src/resources/Strings";
+export default class DbApi extends React.Component {
   /**
    * try to login
    * @param {*} username
    * @param {*} password
    */
   static async Login(username, password) {
-    var url = `http://10.0.0.9:5000/users?Username=${username}&Password=${password}`;
-    const response = await fetch(url);
+    const uri = new URL(RestApiExtensions.Users.GetUser);
+    uri.searchParams.append("Username", username);
+    uri.searchParams.append("Password", password);
+    let response;
+    try {
+      response = await fetch(uri);
+    } catch (e) {
+      throw Messages.FAILED_SERVER_CONNECTION;
+    }
     let retval = response.json();
     if (response.status == 200) {
       return retval;
@@ -16,16 +25,40 @@ export default class DbApi {
       if (response.status == 404) {
         throw Messages.USERNAME_PASS_NO_MATCH;
       } else {
-        throw retval;
+        throw 'err';
       }
     }
   }
 
-  static async Test() {
-    const url = "http://10.0.0.9:5000/video/2";
-    const retval = await fetch(url);
-    let object = await retval.json();
-    return object;
+  /**
+   * register new user
+   * @param {*} name
+   * @param {*} username
+   * @param {*} password
+   */
+  static async RegisterUser(username, password, name) {
+    const uri = new URL(RestApiExtensions.Users.RegisterUser);
+    const method = "PUT";
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const body = JSON.stringify({ Username: username, Password: password, Name: name });
+    const requestObject = { method, headers, body };
+    let response;
+    try {
+      response = await fetch(uri, requestObject);
+      console.log(response)
+    } catch (e) {
+      throw Messages.FAILED_SERVER_CONNECTION;
+    }
+    let retval = response.json();
+    if (response.status == 201) {
+      return retval;
+    } else {
+      if (response.status == 409) {
+        throw Messages.USERNAME_EXIST;
+      } else {
+        throw 'err';
+      }
+    }
   }
 
   /**

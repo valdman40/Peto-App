@@ -41,9 +41,10 @@ const SecondScreen = (props) => {
     }
   };
 
+  console.log(loggedUser)
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{greetingMessage(loggedUser.Name)}</Text>
+      <Text style={styles.title}>{greetingMessage(loggedUser.name)}</Text>
       <TouchableOpacity
         style={{
           borderWidth: 1,

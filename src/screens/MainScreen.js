@@ -16,6 +16,7 @@ import DbApi from "../DbApi";
 import Colors from "../resources/Colors";
 import { saveLoggedUser } from "../store/actions/UserActions";
 import Captions from "../resources/Captions";
+import Messages from "../resources/Messages";
 
 const MainScreen = (props) => {
   const [userName, setUserName] = useState("Roy");
@@ -59,24 +60,24 @@ const MainScreen = (props) => {
       setWaiting(true);
       setError("");
       const user = await DbApi.Login(userName, password);
-      console.log(user)
-      // onSuccedLogin(user);
+      onSuccedLogin(user);
     } catch (e) {
-      setError(JSON.stringify(e));
+      console.log(e);
+      setError(e);
     } finally {
       setWaiting(false);
     }
   };
 
-    // try to login using username + password given
-    const tryTest = async () => {
-      try {
-        const value = await DbApi.Test();
-        alert(JSON.stringify(value));
-      } catch (e) {
-        setError(e);
-      } 
-    };
+  // try to login using username + password given
+  const tryTest = async () => {
+    try {
+      const value = await DbApi.Test();
+      alert(JSON.stringify(value));
+    } catch (e) {
+      setError(e);
+    }
+  };
 
   /**
    * after login was successful, save the user in store and navigate to next screen
@@ -87,24 +88,32 @@ const MainScreen = (props) => {
     props.navigation.navigate({ routeName: ScreensRouteName.SECOND_SCREEN });
   };
 
+  /**
+   * move to register screen
+   * @param {*} user
+   */
+  const onRegisterPressed = () => {
+    props.navigation.navigate({ routeName: ScreensRouteName.REGISTER_SCREEN });
+  };
+
   const LoginButton = () => {
     return (
       <View style={{ opacity: waiting ? 0.8 : 1 }} pointerEvents={waiting ? "none" : "auto"}>
         <TouchableOpacity activeOpacity={0.6} onPress={tryToLogin}>
           <View style={{ borderRadius: 30, backgroundColor: Colors.darkBlue, alignSelf: "center" }}>
-            <Text style={styles.loginButton}>Login</Text>
+            <Text style={styles.loginButton}>{Captions.LOGIN}</Text>
           </View>
         </TouchableOpacity>
       </View>
     );
   };
 
-  const TestButton = () => {
+  const RegisterButton = () => {
     return (
       <View style={{ opacity: waiting ? 0.8 : 1 }} pointerEvents={waiting ? "none" : "auto"}>
-        <TouchableOpacity activeOpacity={0.6} onPress={tryTest}>
-          <View style={{ borderRadius: 30, backgroundColor: Colors.darkBlue, alignSelf: "center" }}>
-            <Text style={styles.loginButton}>Test</Text>
+        <TouchableOpacity activeOpacity={0.6} onPress={onRegisterPressed}>
+          <View style={{ backgroundColor: Colors.white, alignSelf: "center" }}>
+            <Text style={styles.registerButton}>{Messages.REGISTER_MESSAGE}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -135,7 +144,7 @@ const MainScreen = (props) => {
         {inputWithText(userName, setUserName, Captions.USER_NAME)}
         {inputWithText(password, setPassword, Captions.PASSWORD, true, true)}
         {LoginButton()}
-        {/* {TestButton()} */}
+        {RegisterButton()}
         {displayError()}
         {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
       </View>
@@ -150,6 +159,14 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", alignItems: "center" },
   button: { fontSize: 30 },
   loginButton: { color: "white", fontSize: 18, textAlign: "center", margin: 10, padding: 5, paddingHorizontal: 30 },
+  registerButton: {
+    color: Colors.blue,
+    fontSize: 16,
+    textAlign: "center",
+    margin: 5,
+    textDecorationLine: "underline",
+    padding: 20,
+  },
 });
 
 export default MainScreen;
