@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Alert, TextInput, ActivityIndicator } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
 import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
@@ -7,14 +8,17 @@ import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
 import {} from "../store/actions/PetsActions";
 
-const RegisterScreen = () => {
-  const [name, setName] = useState("Tomer");
-  const [userName, setUserName] = useState("Tomer");
-  const [password, setPassword] = useState("1234");
-  const [confirmPassword, setConfirmPassword] = useState("1234");
+const EditUserScreen = () => {
+  const dispatch = useDispatch();
+  const loggedUser = useSelector((state) => state.User.loggedUser);
+
+  const [name, setName] = useState(loggedUser.name);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
+
   /**
    * displays input with text of description
    * @param {*} input the input of the user
@@ -42,30 +46,26 @@ const RegisterScreen = () => {
   };
 
   const validateUserInput = () => {
-    if (userName.length < 2) {
-        throw Messages.USERNAME_SHORT;
-      }
-    if (userName.length < 4) {
-      throw Messages.USERNAME_SHORT;
+    if (newPassword === loggedUser.password) {
+      throw Messages.PASSWORD_SAME_AS_OLD;
     }
-    if (password.length < 4) {
+    if (newPassword.length < 4) {
       throw Messages.PASSWORD_SHORT;
     }
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       throw Messages.PASSWORDS_DONT_MATCH;
     }
   };
 
-  const registerPressed = async () => {
+  const editPressed = async () => {
     try {
       setWaiting(true);
       setMessage("");
       setError("");
       validateUserInput();
-      await DbApi.RegisterUser(userName, password, name);
-      setMessage(Messages.REGISTER_SUCCESS);
+      await DbApi.EditUser(loggedUser.username, loggedUser.password, newPassword, name);
+      setMessage(Messages.EDIT_USER_SUCCESS);
     } catch (e) {
-      console.log(e);
       setError(e);
     } finally {
       setWaiting(false);
@@ -87,12 +87,12 @@ const RegisterScreen = () => {
     return retval;
   };
 
-  const RegisterButton = () => {
+  const EditUserButton = () => {
     return (
       <View style={{ opacity: waiting ? 0.8 : 1 }} pointerEvents={waiting ? "none" : "auto"}>
-        <TouchableOpacity activeOpacity={0.6} onPress={registerPressed}>
+        <TouchableOpacity activeOpacity={0.6} onPress={editPressed}>
           <View style={{ borderRadius: 30, backgroundColor: Colors.darkBlue, alignSelf: "center" }}>
-            <Text style={styles.loginButton}>{Captions.REGISTER}</Text>
+            <Text style={styles.loginButton}>{Captions.COMMIT_USER_EDIT}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -102,10 +102,9 @@ const RegisterScreen = () => {
   return (
     <View style={styles.container}>
       {inputWithText(name, setName, Captions.NAME)}
-      {inputWithText(userName, setUserName, Captions.USER_NAME)}
-      {inputWithText(password, setPassword, Captions.PASSWORD, true)}
+      {inputWithText(newPassword, setNewPassword, Captions.NEW_PASSWORD, true)}
       {inputWithText(confirmPassword, setConfirmPassword, Captions.CONFIRM_PASSWORD, true)}
-      <View style={{ margin: 20 }}>{RegisterButton()}</View>
+      <View style={{ margin: 20 }}>{EditUserButton()}</View>
       {displayMessage()}
       {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
     </View>
@@ -113,7 +112,7 @@ const RegisterScreen = () => {
 };
 
 // screen's header
-RegisterScreen.navigationOptions = () => {
+EditUserScreen.navigationOptions = () => {
   return { headerTitle: Captions.REGISTER };
 };
 
@@ -123,4 +122,4 @@ const styles = StyleSheet.create({
   loginButton: { color: "white", fontSize: 18, textAlign: "center", margin: 10, padding: 5, paddingHorizontal: 30 },
 });
 
-export default RegisterScreen;
+export default EditUserScreen;

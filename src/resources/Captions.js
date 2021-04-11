@@ -4,6 +4,7 @@ export default {
   PETS: "PETS",
   DETAILS: "Details",
   REGISTER: "Register",
+  COMMIT_USER_EDIT: "Edit user",
 
   // greetings
   GOOD_MORNING: "Good morning",
@@ -14,6 +15,7 @@ export default {
   NAME: "Name",
   USER_NAME: "Username",
   PASSWORD: "Password",
+  NEW_PASSWORD: "New password",
   CONFIRM_PASSWORD: "Confirm password",
   DELETE: "Delete",
   CANCEL: "Cancel",

@@ -41,21 +41,18 @@ const SecondScreen = (props) => {
     }
   };
 
-  console.log(loggedUser)
+  const moveToEditUserScreen = async () => {
+    props.navigation.navigate({ routeName: ScreensRouteName.EDIT_USER_SCREEN });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{greetingMessage(loggedUser.name)}</Text>
-      <TouchableOpacity
-        style={{
-          borderWidth: 1,
-          borderRadius: 10,
-          backgroundColor: Colors.accentColor,
-          padding: 10,
-          margin: 10,
-        }}
-        onPress={moveToPets}
-      >
+      <TouchableOpacity style={styles.moveToPets} onPress={moveToPets}>
         <Text style={{ fontSize: 20 }}>move to pets screen</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.moveToPets} onPress={moveToEditUserScreen}>
+        <Text style={{ fontSize: 20 }}>edit user</Text>
       </TouchableOpacity>
     </View>
   );
@@ -72,6 +69,13 @@ const styles = StyleSheet.create({
   },
   item: {
     fontSize: 20,
+  },
+  moveToPets: {
+    borderWidth: 1,
+    borderRadius: 10,
+    backgroundColor: Colors.accentColor,
+    padding: 10,
+    margin: 10,
   },
 });
 

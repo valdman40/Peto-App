@@ -8,6 +8,7 @@ export const HTTP_METHODS = {
 export const ScreensRouteName = {
   MAIN_SCREEN: "MAIN_SCREEN",
   REGISTER_SCREEN: "REGISTER_SCREEN",
+  EDIT_USER_SCREEN: "EDIT_USER_SCREEN",
   SECOND_SCREEN: "SECOND_SCREEN",
   PETS_SCREEN: "PETS_SCREEN",
   PET_DETAILS_SCREEN: "PET_DETAILS_SCREEN",
@@ -19,7 +20,8 @@ export const ReducersNames = {
   Debug: "Debug",
 };
 
-const urlBase = 'http://10.0.0.9:5000';
+// const urlBase = 'http://10.0.0.9:5000';
+const urlBase = 'http://192.168.43.72:5000';
 
 export const RestApiExtensions = {
   Users: {

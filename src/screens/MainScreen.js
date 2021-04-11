@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -62,20 +62,9 @@ const MainScreen = (props) => {
       const user = await DbApi.Login(userName, password);
       onSuccedLogin(user);
     } catch (e) {
-      console.log(e);
-      setError(e);
+      setError(e)
     } finally {
       setWaiting(false);
-    }
-  };
-
-  // try to login using username + password given
-  const tryTest = async () => {
-    try {
-      const value = await DbApi.Test();
-      alert(JSON.stringify(value));
-    } catch (e) {
-      setError(e);
     }
   };
 
@@ -144,9 +133,9 @@ const MainScreen = (props) => {
         {inputWithText(userName, setUserName, Captions.USER_NAME)}
         {inputWithText(password, setPassword, Captions.PASSWORD, true, true)}
         {LoginButton()}
-        {RegisterButton()}
         {displayError()}
         {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
+        {RegisterButton()}
       </View>
     </ScrollView>
   );
