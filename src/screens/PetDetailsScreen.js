@@ -20,8 +20,8 @@ const PetDetailsScreen = (props) => {
 
 // screen's header
 PetDetailsScreen.navigationOptions = (navigationData) => {
-  const petName = navigationData.navigation.getParam("pet").Name;
-  return { headerTitle: `${petName}'s ${Captions.DETAILS}` };
+  const pet = navigationData.navigation.getParam("pet");
+  return { headerTitle: `${pet.name}'s ${Captions.DETAILS}` };
 };
 
 const styles = StyleSheet.create({

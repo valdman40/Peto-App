@@ -1,5 +1,4 @@
 import React from "react";
-import { PETS, USER_TO_PET } from "./data/dummy-data";
 import Messages from "./resources/Messages";
 import { RestApiExtensions, HTTP_METHODS } from "../src/resources/Strings";
 export default class DbApi extends React.Component {
@@ -43,11 +42,11 @@ export default class DbApi extends React.Component {
         if (response.status == 404) {
           reject(Messages.USERNAME_PASS_NO_MATCH);
         } else {
-          reject("unknown error");
+          reject(Messages.UNKNOWN_ERROR);
         }
       }
     });
-    return this.functionWithTimeOut(1500, returnPromise);
+    return this.functionWithTimeOut(500, returnPromise);
   }
 
   /**
@@ -75,12 +74,19 @@ export default class DbApi extends React.Component {
       if (response.status == 409) {
         throw Messages.USERNAME_EXIST;
       } else {
-        throw "err";
+        throw Messages.UNKNOWN_ERROR;
       }
     }
   }
 
-  ///
+  /**
+   * edit user's details
+   * @param {*} username 
+   * @param {*} password 
+   * @param {*} newPassword 
+   * @param {*} name 
+   * @returns 
+   */
   static async EditUser(username, password, newPassword, name) {
     const uri = new URL(RestApiExtensions.Users.RegisterUser);
     const method = HTTP_METHODS.PATCH;
@@ -100,7 +106,7 @@ export default class DbApi extends React.Component {
       if (response.status == 409) {
         throw Messages.USERNAME_EXIST;
       } else {
-        throw "err";
+        throw Messages.UNKNOWN_ERROR;
       }
     }
   }
@@ -121,25 +127,56 @@ export default class DbApi extends React.Component {
   }
 
   /**
+   * delete pet by petId
+   * @param {*} petId 
+   * @returns 
+   */
+  static async DeletePet(petId) {
+    const uri = `${RestApiExtensions.Pets.DeletePet}/${petId}`;
+    const method = HTTP_METHODS.DELETE;
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const requestObject = { method, headers };
+    let response;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      try {
+        response = await fetch(uri, requestObject);
+      } catch (e) {
+        reject(Messages.FAILED_SERVER_CONNECTION);
+      }
+      if (response.status == 200) {
+        resolve();
+      } else {
+        reject(Messages.DELETE_FAILED);
+      }
+    });
+    return this.functionWithTimeOut(500, returnPromise);
+  }
+
+  /**
    * loads user's pets
    * @param {*} userId
    * @returns
    */
   static async LoadUserPets(userId) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // filter leaves us with userToPet relevant rows
-        // map leaves us with only property of petId
-        const PetsIds = USER_TO_PET.filter((userToPet) => userId === userToPet.userId).map(
-          (userToPet) => userToPet.petId
-        );
-        const pets = PETS.filter((pet) => PetsIds.includes(pet.id));
-        if (pets.length > 0) {
-          resolve(pets);
+    const uri = `${RestApiExtensions.Pets.GetUserPets}/${userId}`;
+    let response;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      try {
+        response = await fetch(uri);
+      } catch (e) {
+        reject(Messages.FAILED_SERVER_CONNECTION);
+      }
+      let retval = response.json();
+      if (retval.length == 0) {
+        reject(Messages.NO_PETS);
+      } else {
+        if (response.status == 200) {
+          resolve(retval);
         } else {
-          reject(Messages.NO_PETS);
+          reject(Messages.UNKNOWN_ERROR);
         }
-      }, 200);
+      }
     });
+    return this.functionWithTimeOut(500, returnPromise);
   }
 }

@@ -3,6 +3,7 @@ export const HTTP_METHODS = {
   POST: "POST",
   PUT: "PUT",
   PATCH: "PATCH",
+  DELETE: "DELETE",
 };
 
 export const ScreensRouteName = {
@@ -20,7 +21,6 @@ export const ReducersNames = {
   Debug: "Debug",
 };
 
-// const urlBase = 'http://10.0.0.9:5000';
 const urlBase = 'http://192.168.43.72:5000';
 
 export const RestApiExtensions = {
@@ -28,6 +28,12 @@ export const RestApiExtensions = {
     GetUser: `${urlBase}/users`,
     RegisterUser: `${urlBase}/users`
   },
+  Pets:{
+    GetPet: `${urlBase}/pets`,
+    GetUserPets: `${urlBase}/pets/user`,
+    DeletePet: `${urlBase}/pets`,
+    InsertPet: `${urlBase}/pets`,
+  }
 };
 
 /**

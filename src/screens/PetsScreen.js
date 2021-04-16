@@ -32,7 +32,7 @@ const PetsScreen = (props) => {
 
   const deletePet = async (petId) => {
     try {
-      // await DbApi.
+      await DbApi.DeletePet(petId);
       dispatch(deletePetFromStore(petId));
     } catch (e) {
       alert(e);
@@ -50,22 +50,17 @@ const PetsScreen = (props) => {
    * move to pet details screen
    * @param {*} petId
    */
-  function moveToPetDetailsScreen(petId) {
+  function moveToPetDetailsScreen(pet) {
     // in future, instead of bringing pet from userPets, we should look in db for the pet so it will be updated
-    const pets = userPets.filter((pet) => petId === pet.id);
-    if (pets.length > 0) {
-      props.navigation.navigate({ routeName: ScreensRouteName.PET_DETAILS_SCREEN, params: { pet: pets[0] } });
-    } else {
-      alert("for some reason, couldn't find the petId in the list");
-    }
+    props.navigation.navigate({ routeName: ScreensRouteName.PET_DETAILS_SCREEN, params: { pet } });
   }
 
   const renderPet = (item) => {
     const pet = item.item;
     return (
-      <TouchableOpacity style={styles.petItem} onPress={() => moveToPetDetailsScreen(pet.id)}>
-        <Text style={styles.listAttribute}>{pet.Name}</Text>
-        <Text style={styles.listAttribute}>{pet.Type}</Text>
+      <TouchableOpacity style={styles.petItem} onPress={() => moveToPetDetailsScreen(pet)}>
+        <Text style={styles.listAttribute}>{pet.name}</Text>
+        <Text style={styles.listAttribute}>{pet.type}</Text>
         <TouchableOpacity
           onPress={() => deletePressed(pet.id)}
           style={{ alignSelf: "center", justifyContent: "center", width: 50, height: 50 }}
