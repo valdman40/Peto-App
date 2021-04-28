@@ -21,7 +21,9 @@ export const ReducersNames = {
   Debug: "Debug",
 };
 
-const urlBase = 'http://192.168.43.72:5000';
+// const urlBase = 'http://192.168.43.72:5000';
+// 10.0.0.9
+const urlBase = 'http://10.0.0.9:5000';
 
 export const RestApiExtensions = {
   Users: {
