@@ -34,7 +34,6 @@ const SecondScreen = (props) => {
   const moveToPets = async () => {
     try {
       const userPets = await DbApi.LoadUserPets(loggedUser.id);
-      console.log(userPets)
       dispatch(storeUserPets(userPets));
       props.navigation.navigate({ routeName: ScreensRouteName.PETS_SCREEN });
     } catch (e) {

@@ -17,17 +17,17 @@ const PetsScreen = (props) => {
   const listHeader = () => {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.headerAttribute}>{"Name"}</Text>
-        <Text style={styles.headerAttribute}>{"Type"}</Text>
+        <Text style={styles.headerAttribute}>Name</Text>
+        <Text style={styles.headerAttribute}>Type</Text>
         <TouchableOpacity onPress={addPetPressed}>
-          <Text style={{ ...styles.delete, borderWidth: 0, color: Colors.lawngreen }}>+</Text>
+          <Text style={styles.add}>+</Text>
         </TouchableOpacity>
       </View>
     );
   };
 
   const addPetPressed = () => {
-    alert("add pet pressed");
+    props.navigation.navigate({ routeName: ScreensRouteName.PET_ADD_SCREEN });
   };
 
   const deletePet = async (petId) => {
@@ -55,12 +55,11 @@ const PetsScreen = (props) => {
     props.navigation.navigate({ routeName: ScreensRouteName.PET_DETAILS_SCREEN, params: { pet } });
   }
 
-  const renderPet = (item) => {
-    const pet = item.item;
+  const renderPet = (pet) => {
     return (
       <TouchableOpacity style={styles.petItem} onPress={() => moveToPetDetailsScreen(pet)}>
-        <Text style={styles.listAttribute}>{pet.name}</Text>
-        <Text style={styles.listAttribute}>{pet.type}</Text>
+        <Text style={styles.listAttributeStyle}>{pet.name}</Text>
+        <Text style={styles.listAttributeStyle}>{pet.type}</Text>
         <TouchableOpacity
           onPress={() => deletePressed(pet.id)}
           style={{ alignSelf: "center", justifyContent: "center", width: 50, height: 50 }}
@@ -73,12 +72,11 @@ const PetsScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}></Text>
       <FlatList
         style={{ width: "100%" }}
         data={userPets}
         keyExtractor={(pet) => pet.id.toString()}
-        renderItem={renderPet}
+        renderItem={(pet) => renderPet(pet.item)}
         ListHeaderComponent={listHeader}
       />
     </View>
@@ -88,11 +86,14 @@ const PetsScreen = (props) => {
 // screen's header
 PetsScreen.navigationOptions = { headerTitle: Captions.PETS };
 
+const listAttributeStyle = { fontSize: 18, paddingHorizontal: 10, width: "30%", textAlign: "center", alignSelf: "center" };
+const deleteButtonStyle = { fontSize: 30, paddingHorizontal: 20, textAlignVertical: "center", borderWidth: 1 };
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "center" },
   title: { fontSize: 30 },
-  headerAttribute: { fontSize: 20, padding: 10, paddingHorizontal: 50, color: Colors.white },
-  listAttribute: { fontSize: 18, padding: 10, paddingHorizontal: 50 },
+  listAttributeStyle,
+  headerAttribute: { ...listAttributeStyle, color: Colors.white, fontSize: 20 },
   petItem: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -102,7 +103,8 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     alignSelf: "center",
   },
-  delete: { fontSize: 30, paddingHorizontal: 20, textAlignVertical: "center", borderWidth: 1 },
+  delete: deleteButtonStyle,
+  add: {...deleteButtonStyle, borderWidth: 0, color: Colors.lawngreen},
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -112,6 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     alignSelf: "center",
     backgroundColor: Colors.grey,
+    marginTop: 20,
   },
 });
 

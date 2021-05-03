@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Alert, TextInput, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ActivityIndicator } from "react-native";
 
 import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
@@ -8,10 +8,10 @@ import Colors from "../resources/Colors";
 import {} from "../store/actions/PetsActions";
 
 const RegisterScreen = () => {
-  const [name, setName] = useState("Tomer");
-  const [userName, setUserName] = useState("Tomer");
-  const [password, setPassword] = useState("1234");
-  const [confirmPassword, setConfirmPassword] = useState("1234");
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);

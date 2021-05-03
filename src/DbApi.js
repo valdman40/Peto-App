@@ -116,16 +116,31 @@ export default class DbApi extends React.Component {
   /**
    * insert pet to db
    * insert petId and userId to table that connects them
-   * @param {*} pet
-   * @param {*} userId
+   * @param {*} Name
+   * @param {*} Type
+   * @param {*} User_Id
    * @returns
    */
-  static async InsertPet(pet, userId) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 200);
+  static async InsertPet(Name, Type, User_Id) {
+    const uri = new URL(RestApiExtensions.Pets.InsertPet);
+    const method = HTTP_METHODS.PUT;
+    const body = JSON.stringify({ Name, Type, User_Id });
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const requestObject = { method, headers, body };
+    const returnPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(uri, requestObject);
+      let retval = response.json();
+      if (response.status == 201) {
+        resolve(retval);
+      } else {
+        if (response.status == 409) {
+          reject(Messages.PETNAME_EXIST);
+        } else {
+          reject(Messages.UNKNOWN_ERROR);
+        }
+      }
     });
+    return this.functionWithTimeOut(1000, returnPromise);
   }
 
   /**
@@ -145,7 +160,7 @@ export default class DbApi extends React.Component {
         reject(Messages.FAILED_SERVER_CONNECTION);
       }
       if (response.status == 200) {
-        resolve();
+        resolve(response.json());
       } else {
         reject(Messages.DELETE_FAILED);
       }
@@ -160,13 +175,8 @@ export default class DbApi extends React.Component {
    */
   static async LoadUserPets(userId) {
     const uri = `${RestApiExtensions.Pets.GetUserPets}/${userId}`;
-    let response;
     const returnPromise = new Promise(async (resolve, reject) => {
-      try {
-        response = await fetch(uri);
-      } catch (e) {
-        reject(Messages.FAILED_SERVER_CONNECTION);
-      }
+      const response = await fetch(uri);
       let retval = response.json();
       if (retval.length == 0) {
         reject(Messages.NO_PETS);

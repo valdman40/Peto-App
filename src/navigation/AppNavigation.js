@@ -10,6 +10,7 @@ import PetsScreen from "../screens/PetsScreen";
 import PetDetailsScreen from "../screens/PetDetailsScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import EditUserScreen from "../screens/EditUserScreen";
+import AddPetScreen from '../screens/AddPetScreen';
 
 
 const defaultNavigationOptions = {
@@ -30,9 +31,10 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.SECOND_SCREEN]: SecondScreen,
     [ScreensRouteName.PETS_SCREEN]: PetsScreen,
     [ScreensRouteName.PET_DETAILS_SCREEN]: PetDetailsScreen,
+    [ScreensRouteName.PET_ADD_SCREEN]: AddPetScreen,
   },
   {
-    initialRouteName: decideInitialMode(ScreensRouteName.REGISTER_SCREEN),
+    initialRouteName: decideInitialMode(ScreensRouteName.MAIN_SCREEN),
     defaultNavigationOptions
   }
 );

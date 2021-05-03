@@ -1,9 +1,10 @@
 export default {
   // screens titles
   APP_NAME: "Peto",
-  PETS: "PETS",
+  PETS: "Pets",
   DETAILS: "Details",
   REGISTER: "Register",
+  ADD_PET: "Add Pet",
   COMMIT_USER_EDIT: "Edit user",
 
   // greetings
@@ -21,4 +22,6 @@ export default {
   CANCEL: "Cancel",
   CONFIRM: "Confirm",
   LOGIN: "Login",
+  PET_NAME: "Pet name",
+  PET_TYPE: "Type",
 };
