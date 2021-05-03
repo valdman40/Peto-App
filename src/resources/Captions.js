@@ -14,6 +14,7 @@ export default {
   GOOD_NIGHT: "Good night",
 
   NAME: "Name",
+  TYPE: "Type",
   USER_NAME: "Username",
   PASSWORD: "Password",
   NEW_PASSWORD: "New password",

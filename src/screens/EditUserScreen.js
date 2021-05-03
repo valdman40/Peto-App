@@ -6,15 +6,15 @@ import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
-import {} from "../store/actions/PetsActions";
+import { saveLoggedUser } from "../store/actions/UserActions";
 
 const EditUserScreen = () => {
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.User.loggedUser);
 
   const [name, setName] = useState(loggedUser.name);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPassword, setNewPassword] = useState(loggedUser.password);
+  const [confirmPassword, setConfirmPassword] = useState(loggedUser.password);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
@@ -46,9 +46,9 @@ const EditUserScreen = () => {
   };
 
   const validateUserInput = () => {
-    if (newPassword === loggedUser.password) {
-      throw Messages.PASSWORD_SAME_AS_OLD;
-    }
+    // if (newPassword === loggedUser.password) {
+    //   throw Messages.PASSWORD_SAME_AS_OLD;
+    // }
     if (newPassword.length < 4) {
       throw Messages.PASSWORD_SHORT;
     }
@@ -63,7 +63,8 @@ const EditUserScreen = () => {
       setMessage("");
       setError("");
       validateUserInput();
-      await DbApi.EditUser(loggedUser.username, loggedUser.password, newPassword, name);
+      await DbApi.EditUser(loggedUser.username, newPassword, name, loggedUser.id);
+      dispatch(saveLoggedUser({...loggedUser, password: newPassword, name}))
       setMessage(Messages.EDIT_USER_SUCCESS);
     } catch (e) {
       setError(e);

@@ -17,8 +17,8 @@ const PetsScreen = (props) => {
   const listHeader = () => {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.headerAttribute}>Name</Text>
-        <Text style={styles.headerAttribute}>Type</Text>
+        <Text style={styles.headerAttribute}>{Captions.NAME}</Text>
+        <Text style={styles.headerAttribute}>{Captions.TYPE}</Text>
         <TouchableOpacity onPress={addPetPressed}>
           <Text style={styles.add}>+</Text>
         </TouchableOpacity>

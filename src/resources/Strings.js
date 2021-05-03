@@ -29,7 +29,8 @@ const urlBase = 'http://10.0.0.9:5000';
 export const RestApiExtensions = {
   Users: {
     GetUser: `${urlBase}/users`,
-    RegisterUser: `${urlBase}/users`
+    RegisterUser: `${urlBase}/users`,
+    EditUser: `${urlBase}/users`
   },
   Pets:{
     GetPet: `${urlBase}/pets`,

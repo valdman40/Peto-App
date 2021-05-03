@@ -82,36 +82,31 @@ export default class DbApi extends React.Component {
     return this.functionWithTimeOut(1000, returnPromise);
   }
 
-  /**
-   * edit user's details
-   * @param {*} username
-   * @param {*} password
-   * @param {*} newPassword
-   * @param {*} name
-   * @returns
-   */
-  static async EditUser(username, password, newPassword, name) {
-    const uri = new URL(RestApiExtensions.Users.RegisterUser);
-    const method = HTTP_METHODS.PATCH;
-    const body = JSON.stringify({ Username: username, Password: password, New_Password: newPassword, Name: name });
-    const requestObject = { method, standartHeaders, body };
-    let response;
-    try {
-      response = await fetch(uri, requestObject);
-    } catch (e) {
-      throw Messages.FAILED_SERVER_CONNECTION;
+      /**
+       * edit user's details
+       * @param {*} Username 
+       * @param {*} New_Password 
+       * @param {*} Name 
+       * @param {*} id 
+       * @returns 
+       */
+     static async EditUser(Username, New_Password, Name, id) {
+      const uri = `${RestApiExtensions.Users.EditUser}/${id}`;
+      const method = HTTP_METHODS.PATCH;
+      const body = JSON.stringify({ Username, New_Password, Name });
+      const headers = { Accept: "application/json", "Content-Type": "application/json" };
+      const requestObject = { method, headers, body };
+      const returnPromise = new Promise(async (resolve, reject) => {
+        const response = await fetch(uri, requestObject);
+        let retval = response.json();
+        if (response.status == 201) {
+          resolve(retval);
+        } else {
+          reject(Messages.UNKNOWN_ERROR);
+        }
+      });
+      return this.functionWithTimeOut(1000, returnPromise);
     }
-    let retval = response.json();
-    if (response.status == 201) {
-      return retval;
-    } else {
-      if (response.status == 409) {
-        throw Messages.USERNAME_EXIST;
-      } else {
-        throw Messages.UNKNOWN_ERROR;
-      }
-    }
-  }
 
   /**
    * insert pet to db
