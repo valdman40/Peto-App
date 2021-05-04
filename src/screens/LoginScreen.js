@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,14 +17,32 @@ import Colors from "../resources/Colors";
 import { saveLoggedUser } from "../store/actions/UserActions";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
+import CacheManager, { UserCache } from "../resources/CacheManager";
 
-const MainScreen = (props) => {
-  const [userName, setUserName] = useState("Roy");
-  const [password, setPassword] = useState("1234");
+const LoginScreen = (props) => {
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
 
   const dispatch = useDispatch();
+
+  const loadUserFromCache = () => {
+    // CacheManager.cleanCache(UserCache.name); // if we want to clear cache
+    // the reason i made this function inside another loadUserFromCache
+    // is for the reason this function cant be async so i bypass it
+    (async () => {
+      try {
+        const user = await CacheManager.loadEntrieValue(UserCache.name, UserCache.types.lastLoggedUser);
+        setUserName(user.username);
+        setPassword(user.password);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  };
+
+  useEffect(loadUserFromCache, []);
 
   /**
    * displays input with text of description
@@ -32,10 +50,9 @@ const MainScreen = (props) => {
    * @param {*} inputSetter the setter to change the input
    * @param {*} inputDescription
    * @param {*} secret wheather the input should be hidden or not
-   * @param {*} loginAfter if true, will try to login after pressing "v" on keyboard
+   * @param {*} callback on submiting (V)
    */
-  const inputWithText = (input, inputSetter, inputDescription, secret = false, loginAfter = false) => {
-    const fun = loginAfter ? tryToLogin : () => {};
+  const inputWithText = (input, inputSetter, inputDescription, callback = () => {}, secret = false) => {
     return (
       <View style={{ margin: 10, flexDirection: "row", justifyContent: "space-between", width: "90%", padding: 10 }}>
         <Text style={{ fontSize: 20 }}>{inputDescription}</Text>
@@ -48,7 +65,7 @@ const MainScreen = (props) => {
           maxLength={25}
           underlineColorAndroid="#888"
           secureTextEntry={secret}
-          onSubmitEditing={fun}
+          onSubmitEditing={callback}
         />
       </View>
     );
@@ -62,7 +79,7 @@ const MainScreen = (props) => {
       const user = await DbApi.Login(userName, password);
       onSuccedLogin(user);
     } catch (e) {
-      setError(e)
+      setError(e);
     } finally {
       setWaiting(false);
     }
@@ -74,7 +91,7 @@ const MainScreen = (props) => {
    */
   const onSuccedLogin = (user) => {
     dispatch(saveLoggedUser(user));
-    props.navigation.navigate({ routeName: ScreensRouteName.SECOND_SCREEN });
+    props.navigation.replace({ routeName: ScreensRouteName.MENU_SCREEN });
   };
 
   /**
@@ -122,6 +139,14 @@ const MainScreen = (props) => {
     return retval;
   };
 
+  // if waiting, it displays timer on screen
+  // otherwise it will return nothing so won't display
+  const timer = () =>{
+    if(waiting){
+      return <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />;
+    }
+  }
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
@@ -131,10 +156,10 @@ const MainScreen = (props) => {
           style={{ width: "90%", marginVertical: 20 }}
         />
         {inputWithText(userName, setUserName, Captions.USER_NAME)}
-        {inputWithText(password, setPassword, Captions.PASSWORD, true, true)}
+        {inputWithText(password, setPassword, Captions.PASSWORD, tryToLogin, true)}
         {LoginButton()}
         {displayError()}
-        {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
+        {timer()}
         {RegisterButton()}
       </View>
     </ScrollView>
@@ -142,7 +167,7 @@ const MainScreen = (props) => {
 };
 
 // screen's header
-MainScreen.navigationOptions = { headerTitle: Captions.APP_NAME };
+LoginScreen.navigationOptions = { headerTitle: Captions.APP_NAME };
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", alignItems: "center" },
@@ -158,4 +183,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainScreen;
+export default LoginScreen;

@@ -5,7 +5,9 @@ export default {
   DETAILS: "Details",
   REGISTER: "Register",
   ADD_PET: "Add Pet",
+  MENU: "Menu",
   COMMIT_USER_EDIT: "Edit user",
+  SETTINGS: "Settings",
 
   // greetings
   GOOD_MORNING: "Good morning",
@@ -25,4 +27,7 @@ export default {
   LOGIN: "Login",
   PET_NAME: "Pet name",
   PET_TYPE: "Type",
+  DISCONNECT: "Disconnect",
+  YES: "Yes",
+  NO: "No",
 };

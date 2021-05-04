@@ -4,8 +4,8 @@ import { ScreensRouteName } from "../resources/Strings";
 import Colors from "../resources/Colors";
 
 // screens
-import MainScreen from "../screens/MainScreen";
-import SecondScreen from "../screens/SecondScreen";
+import LoginScreen from "../screens/LoginScreen";
+import MenuScreen from "../screens/MenuScreen";
 import PetsScreen from "../screens/PetsScreen";
 import PetDetailsScreen from "../screens/PetDetailsScreen";
 import RegisterScreen from "../screens/RegisterScreen";
@@ -25,10 +25,10 @@ const defaultNavigationOptions = {
  */
 const AppNavigator = createStackNavigator(
   {
-    [ScreensRouteName.MAIN_SCREEN]: MainScreen,
+    [ScreensRouteName.LOGIN_SCREEN]: LoginScreen,
     [ScreensRouteName.REGISTER_SCREEN]: RegisterScreen,
     [ScreensRouteName.EDIT_USER_SCREEN]: EditUserScreen,
-    [ScreensRouteName.SECOND_SCREEN]: SecondScreen,
+    [ScreensRouteName.MENU_SCREEN]: MenuScreen,
     [ScreensRouteName.PETS_SCREEN]: PetsScreen,
     [ScreensRouteName.PET_DETAILS_SCREEN]: PetDetailsScreen,
     [ScreensRouteName.PET_ADD_SCREEN]: AddPetScreen,
