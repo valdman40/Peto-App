@@ -51,7 +51,7 @@ export default class DbApi extends React.Component {
         reject(Messages.UNKNOWN_ERROR);
       }
     });
-    return this.functionWithTimeOut(1000, returnPromise);
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
   /**
@@ -79,7 +79,7 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return this.functionWithTimeOut(1000, returnPromise);
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
       /**
@@ -105,7 +105,7 @@ export default class DbApi extends React.Component {
           reject(Messages.UNKNOWN_ERROR);
         }
       });
-      return this.functionWithTimeOut(1000, returnPromise);
+      return this.functionWithTimeOut(3000, returnPromise);
     }
 
   /**
@@ -135,7 +135,7 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return this.functionWithTimeOut(1000, returnPromise);
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
   /**
@@ -160,7 +160,7 @@ export default class DbApi extends React.Component {
         reject(Messages.DELETE_FAILED);
       }
     });
-    return this.functionWithTimeOut(500, returnPromise);
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
   /**
@@ -183,6 +183,6 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return this.functionWithTimeOut(500, returnPromise);
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 }
