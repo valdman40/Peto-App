@@ -1,34 +1,12 @@
 import React from "react";
 import Messages from "./resources/Messages";
 import { RestApiExtensions, HTTP_METHODS } from "../src/resources/Strings";
+import fetch from './FetchWithTimeOut';
 
 const standartHeaders = { Accept: "application/json", "Content-Type": "application/json" };
 
 export default class DbApi extends React.Component {
-  /**
-   * executes function with timout timer, if exceeded time it will "reject" the request
-   * @param {*} ms number of ms till exception
-   * @param {*} promise promise to execute
-   * @param {*} message message to diaply when timout
-   * @returns
-   */
-  static functionWithTimeOut(ms, promise, message = Messages.FAILED_SERVER_CONNECTION) {
-    return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
-        reject(message);
-      }, ms);
-      promise
-        .then((value) => {
-          clearTimeout(timer);
-          resolve(value);
-        })
-        .catch((reason) => {
-          clearTimeout(timer);
-          reject(reason);
-        });
-    });
-  }
-
+  
   /**
    * try to login
    * @param {*} username
@@ -51,7 +29,7 @@ export default class DbApi extends React.Component {
         reject(Messages.UNKNOWN_ERROR);
       }
     });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return returnPromise;
   }
 
   /**
@@ -79,7 +57,7 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return returnPromise;
   }
 
       /**
@@ -105,7 +83,7 @@ export default class DbApi extends React.Component {
           reject(Messages.UNKNOWN_ERROR);
         }
       });
-      return this.functionWithTimeOut(3000, returnPromise);
+      return returnPromise;
     }
 
   /**
@@ -135,7 +113,7 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return returnPromise;
   }
 
   /**
@@ -160,7 +138,7 @@ export default class DbApi extends React.Component {
         reject(Messages.DELETE_FAILED);
       }
     });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return returnPromise;
   }
 
   /**
@@ -183,6 +161,6 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return returnPromise;
   }
 }
