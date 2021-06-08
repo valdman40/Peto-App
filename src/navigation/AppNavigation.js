@@ -34,7 +34,7 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.PET_ADD_SCREEN]: AddPetScreen,
   },
   {
-    initialRouteName: decideInitialMode(ScreensRouteName.MAIN_SCREEN),
+    initialRouteName: decideInitialMode(ScreensRouteName.PET_DETAILS_SCREEN),
     defaultNavigationOptions
   }
 );

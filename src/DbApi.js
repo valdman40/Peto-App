@@ -1,12 +1,35 @@
 import React from "react";
 import Messages from "./resources/Messages";
 import { RestApiExtensions, HTTP_METHODS } from "../src/resources/Strings";
-import fetch from './FetchWithTimeOut';
+import fetch from "./FetchWithTimeOut";
 
 const standartHeaders = { Accept: "application/json", "Content-Type": "application/json" };
 
 export default class DbApi extends React.Component {
-  
+  /**
+   * executes function with timout timer, if exceeded time it will "reject" the request
+   * @param {*} ms number of ms till exception
+   * @param {*} promise promise to execute
+   * @param {*} message message to diaply when timout
+   * @returns
+   */
+  static functionWithTimeOut(ms, promise, message = Messages.FAILED_SERVER_CONNECTION) {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject(message);
+      }, ms);
+      promise
+        .then((value) => {
+          clearTimeout(timer);
+          resolve(value);
+        })
+        .catch((reason) => {
+          clearTimeout(timer);
+          reject(reason);
+        });
+    });
+  }
+
   /**
    * try to login
    * @param {*} username
@@ -29,7 +52,7 @@ export default class DbApi extends React.Component {
         reject(Messages.UNKNOWN_ERROR);
       }
     });
-    return returnPromise;
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
   /**
@@ -57,34 +80,34 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return returnPromise;
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
-      /**
-       * edit user's details
-       * @param {*} Username 
-       * @param {*} New_Password 
-       * @param {*} Name 
-       * @param {*} id 
-       * @returns 
-       */
-     static async EditUser(Username, New_Password, Name, id) {
-      const uri = `${RestApiExtensions.Users.EditUser}/${id}`;
-      const method = HTTP_METHODS.PATCH;
-      const body = JSON.stringify({ Username, New_Password, Name });
-      const headers = { Accept: "application/json", "Content-Type": "application/json" };
-      const requestObject = { method, headers, body };
-      const returnPromise = new Promise(async (resolve, reject) => {
-        const response = await fetch(uri, requestObject);
-        let retval = response.json();
-        if (response.status == 201) {
-          resolve(retval);
-        } else {
-          reject(Messages.UNKNOWN_ERROR);
-        }
-      });
-      return returnPromise;
-    }
+  /**
+   * edit user's details
+   * @param {*} Username
+   * @param {*} New_Password
+   * @param {*} Name
+   * @param {*} id
+   * @returns
+   */
+  static async EditUser(Username, New_Password, Name, id) {
+    const uri = `${RestApiExtensions.Users.EditUser}/${id}`;
+    const method = HTTP_METHODS.PATCH;
+    const body = JSON.stringify({ Username, New_Password, Name });
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const requestObject = { method, headers, body };
+    const returnPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(uri, requestObject);
+      let retval = response.json();
+      if (response.status == 201) {
+        resolve(retval);
+      } else {
+        reject(Messages.UNKNOWN_ERROR);
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
 
   /**
    * insert pet to db
@@ -113,7 +136,7 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return returnPromise;
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
   /**
@@ -138,7 +161,7 @@ export default class DbApi extends React.Component {
         reject(Messages.DELETE_FAILED);
       }
     });
-    return returnPromise;
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
   /**
@@ -161,6 +184,32 @@ export default class DbApi extends React.Component {
         }
       }
     });
-    return returnPromise;
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
+
+  /**
+   * feeds pet right now
+   * @param {*} pet
+   * @returns
+   */
+  static async FeedPet(pet) {
+    const uri = `${RestApiExtensions.Pets.FeedPet}/${pet.id}`;
+    const method = HTTP_METHODS.PUT;
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const body = JSON.stringify({});
+    const requestObject = { method, headers, body };
+    const returnPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(uri, requestObject);
+      if (response.status == 200) {
+        resolve();
+      }
+      // else if (response.status == 404) {
+      //   reject(Messages.USERNAME_PASS_NO_MATCH);
+      // }
+      else {
+        reject(Messages.UNKNOWN_ERROR);
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 }

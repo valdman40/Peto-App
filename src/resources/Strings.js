@@ -37,6 +37,7 @@ export const RestApiExtensions = {
     GetUserPets: `${urlBase}/pets/user`,
     DeletePet: `${urlBase}/pets`,
     InsertPet: `${urlBase}/pets`,
+    FeedPet: `${urlBase}/pets/feed`,
   }
 };
 
