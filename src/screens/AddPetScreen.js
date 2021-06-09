@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, ActivityIndicator, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import DropDownPicker from "react-native-dropdown-picker";
 
 import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
@@ -103,6 +102,9 @@ const AddPetScreen = () => {
       { label: "6", value: 6, hidden: false },
     ];
     return (
+      <View>
+        
+      </View>
       // <View
       //   style={{
       //     flexDirection: "row",
@@ -125,11 +127,11 @@ const AddPetScreen = () => {
         //   arrowStyle={{ alignSelf: "flex-start" }}
         //   // scrollViewProps={{contentContainerStyle: {flexGrow: 1}}}
         //   onChangeItem={(type) => setType(type.value)}
-        // />
-        <DropDownPicker
-        items={items}
-        containerStyle={{height: 40}}
-      />
+      //   // />
+      //   <DropDownPicker
+      //   items={items}
+      //   containerStyle={{height: 40}}
+      // />
       // </View>
     );
   };

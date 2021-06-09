@@ -11,6 +11,7 @@ import PetDetailsScreen from "../screens/PetDetailsScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import EditUserScreen from "../screens/EditUserScreen";
 import AddPetScreen from '../screens/AddPetScreen';
+import PetFeedingScheduleScreen from '../screens/PetFeedingScheduleScreen';
 
 
 const defaultNavigationOptions = {
@@ -32,6 +33,7 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.PETS_SCREEN]: PetsScreen,
     [ScreensRouteName.PET_DETAILS_SCREEN]: PetDetailsScreen,
     [ScreensRouteName.PET_ADD_SCREEN]: AddPetScreen,
+    [ScreensRouteName.PET__FEEDING_SCHEDULE_SCREEN]: PetFeedingScheduleScreen,
   },
   {
     initialRouteName: decideInitialMode(ScreensRouteName.PET_DETAILS_SCREEN),
@@ -41,7 +43,7 @@ const AppNavigator = createStackNavigator(
 
 // if i'm in dev mode, put whatwever i chose, else put login screen
 function decideInitialMode(screenChosen) {
-  let retval = ScreensRouteName.MAIN_SCREEN;
+  let retval = ScreensRouteName.LOGIN_SCREEN;
   // eslint-disable-next-line no-undef
   if (__DEV__) {
     retval = screenChosen;

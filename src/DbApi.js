@@ -192,11 +192,11 @@ export default class DbApi extends React.Component {
    * @param {*} pet
    * @returns
    */
-  static async FeedPet(pet) {
+  static async FeedPet(pet, Amount) {
     const uri = `${RestApiExtensions.Pets.FeedPet}/${pet.id}`;
     const method = HTTP_METHODS.PUT;
     const headers = { Accept: "application/json", "Content-Type": "application/json" };
-    const body = JSON.stringify({});
+    const body = JSON.stringify({ Amount });
     const requestObject = { method, headers, body };
     const returnPromise = new Promise(async (resolve, reject) => {
       const response = await fetch(uri, requestObject);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Alert, TextInput, FlatList } from "react-native";
 import { useDispatch } from "react-redux";
+import { Dropdown } from "react-native-material-dropdown-v2";
 
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
@@ -11,34 +12,32 @@ import DbApi from "../DbApi";
 const defaultPet = {
   name: "debugger",
   id: 1,
-  feedingTimes: [
-    { time: "01:00", id: 1 },
-    { time: "02:00", id: 2 },
-    { time: "04:00", id: 3 },
-  ],
+  defaultFeedingAmount: 10,
 };
 
 const buttonSize = 200;
 
 const PetDetailsScreen = (props) => {
   const pet = props.navigation.getParam("pet") || defaultPet;
-  const [waiting, setWaiting] = useState(false);
-  const [feedingTimes, setFeedingTimes] = useState([]);
-  useEffect(() => {
-    const feedingTimesAfterManipulation = [];
-    let i = 0;
-    pet.feedingTimes.forEach((feeding) => {
-      feedingTimesAfterManipulation.push({ ...feeding, index: i });
-      i += 1;
-    });
-    setFeedingTimes(feedingTimesAfterManipulation);
-  }, [pet]);
+  const [feedingAmount, setFeedingAmount] = useState(0);
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState({});
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const x = [];
+    for (let i = 1; i <= 10; i++) {
+      const value = 10 * i;
+      x.push({ value });
+    }
+    setItems(x);
+    setSelectedItem(x[0].value);
+  }, []);
 
   const feedPet = async () => {
     let message = "";
     try {
-      await DbApi.FeedPet(pet);
+      await DbApi.FeedPet(pet, feedingAmount);
       message = "Feeding request sent";
     } catch (e) {
       message = e.message;
@@ -46,39 +45,6 @@ const PetDetailsScreen = (props) => {
       //
     }
     alert(message);
-  };
-
-  /**
-   * displays input with text of description
-   * @param {*} input the input of the user
-   * @param {*} inputSetter the setter to change the input
-   * @param {*} inputDescription
-   */
-  const inputWithText = (input, inputSetter, inputDescription, index) => {
-    return (
-      <View
-        style={{
-          margin: 10,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "80%",
-          padding: 10,
-          alignSelf: "center",
-        }}
-      >
-        <Text style={{ fontSize: 20 }}>{inputDescription}</Text>
-        <TextInput
-          onChangeText={(newInput) => inputSetter(newInput)}
-          value={input}
-          style={{ width: 200, fontSize: 25 }}
-          placeholder={""}
-          placeholderTextColor={Colors.grey}
-          maxLength={25}
-          underlineColorAndroid="#888"
-          textAlign={"center"}
-        />
-      </View>
-    );
   };
 
   const feedButton = () => {
@@ -89,40 +55,16 @@ const PetDetailsScreen = (props) => {
     );
   };
 
-  const renderFeedingTime = (feeding) => {
-    return inputWithText(feeding.time, setFeedingTimes, feeding.id, feeding.index);
-  };
-
-  const feedingTimesDisplay = () => {
-    return (
-      <FlatList
-        data={feedingTimes}
-        keyExtractor={(feeding) => feeding.id.toString()}
-        renderItem={(feeding) => renderFeedingTime(feeding.item)}
-      />
-    );
-  };
-
-  const saveChanges = () => {
-    alert("save");
-  };
-
-  const SaveChangesButton = () => {
-    return (
-      <View style={{ opacity: waiting ? 0.8 : 1 }} pointerEvents={waiting ? "none" : "auto"}>
-        <TouchableOpacity activeOpacity={0.6} onPress={saveChanges}>
-          <View style={{ borderRadius: 30, backgroundColor: Colors.darkBlue, alignSelf: "center" }}>
-            <Text style={styles.loginButton}>{Captions.COMMIT_USER_EDIT}</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
-      {feedingTimesDisplay()}
-      {SaveChangesButton()}
+      <Dropdown
+        data={items}
+        containerStyle={{ height: 70 }}
+        value={feedingAmount}
+        itemTextStyle={{ textAlign: "center" }}
+        style={{ textAlign: "center" }}
+        onChangeText={(amount) => setFeedingAmount(amount)}
+      />
       {feedButton()}
     </View>
   );
@@ -135,7 +77,7 @@ PetDetailsScreen.navigationOptions = (navigationData) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "center" },
+  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "space-around" },
   title: { fontSize: 30 },
   circleButton: {
     borderWidth: 3,
