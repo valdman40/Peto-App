@@ -25,7 +25,8 @@ export const ReducersNames = {
 
 // const urlBase = 'http://192.168.43.72:5000';
 // 10.0.0.9
-const urlBase = 'http://10.0.0.9:5000';
+// const urlBase = 'http://10.0.0.9:5000';
+const urlBase = 'http://192.168.0.109:5000';
 
 export const RestApiExtensions = {
   Users: {
@@ -39,6 +40,11 @@ export const RestApiExtensions = {
     DeletePet: `${urlBase}/pets`,
     InsertPet: `${urlBase}/pets`,
     FeedPet: `${urlBase}/pets/feed`,
+  },
+  Schedule:{
+    DeleteSchedule: `${urlBase}/feedingschedule`,
+    InsertSchedule: `${urlBase}/feedingschedule`,
+    GetPetSchedule: `${urlBase}/feedingschedule/pet`,
   }
 };
 

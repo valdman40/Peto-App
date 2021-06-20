@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Alert, TextInput, FlatList } 
 import { useDispatch } from "react-redux";
 import { Dropdown } from "react-native-material-dropdown-v2";
 
+import { ScreensRouteName } from "../resources/Strings";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
@@ -55,17 +56,42 @@ const PetDetailsScreen = (props) => {
     );
   };
 
+  const amountDropDown = () => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          margin: 40,
+          alignItems: "center",
+          width: "40%",
+          alignSelf: "center",
+          justifyContent: "space-around",
+        }}
+      >
+        <Dropdown
+          data={items}
+          containerStyle={{ height: 70 }}
+          value={feedingAmount}
+          itemTextStyle={{ textAlign: "center" }}
+          style={{ textAlign: "center" }}
+          onChangeText={(amount) => setFeedingAmount(amount)}
+        />
+        <Text style={{ fontSize: 20 }}>grams</Text>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Dropdown
-        data={items}
-        containerStyle={{ height: 70 }}
-        value={feedingAmount}
-        itemTextStyle={{ textAlign: "center" }}
-        style={{ textAlign: "center" }}
-        onChangeText={(amount) => setFeedingAmount(amount)}
-      />
+      {amountDropDown()}
       {feedButton()}
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.navigate({ routeName: ScreensRouteName.PET__FEEDING_SCHEDULE_SCREEN, params: { pet } });
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>Schedules</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -77,9 +103,10 @@ PetDetailsScreen.navigationOptions = (navigationData) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "space-around" },
+  container: { flex: 1, backgroundColor: "#fff", alignItems: "center" },
   title: { fontSize: 30 },
   circleButton: {
+    margin: 30,
     borderWidth: 3,
     borderColor: "rgba(0,0,0,0.2)",
     alignItems: "center",

@@ -17,6 +17,7 @@ export default {
 
   NAME: "Name",
   TYPE: "Type",
+  AMOUNT: "Amount",
   USER_NAME: "Username",
   PASSWORD: "Password",
   NEW_PASSWORD: "New password",

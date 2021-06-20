@@ -164,6 +164,61 @@ export default class DbApi extends React.Component {
     return this.functionWithTimeOut(3000, returnPromise);
   }
 
+    /**
+   * insert feeding to db
+   * insert feedingId and with petId to table that connects them
+   * @param {*} Name
+   * @param {*} Amount
+   * @param {*} Pet_Id
+   * @returns
+   */
+     static async InsertSchedule(Name, Amount, Pet_Id) {
+      const uri = new URL(RestApiExtensions.Schedule.InsertSchedule);
+      const method = HTTP_METHODS.PUT;
+      const body = JSON.stringify({ Name, Amount, Pet_Id });
+      const headers = { Accept: "application/json", "Content-Type": "application/json" };
+      const requestObject = { method, headers, body };
+      const returnPromise = new Promise(async (resolve, reject) => {
+        const response = await fetch(uri, requestObject);
+        let retval = response.json();
+        if (response.status == 201) {
+          resolve(retval);
+        } else {
+          if (response.status == 409) {
+            reject(Messages.PETNAME_EXIST);
+          } else {
+            reject(Messages.UNKNOWN_ERROR);
+          }
+        }
+      });
+      return this.functionWithTimeOut(3000, returnPromise);
+    }
+
+  /**
+   * delete schedule of feeding
+   * @param {*} scheduleId
+   * @returns
+   */
+  static async DeleteSchedule(scheduleId) {
+    const uri = `${RestApiExtensions.Schedule.DeleteSchedule}/${scheduleId}`;
+    const method = HTTP_METHODS.DELETE;
+    const requestObject = { method, standartHeaders };
+    let response;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      try {
+        response = await fetch(uri, requestObject);
+      } catch (e) {
+        reject(Messages.FAILED_SERVER_CONNECTION);
+      }
+      if (response.status == 200) {
+        resolve(response.json());
+      } else {
+        reject(Messages.DELETE_FAILED);
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
+
   /**
    * loads user's pets
    * @param {*} userId
