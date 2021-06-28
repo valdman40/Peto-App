@@ -1,7 +1,7 @@
 import React from "react";
 import Messages from "./resources/Messages";
 import { RestApiExtensions, HTTP_METHODS } from "../src/resources/Strings";
-import fetch from "./FetchWithTimeOut";
+// import fetch from "./FetchWithTimeOut";
 
 const standartHeaders = { Accept: "application/json", "Content-Type": "application/json" };
 
@@ -164,7 +164,7 @@ export default class DbApi extends React.Component {
     return this.functionWithTimeOut(3000, returnPromise);
   }
 
-    /**
+  /**
    * insert feeding to db
    * insert feedingId and with petId to table that connects them
    * @param {*} Name
@@ -172,27 +172,34 @@ export default class DbApi extends React.Component {
    * @param {*} Pet_Id
    * @returns
    */
-     static async InsertSchedule(Name, Amount, Pet_Id) {
-      const uri = new URL(RestApiExtensions.Schedule.InsertSchedule);
-      const method = HTTP_METHODS.PUT;
-      const body = JSON.stringify({ Name, Amount, Pet_Id });
-      const headers = { Accept: "application/json", "Content-Type": "application/json" };
-      const requestObject = { method, headers, body };
-      const returnPromise = new Promise(async (resolve, reject) => {
-        const response = await fetch(uri, requestObject);
-        let retval = response.json();
-        if (response.status == 201) {
-          resolve(retval);
+  static async InsertSchedule(Name, Amount, Time, Pet_Id) {
+    // alert("insert");
+    return;
+    const uri = new URL(RestApiExtensions.Schedule.InsertSchedule);
+    const method = HTTP_METHODS.PUT;
+    const body = JSON.stringify({ Name, Amount, Pet_Id });
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const requestObject = { method, headers, body };
+    const returnPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(uri, requestObject);
+      let retval = response.json();
+      if (response.status == 201) {
+        resolve(retval);
+      } else {
+        if (response.status == 409) {
+          reject(Messages.PETNAME_EXIST);
         } else {
-          if (response.status == 409) {
-            reject(Messages.PETNAME_EXIST);
-          } else {
-            reject(Messages.UNKNOWN_ERROR);
-          }
+          reject(Messages.UNKNOWN_ERROR);
         }
-      });
-      return this.functionWithTimeOut(3000, returnPromise);
-    }
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
+
+  static async UpdateSchedule(Name, Amount, Time, Id) {
+    // alert("update");
+    return;
+  }
 
   /**
    * delete schedule of feeding
@@ -242,6 +249,28 @@ export default class DbApi extends React.Component {
     return this.functionWithTimeOut(3000, returnPromise);
   }
 
+  /**
+   * loads pet's feeding schedule
+   * @param {*} petId
+   * @returns
+   */
+  static async GetPetFeedingSchedule(petId) {
+    const uri = `${RestApiExtensions.Schedule.GetUserPets}/${petId}`;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(uri);
+      let retval = response.json();
+      if (retval.length == 0) {
+        reject(Messages.NO_PETS);
+      } else {
+        if (response.status == 200) {
+          resolve(retval);
+        } else {
+          reject(Messages.UNKNOWN_ERROR);
+        }
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
   /**
    * feeds pet right now
    * @param {*} pet

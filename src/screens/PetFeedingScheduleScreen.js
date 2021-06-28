@@ -12,14 +12,19 @@ import DbApi from "../DbApi";
 
 const PetFeedingScheduleScreen = (props) => {
   const [petsFeeding, setPetsFeeding] = useState([]);
-  const [addNewScheduleMode, setAddNewScheduleMode] = useState(false);
-  const [newFeedingSchedule, setNewFeedingSchedule] = useState("");
   const dispatch = useDispatch();
+  const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
 
   const loadPetFeedingScheduleFromDb = () => {
     (async () => {
       try {
-        // setPetsFeeding(await DbApi.GetPetFeedingSchedule(props.navigation.getParam("petId")));
+        // setPetsFeeding(await DbApi.GetPetFeedingSchedule(id));
+        alert("loadPetFeedingScheduleFromDb of petid", pet.id);
+        setPetsFeeding([
+          { name: "meal1", amount: 100, time: "01:00", id: 1 },
+          { name: "meal2", amount: 30, time: "02:00", id: 2 },
+          { name: "meal3", amount: 80, time: "03:00", id: 3 },
+        ]);
       } catch (e) {
         console.log(e);
       }
@@ -33,6 +38,7 @@ const PetFeedingScheduleScreen = (props) => {
       <View style={styles.headerContainer}>
         <Text style={styles.headerAttribute}>{Captions.NAME}</Text>
         <Text style={styles.headerAttribute}>{Captions.AMOUNT}</Text>
+        <Text style={styles.headerAttribute}>{Captions.TIME}</Text>
         <TouchableOpacity onPress={addSchedulePressed}>
           <Text style={styles.add}>+</Text>
         </TouchableOpacity>
@@ -41,7 +47,7 @@ const PetFeedingScheduleScreen = (props) => {
   };
 
   const addSchedulePressed = () => {
-    setAddNewScheduleMode(true);
+    props.navigation.navigate({ routeName: ScreensRouteName.ADD_EDIT_FEEDING_SCHEDULE_SCREEN, params: pet });
   };
 
   const deleteSchedule = async (scheduleId) => {
@@ -61,9 +67,10 @@ const PetFeedingScheduleScreen = (props) => {
   };
 
   function editSchedule(scheduleDetails) {
-    alert("edit mechanism");
-    // in future, instead of bringing pet from userPets, we should look in db for the pet so it will be updated
-    // props.navigation.navigate({ routeName: ScreensRouteName.PET_DETAILS_SCREEN, params: { scheduleDetails } });
+    props.navigation.navigate({
+      routeName: ScreensRouteName.ADD_EDIT_FEEDING_SCHEDULE_SCREEN,
+      params: { schedule: scheduleDetails },
+    });
   }
 
   const renderFeedingSchedule = (feedingSchedule) => {
@@ -71,6 +78,7 @@ const PetFeedingScheduleScreen = (props) => {
       <TouchableOpacity style={styles.scheduleItem} onPress={() => editSchedule(feedingSchedule)}>
         <Text style={styles.listAttributeStyle}>{feedingSchedule.name}</Text>
         <Text style={styles.listAttributeStyle}>{feedingSchedule.amount}</Text>
+        <Text style={styles.listAttributeStyle}>{feedingSchedule.time}</Text>
         <TouchableOpacity
           onPress={() => deletePressed(feedingSchedule.id)}
           style={{ alignSelf: "center", justifyContent: "center", width: 50, height: 50 }}
@@ -79,39 +87,6 @@ const PetFeedingScheduleScreen = (props) => {
         </TouchableOpacity>
       </TouchableOpacity>
     );
-  };
-
-    /**
-   * displays input with text of description
-   * @param {*} input the input of the user
-   * @param {*} inputSetter the setter to change the input
-   * @param {*} inputDescription
-   */
-     const inputWithText = (input, inputSetter, inputDescription) => {
-      return (
-        <View style={{ margin: 10, flexDirection: "row", justifyContent: "space-between", width: "100%", padding: 10 }}>
-          <Text style={{ fontSize: 20 }}>{inputDescription}</Text>
-          <TextInput
-            onChangeText={(newInput) => inputSetter(newInput)}
-            value={input}
-            style={{ width: 200, fontSize: 25 }}
-            placeholder={""}
-            placeholderTextColor={Colors.grey}
-            maxLength={25}
-            underlineColorAndroid="#888"
-          />
-        </View>
-      );
-    };
-
-  const addNewScheduleView = () => {
-    if (addNewScheduleMode) {
-      return (
-        <View style={{ borderWidth: 1, width: "50%" }}>
-          {inputWithText(petName, setPetName, Captions.PET_NAME)}
-        </View>
-      );
-    }
   };
 
   return (
@@ -123,14 +98,13 @@ const PetFeedingScheduleScreen = (props) => {
         renderItem={(pet) => renderFeedingSchedule(pet.item)}
         ListHeaderComponent={listHeader}
       />
-      {addNewScheduleView()}
     </View>
   );
 };
 
 // screen's header
 PetFeedingScheduleScreen.navigationOptions = (navigationData) => {
-  const pet = navigationData.navigation.getParam("pet");
+  const pet = navigationData.navigation.getParam("pet") || { name: "debugger's pet" };
   return { headerTitle: `${pet.name}'s Feeding Schedule` };
 };
 
@@ -151,7 +125,7 @@ const styles = StyleSheet.create({
   scheduleItem: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "90%",
+    width: "95%",
     padding: 3,
     borderWidth: 1,
     borderRadius: 3,
@@ -162,7 +136,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "90%",
+    width: "95%",
     padding: 3,
     borderWidth: 1,
     borderRadius: 3,

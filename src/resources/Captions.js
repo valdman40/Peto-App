@@ -5,6 +5,7 @@ export default {
   DETAILS: "Details",
   REGISTER: "Register",
   ADD_PET: "Add Pet",
+  SUBMIT: "Submit",
   MENU: "Menu",
   COMMIT_USER_EDIT: "Edit user",
   SETTINGS: "Settings",
@@ -31,4 +32,6 @@ export default {
   DISCONNECT: "Disconnect",
   YES: "Yes",
   NO: "No",
+  SCHEDULE_NAME: "Meal name",
+  TIME: "Time",
 };
