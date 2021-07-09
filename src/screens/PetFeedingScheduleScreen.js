@@ -11,27 +11,9 @@ import { Entypo } from "@expo/vector-icons";
 import DbApi from "../DbApi";
 
 const PetFeedingScheduleScreen = (props) => {
-  const [petsFeeding, setPetsFeeding] = useState([]);
   const dispatch = useDispatch();
+  const feedingSchedule = useSelector((state) => state.FeedingSchedule.feedingSchedule);
   const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
-
-  const loadPetFeedingScheduleFromDb = () => {
-    (async () => {
-      try {
-        // setPetsFeeding(await DbApi.GetPetFeedingSchedule(id));
-        alert("loadPetFeedingScheduleFromDb of petid", pet.id);
-        setPetsFeeding([
-          { name: "meal1", amount: 100, time: "01:00", id: 1 },
-          { name: "meal2", amount: 30, time: "02:00", id: 2 },
-          { name: "meal3", amount: 80, time: "03:00", id: 3 },
-        ]);
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  };
-
-  useEffect(loadPetFeedingScheduleFromDb, []);
 
   const listHeader = () => {
     return (
@@ -93,7 +75,7 @@ const PetFeedingScheduleScreen = (props) => {
     <View style={styles.container}>
       <FlatList
         style={{ width: "100%" }}
-        data={petsFeeding}
+        data={feedingSchedule}
         keyExtractor={(pet) => pet.id.toString()}
         renderItem={(pet) => renderFeedingSchedule(pet.item)}
         ListHeaderComponent={listHeader}

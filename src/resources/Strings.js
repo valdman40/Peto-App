@@ -21,6 +21,7 @@ export const ScreensRouteName = {
 export const ReducersNames = {
   User: "User",
   Pets: "Pets",
+  FeedingSchedule: "FeedingSchedule",
   Debug: "Debug",
 };
 

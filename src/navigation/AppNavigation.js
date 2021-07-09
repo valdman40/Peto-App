@@ -38,7 +38,7 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.ADD_EDIT_FEEDING_SCHEDULE_SCREEN]: AddOrEditFeedingScheduleScreen,
   },
   {
-    initialRouteName: decideInitialMode(ScreensRouteName.PET__FEEDING_SCHEDULE_SCREEN),
+    initialRouteName: decideInitialMode(ScreensRouteName.PET_DETAILS_SCREEN),
     defaultNavigationOptions
   }
 );

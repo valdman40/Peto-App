@@ -16,7 +16,7 @@ import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
-import { storeNewPet } from "../store/actions/PetsActions";
+import { storeNewFeedingSchedule, updateFeedingSchedule } from "../store/actions/FeedingScheduleActions";
 
 const AddOrEditFeedingScheduleScreen = (props) => {
   const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
@@ -71,14 +71,15 @@ const AddOrEditFeedingScheduleScreen = (props) => {
       setMessage("");
       setError("");
       validateInput();
-      let schedUpdated;
+      // if id isn't new, update it, otherwise insert new
       if (schedule.id > 0) {
-        schedUpdated = await DbApi.UpdateSchedule(scheduleName, amount, time, schedule.id);
+        // const sched = await DbApi.UpdateSchedule(scheduleName, amount, time, schedule.id);
+        const sched = { name: scheduleName , amount, time, id: schedule.id };
+        dispatch(updateFeedingSchedule(sched));
       } else {
-        schedUpdated = await DbApi.InsertSchedule(scheduleName, amount, time, pet.id);
+        const sched = await DbApi.InsertSchedule(scheduleName, amount, time, pet.id);
+        dispatch(storeNewFeedingSchedule(sched));
       }
-
-      //   dispatch(storeNewPet(newPet));
       setMessage(Messages.SCHEDULE_CHANGE_SUCCESS);
       Alert.alert(`${"alert"}`, `${Messages.SCHEDULE_CHANGE_SUCCESS}`, [
         { text: `${Captions.CONFIRM}`, onPress: () => props.navigation.pop() },
@@ -152,7 +153,7 @@ const AddOrEditFeedingScheduleScreen = (props) => {
             style={{ textAlign: "center" }}
             onChangeText={(amount) => setAmount(amount)}
           />
-          <Text style={{ fontSize: 20, alignSelf: 'center', margin: 10 }}>grams</Text>
+          <Text style={{ fontSize: 20, alignSelf: "center", margin: 10 }}>grams</Text>
         </View>
       </View>
     );

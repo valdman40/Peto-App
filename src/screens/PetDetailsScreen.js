@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Alert, TextInput, FlatList } 
 import { useDispatch } from "react-redux";
 import { Dropdown } from "react-native-material-dropdown-v2";
 
+import { loadPetFeedingSchedule } from "../store/actions/FeedingScheduleActions";
 import { ScreensRouteName } from "../resources/Strings";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
@@ -87,6 +88,13 @@ const PetDetailsScreen = (props) => {
       {feedButton()}
       <TouchableOpacity
         onPress={() => {
+          // need to fetch from database
+          const feedingPlan = [
+            { name: "meal1234", amount: 100, time: "01:00", id: 1 },
+            { name: "meal245", amount: 30, time: "02:00", id: 2 },
+            { name: "meal377", amount: 80, time: "03:00", id: 3 },
+          ];
+          dispatch(loadPetFeedingSchedule(feedingPlan));
           props.navigation.navigate({ routeName: ScreensRouteName.PET__FEEDING_SCHEDULE_SCREEN, params: { pet } });
         }}
       >
