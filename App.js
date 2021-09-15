@@ -7,7 +7,7 @@ import Expo from "expo";
 
 import userReducer from "./src/store/reducers/UserReducer";
 import petsReducer from "./src/store/reducers/PetsReducer";
-import feedingScheduleReducer from "./src/store/reducers/FeedingScheduleReducer";
+import mealsReducer from "./src/store/reducers/MealsReducer";
 import debugReducer from "./src/store/reducers/DebugModeReducer";
 import { ReducersNames } from "./src/resources/Strings";
 
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   [ReducersNames.Debug]: debugReducer,
   [ReducersNames.User]: userReducer,
   [ReducersNames.Pets]: petsReducer,
-  [ReducersNames.FeedingSchedule]: feedingScheduleReducer,
+  [ReducersNames.Meals]: mealsReducer,
 });
 
 // here we store components's states

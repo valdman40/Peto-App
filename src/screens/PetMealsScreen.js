@@ -6,36 +6,35 @@ import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
 import { ScreensRouteName } from "../resources/Strings";
-import { deleteFeedingSchedule } from "../store/actions/FeedingScheduleActions";
+import { deleteMeal } from "../store/actions/MealsActions";
 import { Entypo } from "@expo/vector-icons";
 import DbApi from "../DbApi";
 
-const PetFeedingScheduleScreen = (props) => {
+const PetMealsScreen = (props) => {
   const dispatch = useDispatch();
-  const feedingSchedule = useSelector((state) => state.FeedingSchedule.feedingSchedule);
+  const meals = useSelector((state) => state.Meals.meals);
   const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
-
   const listHeader = () => {
     return (
       <View style={styles.headerContainer}>
         <Text style={styles.headerAttribute}>{Captions.NAME}</Text>
         <Text style={styles.headerAttribute}>{Captions.AMOUNT}</Text>
         <Text style={styles.headerAttribute}>{Captions.TIME}</Text>
-        <TouchableOpacity onPress={addSchedulePressed}>
+        <TouchableOpacity onPress={addMealPressed}>
           <Text style={styles.add}>+</Text>
         </TouchableOpacity>
       </View>
     );
   };
 
-  const addSchedulePressed = () => {
-    props.navigation.navigate({ routeName: ScreensRouteName.ADD_EDIT_FEEDING_SCHEDULE_SCREEN, params: pet });
+  const addMealPressed = () => {
+    props.navigation.navigate({ routeName: ScreensRouteName.ADD_EDIT_MEAL_SCREEN, params: pet });
   };
 
-  const deleteSchedule = async (scheduleId) => {
+  const deleteMeal_ = async (mealId) => {
     try {
-      await DbApi.DeleteSchedule(scheduleId);
-      dispatch(deleteFeedingSchedule(scheduleId));
+      await DbApi.DeleteSchedule(mealId);
+      dispatch(deleteMeal(mealId));
     } catch (e) {
       alert(e);
     }
@@ -44,25 +43,25 @@ const PetFeedingScheduleScreen = (props) => {
   const deletePressed = (petId) => {
     Alert.alert(`${Captions.DELETE}`, `${Messages.ARE_YOU_SURE_DELETE_PET}`, [
       { text: `${Captions.CANCEL}` },
-      { text: `${Captions.CONFIRM}`, onPress: () => deleteSchedule(petId) },
+      { text: `${Captions.CONFIRM}`, onPress: () => deleteMeal_(petId) },
     ]);
   };
 
-  function editSchedule(scheduleDetails) {
+  function editMeal(meal) {
     props.navigation.navigate({
-      routeName: ScreensRouteName.ADD_EDIT_FEEDING_SCHEDULE_SCREEN,
-      params: { schedule: scheduleDetails },
+      routeName: ScreensRouteName.ADD_EDIT_MEAL_SCREEN,
+      params: { meal },
     });
   }
 
-  const renderFeedingSchedule = (feedingSchedule) => {
+  const renderMeal = (meal) => {
     return (
-      <TouchableOpacity style={styles.scheduleItem} onPress={() => editSchedule(feedingSchedule)}>
-        <Text style={styles.listAttributeStyle}>{feedingSchedule.name}</Text>
-        <Text style={styles.listAttributeStyle}>{feedingSchedule.amount}</Text>
-        <Text style={styles.listAttributeStyle}>{feedingSchedule.time}</Text>
+      <TouchableOpacity style={styles.scheduleItem} onPress={() => editMeal(meal)}>
+        <Text style={styles.listAttributeStyle}>{meal.name}</Text>
+        <Text style={styles.listAttributeStyle}>{meal.amount}</Text>
+        <Text style={styles.listAttributeStyle}>{meal.time}</Text>
         <TouchableOpacity
-          onPress={() => deletePressed(feedingSchedule.id)}
+          onPress={() => deletePressed(meal.id)}
           style={{ alignSelf: "center", justifyContent: "center", width: 50, height: 50 }}
         >
           <Entypo name="trash" color={Colors.red} size={20} style={{ alignSelf: "center" }} />
@@ -75,9 +74,9 @@ const PetFeedingScheduleScreen = (props) => {
     <View style={styles.container}>
       <FlatList
         style={{ width: "100%" }}
-        data={feedingSchedule}
-        keyExtractor={(pet) => pet.id.toString()}
-        renderItem={(pet) => renderFeedingSchedule(pet.item)}
+        data={meals}
+        keyExtractor={(meal) => meal.id.toString()}
+        renderItem={(meal) => renderMeal(meal.item)}
         ListHeaderComponent={listHeader}
       />
     </View>
@@ -85,7 +84,7 @@ const PetFeedingScheduleScreen = (props) => {
 };
 
 // screen's header
-PetFeedingScheduleScreen.navigationOptions = (navigationData) => {
+PetMealsScreen.navigationOptions = (navigationData) => {
   const pet = navigationData.navigation.getParam("pet") || { name: "debugger's pet" };
   return { headerTitle: `${pet.name}'s Feeding Schedule` };
 };
@@ -128,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PetFeedingScheduleScreen;
+export default PetMealsScreen;

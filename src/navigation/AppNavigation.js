@@ -11,8 +11,8 @@ import PetDetailsScreen from "../screens/PetDetailsScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import EditUserScreen from "../screens/EditUserScreen";
 import AddPetScreen from '../screens/AddPetScreen';
-import PetFeedingScheduleScreen from '../screens/PetFeedingScheduleScreen';
-import AddOrEditFeedingScheduleScreen from '../screens/AddOrEditFeedingScheduleScreen';
+import PetMealsScreen from '../screens/PetMealsScreen';
+import AddOrEditMealScreen from '../screens/AddOrEditMealScreen';
 
 
 const defaultNavigationOptions = {
@@ -34,11 +34,11 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.PETS_SCREEN]: PetsScreen,
     [ScreensRouteName.PET_DETAILS_SCREEN]: PetDetailsScreen,
     [ScreensRouteName.PET_ADD_SCREEN]: AddPetScreen,
-    [ScreensRouteName.PET__FEEDING_SCHEDULE_SCREEN]: PetFeedingScheduleScreen,
-    [ScreensRouteName.ADD_EDIT_FEEDING_SCHEDULE_SCREEN]: AddOrEditFeedingScheduleScreen,
+    [ScreensRouteName.PET_MEAL_SCREEN]: PetMealsScreen,
+    [ScreensRouteName.ADD_EDIT_MEAL_SCREEN]: AddOrEditMealScreen,
   },
   {
-    initialRouteName: decideInitialMode(ScreensRouteName.PET_DETAILS_SCREEN),
+    initialRouteName: decideInitialMode(ScreensRouteName.LOGIN_SCREEN),
     defaultNavigationOptions
   }
 );

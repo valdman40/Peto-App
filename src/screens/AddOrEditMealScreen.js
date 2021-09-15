@@ -16,15 +16,15 @@ import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
-import { storeNewFeedingSchedule, updateFeedingSchedule } from "../store/actions/FeedingScheduleActions";
+import { storeNewMeal, updateMeal } from "../store/actions/MealsActions";
 
-const AddOrEditFeedingScheduleScreen = (props) => {
+const AddOrEditMealScreen = (props) => {
   const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
-  const schedule = props.navigation.getParam("schedule") || { name: "", amount: 0, time: "00:00", id: 0 };
+  const meal = props.navigation.getParam("meal") || { name: "", amount: 0, time: "00:00", id: 0 };
   const dispatch = useDispatch();
-  const [scheduleName, setScheduleName] = useState(schedule.name);
-  const [amount, setAmount] = useState(schedule.amount);
-  const [time, setTime] = useState(schedule.time);
+  const [name, setName] = useState(meal.name);
+  const [amount, setAmount] = useState(meal.amount);
+  const [time, setTime] = useState(meal.time);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
@@ -57,8 +57,8 @@ const AddOrEditFeedingScheduleScreen = (props) => {
   };
 
   const validateInput = () => {
-    if (scheduleName.length < 2) {
-      throw Messages.SCHEDULENAME_SHORT;
+    if (name.length < 2) {
+      throw Messages.MEAL_NAME_SHORT;
     }
     if (!/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(time)) {
       throw Messages.NOT_VALID_TIME;
@@ -72,16 +72,16 @@ const AddOrEditFeedingScheduleScreen = (props) => {
       setError("");
       validateInput();
       // if id isn't new, update it, otherwise insert new
-      if (schedule.id > 0) {
-        // const sched = await DbApi.UpdateSchedule(scheduleName, amount, time, schedule.id);
-        const sched = { name: scheduleName , amount, time, id: schedule.id };
-        dispatch(updateFeedingSchedule(sched));
+      if (meal.id > 0) {
+        const updatedMeal = { name, amount, time, type: true, id: meal.id };
+        await DbApi.UpdateMeal(updatedMeal);
+        dispatch(updateMeal(updatedMeal));
       } else {
-        const sched = await DbApi.InsertSchedule(scheduleName, amount, time, pet.id);
-        dispatch(storeNewFeedingSchedule(sched));
+        const sched = await DbApi.InsertSchedule(name, amount, time, true, pet.id);
+        dispatch(storeNewMeal(sched));
       }
-      setMessage(Messages.SCHEDULE_CHANGE_SUCCESS);
-      Alert.alert(`${"alert"}`, `${Messages.SCHEDULE_CHANGE_SUCCESS}`, [
+      setMessage(Messages.MEAL_CHANGE_SUCCESS);
+      Alert.alert(`${"alert"}`, `${Messages.MEAL_CHANGE_SUCCESS}`, [
         { text: `${Captions.CONFIRM}`, onPress: () => props.navigation.pop() },
       ]);
     } catch (e) {
@@ -161,7 +161,7 @@ const AddOrEditFeedingScheduleScreen = (props) => {
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.container}>
-      {inputWithText(scheduleName, setScheduleName, Captions.SCHEDULE_NAME)}
+      {inputWithText(name, setName, Captions.SCHEDULE_NAME)}
       {/* {inputWithText(amount, setAmount, Captions.AMOUNT, "numeric")} */}
       {inputWithText(time, setTime, Captions.TIME, "numeric")}
       {amountDropDown()}
@@ -173,7 +173,7 @@ const AddOrEditFeedingScheduleScreen = (props) => {
 };
 
 // screen's header
-AddOrEditFeedingScheduleScreen.navigationOptions = () => {
+AddOrEditMealScreen.navigationOptions = () => {
   return { headerTitle: Captions.ADD_PET };
 };
 
@@ -183,4 +183,4 @@ const styles = StyleSheet.create({
   addButton: { color: "white", fontSize: 18, textAlign: "center", margin: 10, padding: 5, paddingHorizontal: 30 },
 });
 
-export default AddOrEditFeedingScheduleScreen;
+export default AddOrEditMealScreen;

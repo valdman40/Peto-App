@@ -196,18 +196,35 @@ export default class DbApi extends React.Component {
     // return this.functionWithTimeOut(3000, returnPromise);
   }
 
-  static async UpdateSchedule(Name, Amount, Time, Id) {
-    // alert("update");
-    return;
+  static async UpdateMeal(updatedMeal) {
+    const uri = `${RestApiExtensions.Meal.UpdateMeal}/${updatedMeal.id}`;
+    const method = HTTP_METHODS.PATCH;
+    const body = JSON.stringify(updatedMeal);
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const requestObject = { method, headers, body };
+    let response;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      try {
+        response = await fetch(uri, requestObject);
+      } catch (e) {
+        reject(Messages.FAILED_SERVER_CONNECTION);
+      }
+      if (response.status == 200) {
+        resolve();
+      } else {
+        reject(Messages.UPDATE_FAILED);
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
   /**
    * delete schedule of feeding
-   * @param {*} scheduleId
+   * @param {*} mealId
    * @returns
    */
-  static async DeleteSchedule(scheduleId) {
-    const uri = `${RestApiExtensions.Schedule.DeleteSchedule}/${scheduleId}`;
+  static async DeleteSchedule(mealId) {
+    const uri = `${RestApiExtensions.Meal.DeleteMeal}/${mealId}`;
     const method = HTTP_METHODS.DELETE;
     const requestObject = { method, standartHeaders };
     let response;
@@ -254,13 +271,14 @@ export default class DbApi extends React.Component {
    * @param {*} petId
    * @returns
    */
-  static async GetPetFeedingSchedule(petId) {
-    const uri = `${RestApiExtensions.Schedule.GetUserPets}/${petId}`;
+  static async GetPetMeals(petId) {
+    const uri = `${RestApiExtensions.Meal.GetPetMeals}/${petId}`;
     const returnPromise = new Promise(async (resolve, reject) => {
       const response = await fetch(uri);
-      let retval = response.json();
+      // let retval = JSON.parse(response.json());
+      let retval = await response.json();
       if (retval.length == 0) {
-        reject(Messages.NO_PETS);
+        reject(Messages.NO_MEALS);
       } else {
         if (response.status == 200) {
           resolve(retval);

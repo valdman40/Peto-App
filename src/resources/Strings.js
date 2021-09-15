@@ -14,21 +14,22 @@ export const ScreensRouteName = {
   PETS_SCREEN: "PETS_SCREEN",
   PET_DETAILS_SCREEN: "PET_DETAILS_SCREEN",
   PET_ADD_SCREEN: "PET_ADD_SCREEN",
-  PET__FEEDING_SCHEDULE_SCREEN: "PET__FEEDING_SCHEDULE_SCREEN",
-  ADD_EDIT_FEEDING_SCHEDULE_SCREEN: "ADD_EDIT_FEEDING_SCHEDULE_SCREEN",
+  PET_MEAL_SCREEN: "PET_MEAL_SCREEN",
+  ADD_EDIT_MEAL_SCREEN: "ADD_EDIT_MEAL_SCREEN",
 };
 
 export const ReducersNames = {
   User: "User",
   Pets: "Pets",
-  FeedingSchedule: "FeedingSchedule",
+  Meals: "Meals",
   Debug: "Debug",
 };
 
 // const urlBase = 'http://192.168.43.72:5000';
 // 10.0.0.9
 // const urlBase = 'http://10.0.0.9:5000';
-const urlBase = 'http://192.168.0.109:5000';
+// const urlBase = 'http://192.168.0.109:5000';
+const urlBase = 'http://10.0.0.11:5000';
 
 export const RestApiExtensions = {
   Users: {
@@ -43,10 +44,11 @@ export const RestApiExtensions = {
     InsertPet: `${urlBase}/pets`,
     FeedPet: `${urlBase}/pets/feed`,
   },
-  Schedule:{
-    DeleteSchedule: `${urlBase}/feedingschedule`,
-    InsertSchedule: `${urlBase}/feedingschedule`,
-    GetPetSchedule: `${urlBase}/feedingschedule/pet`,
+  Meal:{
+    UpdateMeal: `${urlBase}/meal`,
+    DeleteMeal: `${urlBase}/meal`,
+    InsertMeal: `${urlBase}/meal`,
+    GetPetMeals: `${urlBase}/meal/pet`,
   }
 };
 
