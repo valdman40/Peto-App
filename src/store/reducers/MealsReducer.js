@@ -42,10 +42,10 @@ const mealsReducer = (state = initialState, action) => {
         meals: [...updatedmeals],
       };
     case DELETE_MEAL:
-      const newPetSchedule = meals.filter((schedule) => schedule.id != action.scheduleId);
+      const petNewMeals = meals.filter((meal) => meal.id != action.mealId);
       return {
         ...state,
-        meals: newPetSchedule,
+        meals: petNewMeals,
       };
     default:
       return state;

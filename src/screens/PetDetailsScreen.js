@@ -83,21 +83,20 @@ const PetDetailsScreen = (props) => {
     );
   };
 
+  const loadAndGoToMeals = async () => {
+    const feedingPlan = await DbApi.GetPetMeals(pet.id);
+    feedingPlan.forEach((meal) => {
+      meal.time = Shared.fromSqlTime2TimeString(meal.time);
+    });
+    dispatch(loadPetMeals(feedingPlan));
+    props.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_SCREEN, params: { pet } });
+  };
+
   return (
     <View style={styles.container}>
       {amountDropDown()}
       {feedButton()}
-      <TouchableOpacity
-        onPress={async () => {
-          const feedingPlan = await DbApi.GetPetMeals(pet.id);
-          console.log(feedingPlan);
-          feedingPlan.forEach((meal) => {
-            meal.time = Shared.fromSqlTime2TimeString(meal.time);
-          });
-          dispatch(loadPetMeals(feedingPlan));
-          props.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_SCREEN, params: { pet } });
-        }}
-      >
+      <TouchableOpacity onPress={loadAndGoToMeals}>
         <Text style={{ fontSize: 20 }}>Meals</Text>
       </TouchableOpacity>
     </View>
