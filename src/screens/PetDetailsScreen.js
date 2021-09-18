@@ -90,6 +90,7 @@ const PetDetailsScreen = (props) => {
       <TouchableOpacity
         onPress={async () => {
           const feedingPlan = await DbApi.GetPetMeals(pet.id);
+          console.log(feedingPlan);
           feedingPlan.forEach((meal) => {
             meal.time = Shared.fromSqlTime2TimeString(meal.time);
           });
@@ -97,7 +98,7 @@ const PetDetailsScreen = (props) => {
           props.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_SCREEN, params: { pet } });
         }}
       >
-        <Text style={{ fontSize: 20 }}>Schedules</Text>
+        <Text style={{ fontSize: 20 }}>Meals</Text>
       </TouchableOpacity>
     </View>
   );

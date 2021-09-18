@@ -25,7 +25,7 @@ const mealsReducer = (state = initialState, action) => {
     case STORE_NEW_MEAL:
       return {
         ...state,
-        meals: meals.concat(action.newmeals),
+        meals: meals.concat(action.newMeal),
       };
     case UPDATE_MEAL:
       var index = meals

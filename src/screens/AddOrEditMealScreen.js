@@ -8,6 +8,7 @@ import {
   TextInput,
   ActivityIndicator,
   ScrollView,
+  CheckBox,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Dropdown } from "react-native-material-dropdown-v2";
@@ -20,11 +21,12 @@ import { storeNewMeal, updateMeal } from "../store/actions/MealsActions";
 
 const AddOrEditMealScreen = (props) => {
   const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
-  const meal = props.navigation.getParam("meal") || { name: "", amount: 0, time: "00:00", id: 0 };
+  const meal = props.navigation.getParam("meal") || { name: "", amount: 0, time: "00:00", repeat_daily: true, id: 0 };
   const dispatch = useDispatch();
   const [name, setName] = useState(meal.name);
   const [amount, setAmount] = useState(meal.amount);
   const [time, setTime] = useState(meal.time);
+  const [repeat_daily, setRepeat_daily] = useState(meal.repeat_daily);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
@@ -72,16 +74,19 @@ const AddOrEditMealScreen = (props) => {
       setError("");
       validateInput();
       // if id isn't new, update it, otherwise insert new
-      if (meal.id > 0) {
-        const updatedMeal = { name, amount, time, type: true, id: meal.id };
-        await DbApi.UpdateMeal(updatedMeal);
-        dispatch(updateMeal(updatedMeal));
+      const changed_meal = { name, amount, time, repeat_daily, id: meal.id };
+      let message = Messages.MEAL_CHANGE_SUCCESS;
+      if (changed_meal.id > 0) {
+        await DbApi.UpdateMeal(changed_meal);
+        dispatch(updateMeal(changed_meal));
       } else {
-        const sched = await DbApi.InsertSchedule(name, amount, time, true, pet.id);
-        dispatch(storeNewMeal(sched));
+        message = Messages.MEAL_INSERT_SUCCESS;
+        const newMeal_id = await DbApi.InsertMeal(changed_meal, pet.id);
+        dispatch(storeNewMeal({ ...changed_meal, id: newMeal_id }));
       }
-      setMessage(Messages.MEAL_CHANGE_SUCCESS);
-      Alert.alert(`${"alert"}`, `${Messages.MEAL_CHANGE_SUCCESS}`, [
+      // MEAL_INSERT_SUCCESS
+      setMessage(message);
+      Alert.alert(`${"alert"}`, `${message}`, [
         { text: `${Captions.CONFIRM}`, onPress: () => props.navigation.pop() },
       ]);
     } catch (e) {
@@ -159,12 +164,32 @@ const AddOrEditMealScreen = (props) => {
     );
   };
 
+  const repeatDaily = () => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          margin: 10,
+          alignItems: "center",
+          width: "95%",
+          alignSelf: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>{Captions.REPEAT}</Text>
+        <View style={{ width: "50%" }}>
+          <CheckBox value={repeat_daily} onValueChange={setRepeat_daily} style={{ alignSelf: "flex-start" }} />
+        </View>
+      </View>
+    );
+  };
+
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.container}>
       {inputWithText(name, setName, Captions.SCHEDULE_NAME)}
-      {/* {inputWithText(amount, setAmount, Captions.AMOUNT, "numeric")} */}
       {inputWithText(time, setTime, Captions.TIME, "numeric")}
       {amountDropDown()}
+      {repeatDaily()}
       <View style={{ margin: 20 }}>{SubmitButton()}</View>
       {displayMessage()}
       {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}

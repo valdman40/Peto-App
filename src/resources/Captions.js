@@ -19,6 +19,7 @@ export default {
   NAME: "Name",
   TYPE: "Type",
   AMOUNT: "Amount",
+  REPEAT: "Repeat",
   USER_NAME: "Username",
   PASSWORD: "Password",
   NEW_PASSWORD: "New password",

@@ -165,35 +165,32 @@ export default class DbApi extends React.Component {
   }
 
   /**
-   * insert feeding to db
-   * insert feedingId and with petId to table that connects them
-   * @param {*} Name
-   * @param {*} Amount
-   * @param {*} Pet_Id
+   * insert meal to db
+   * insert meal with petId to table that connects them
+   * @param {*} meal
    * @returns
    */
-  static async InsertSchedule(Name, Amount, Time, Pet_Id) {
-    // alert("insert");
-    return { name: "mealNew", amount: 60, time: "01:01", id: 1234 };
-    // const uri = new URL(RestApiExtensions.Schedule.InsertSchedule);
-    // const method = HTTP_METHODS.PUT;
-    // const body = JSON.stringify({ Name, Amount, Pet_Id });
-    // const headers = { Accept: "application/json", "Content-Type": "application/json" };
-    // const requestObject = { method, headers, body };
-    // const returnPromise = new Promise(async (resolve, reject) => {
-    //   const response = await fetch(uri, requestObject);
-    //   let retval = response.json();
-    //   if (response.status == 201) {
-    //     resolve(retval);
-    //   } else {
-    //     if (response.status == 409) {
-    //       reject(Messages.PETNAME_EXIST);
-    //     } else {
-    //       reject(Messages.UNKNOWN_ERROR);
-    //     }
-    //   }
-    // });
-    // return this.functionWithTimeOut(3000, returnPromise);
+  static async InsertMeal(meal, pet_id) {
+    const uri = `${RestApiExtensions.Meal.InsertMeal}/${pet_id}`;
+    const method = HTTP_METHODS.PUT;
+    const body = JSON.stringify(meal);
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const requestObject = { method, headers, body };
+    let response;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      try {
+        response = await fetch(uri, requestObject);
+      } catch (e) {
+        reject(Messages.FAILED_SERVER_CONNECTION);
+      }
+      if (response.status == 200) {
+        const retval = await response.json();
+        resolve(retval);
+      } else {
+        reject(Messages.INSERT_FAILED);
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
   }
 
   static async UpdateMeal(updatedMeal) {
@@ -275,10 +272,9 @@ export default class DbApi extends React.Component {
     const uri = `${RestApiExtensions.Meal.GetPetMeals}/${petId}`;
     const returnPromise = new Promise(async (resolve, reject) => {
       const response = await fetch(uri);
-      // let retval = JSON.parse(response.json());
       let retval = await response.json();
-      if (retval.length == 0) {
-        reject(Messages.NO_MEALS);
+      if (retval.length == 0 || response.status == 404) {
+        resolve([]);
       } else {
         if (response.status == 200) {
           resolve(retval);

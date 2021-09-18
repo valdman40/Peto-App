@@ -11,6 +11,7 @@ export default {
   REGISTER_SUCCESS: "New user registered successfully",
   REGISTER_PET_SUCCESS: "New Pet registered successfully",
   MEAL_CHANGE_SUCCESS: "Pet's meal updated",
+  MEAL_INSERT_SUCCESS: "Pet's meal added",
   EDIT_USER_SUCCESS: "User changes commited",
   NAME_SHORT: "Name should be at least 2 characters long",
   USERNAME_SHORT: "Username should be at least 4 characters long",
@@ -23,6 +24,7 @@ export default {
   UNKNOWN_ERROR: "The request failed for unknown reason",
   DELETE_FAILED: "Delete request has failed",
   UPDATE_FAILED: "Update request has failed",
+  INSERT_FAILED: "Insert request has failed",
   PASSWORD_SAME_AS_OLD: "Entered old password",
   DISCONNECT_QUESTION: 'Are you sure you want to disconnect?'
 };
