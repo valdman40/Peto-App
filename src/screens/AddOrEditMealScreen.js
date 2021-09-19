@@ -11,13 +11,17 @@ import {
   CheckBox,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { AntDesign } from "@expo/vector-icons";
 import { Dropdown } from "react-native-material-dropdown-v2";
+import DatePicker from "react-native-datepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
 import { storeNewMeal, updateMeal } from "../store/actions/MealsActions";
+import Shared from "../Shared";
 
 const AddOrEditMealScreen = (props) => {
   const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
@@ -26,6 +30,7 @@ const AddOrEditMealScreen = (props) => {
   const [name, setName] = useState(meal.name);
   const [amount, setAmount] = useState(meal.amount);
   const [time, setTime] = useState(meal.time);
+  const [clockOpen, setClockOpen] = useState(false);
   const [repeat_daily, setRepeat_daily] = useState(meal.repeat_daily > 0 ? true : false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -182,10 +187,41 @@ const AddOrEditMealScreen = (props) => {
     );
   };
 
+  const inputTime = () => {
+    return (
+      <View style={{ flexDirection: "row", justifyContent: "space-between", width: "95%" }}>
+        <Text style={{ fontSize: 20 }}>{Captions.TIME}</Text>
+        <View style={{ flex: 0.6 }}>
+          <TouchableOpacity
+            onPress={() => setClockOpen(true)}
+            style={{ flexDirection: "row", width: "60%", justifyContent: "space-between" }}
+          >
+            <AntDesign size={25} color={Colors.blue} name={"clockcircle"} />
+            <Text style={{ fontSize: 20 }}>{time}</Text>
+            {clockOpen && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={Shared.generateDateFromTime(time)}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={(input) => {
+                  setClockOpen(false);
+                  setTime(Shared.fromDate2TimeString(input.nativeEvent.timestamp));
+                }}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.container}>
       {inputWithText(name, setName, Captions.SCHEDULE_NAME)}
-      {inputWithText(time, setTime, Captions.TIME, "numeric")}
+      {/* {inputWithText(time, setTime, Captions.TIME, "numeric")} */}
+      {inputTime()}
       {amountDropDown()}
       {repeatDaily()}
       <View style={{ margin: 20 }}>{SubmitButton()}</View>

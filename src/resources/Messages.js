@@ -4,6 +4,7 @@ export default {
   NO_PETS: "user has not yet have pets",
   NO_MEALS: "pet has no meals",
   ARE_YOU_SURE_DELETE_PET: "are you sure you want to delete this pet?",
+  ARE_YOU_SURE_DELETE_MEAL: "are you sure you want to delete this meal?",
   FAILED_SERVER_CONNECTION: "failed to connect with the server",
   USERNAME_EXIST: "Username already exist",
   PETNAME_EXIST: "user has already pet with this name",

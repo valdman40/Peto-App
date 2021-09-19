@@ -40,10 +40,10 @@ const PetMealsScreen = (props) => {
     }
   };
 
-  const deletePressed = (petId) => {
-    Alert.alert(`${Captions.DELETE}`, `${Messages.ARE_YOU_SURE_DELETE_PET}`, [
+  const deletePressed = (id) => {
+    Alert.alert(`${Captions.DELETE}`, `${Messages.ARE_YOU_SURE_DELETE_MEAL}`, [
       { text: `${Captions.CANCEL}` },
-      { text: `${Captions.CONFIRM}`, onPress: () => deleteMeal_(petId) },
+      { text: `${Captions.CONFIRM}`, onPress: () => deleteMeal_(id) },
     ]);
   };
 
