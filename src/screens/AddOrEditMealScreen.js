@@ -21,12 +21,12 @@ import { storeNewMeal, updateMeal } from "../store/actions/MealsActions";
 
 const AddOrEditMealScreen = (props) => {
   const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
-  const meal = props.navigation.getParam("meal") || { name: "", amount: 0, time: "00:00", repeat_daily: true, id: 0 };
+  const meal = props.navigation.getParam("meal") || { name: "", amount: 0, time: "00:00", repeat_daily: 1, id: 0 };
   const dispatch = useDispatch();
   const [name, setName] = useState(meal.name);
   const [amount, setAmount] = useState(meal.amount);
   const [time, setTime] = useState(meal.time);
-  const [repeat_daily, setRepeat_daily] = useState(meal.repeat_daily);
+  const [repeat_daily, setRepeat_daily] = useState(meal.repeat_daily > 0 ? true : false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
@@ -74,7 +74,7 @@ const AddOrEditMealScreen = (props) => {
       setError("");
       validateInput();
       // if id isn't new, update it, otherwise insert new
-      const changed_meal = { name, amount, time, repeat_daily, id: meal.id };
+      const changed_meal = { name, amount, time, repeat_daily: repeat_daily ? 1 : 0, id: meal.id };
       let message = Messages.MEAL_CHANGE_SUCCESS;
       if (changed_meal.id > 0) {
         await DbApi.UpdateMeal(changed_meal);
@@ -86,9 +86,7 @@ const AddOrEditMealScreen = (props) => {
       }
       // MEAL_INSERT_SUCCESS
       setMessage(message);
-      Alert.alert(`${"alert"}`, `${message}`, [
-        { text: `${Captions.CONFIRM}`, onPress: () => props.navigation.pop() },
-      ]);
+      Alert.alert(`${"alert"}`, `${message}`, [{ text: `${Captions.CONFIRM}`, onPress: () => props.navigation.pop() }]);
     } catch (e) {
       console.log(e);
       setError(e);

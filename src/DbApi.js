@@ -210,6 +210,7 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getUrl(urlBase);
     const uri = `${RestApiExtensions.Meal.UpdateMeal}/${updatedMeal.id}`;
     const method = HTTP_METHODS.PATCH;
+    console.log({ updatedMeal });
     const body = JSON.stringify(updatedMeal);
     const headers = { Accept: "application/json", "Content-Type": "application/json" };
     const requestObject = { method, headers, body };
