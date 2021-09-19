@@ -26,5 +26,6 @@ export default {
   UPDATE_FAILED: "Update request has failed",
   INSERT_FAILED: "Insert request has failed",
   PASSWORD_SAME_AS_OLD: "Entered old password",
-  DISCONNECT_QUESTION: 'Are you sure you want to disconnect?'
+  DISCONNECT_QUESTION: 'Are you sure you want to disconnect?',
+  CHANGE_SUCCESS: 'Changes saved successfully'
 };

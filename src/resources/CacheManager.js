@@ -8,20 +8,35 @@ export const UserCache = {
   },
 };
 
+export const SettingsCache = {
+  name: "settings",
+  types: {
+    urlBase: "urlBase",
+  },
+};
+
 export default class CacheManager {
   // here we'll store cache
   static userCache = new Cache({ namespace: UserCache.name, policy: { maxEntries: 15 }, backend: AsyncStorage });
+  static settingsCache = new Cache({
+    namespace: SettingsCache.name,
+    policy: { maxEntries: 15 },
+    backend: AsyncStorage,
+  });
 
   /**
    * cleans cache that we chose
    * @param {*} cacheName
    */
   static cleanCache = (cacheName) => {
-      console.log('cleanCache', cacheName);
     return new Promise((resolve, reject) => {
       switch (cacheName) {
         case UserCache.name:
           this.userCache.clearAll();
+          resolve();
+          break;
+        case SettingsCache.name:
+          this.settingsCache.clearAll();
           resolve();
           break;
         default:
@@ -39,6 +54,8 @@ export default class CacheManager {
     switch (cacheName) {
       case UserCache.name:
         this.userCache.remove(key);
+      case SettingsCache.name:
+        this.settingsCache.remove(key);
         break;
     }
   }
@@ -48,6 +65,8 @@ export default class CacheManager {
     switch (cacheName) {
       case UserCache.name:
         this.userCache.set(key, value);
+      case SettingsCache.name:
+        this.settingsCache.set(key, value);
         break;
     }
   }
@@ -93,9 +112,16 @@ export default class CacheManager {
    */
   static loadCache = (cacheName) => {
     return new Promise((resolve, reject) => {
+      var cache;
       switch (cacheName) {
         case UserCache.name:
           this.userCache
+            .getAll()
+            .then((res) => resolve(res))
+            .catch((err) => reject(err));
+          break;
+        case SettingsCache.name:
+          this.settingsCache
             .getAll()
             .then((res) => resolve(res))
             .catch((err) => reject(err));

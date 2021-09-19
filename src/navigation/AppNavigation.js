@@ -5,15 +5,15 @@ import Colors from "../resources/Colors";
 
 // screens
 import LoginScreen from "../screens/LoginScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 import MenuScreen from "../screens/MenuScreen";
 import PetsScreen from "../screens/PetsScreen";
 import PetDetailsScreen from "../screens/PetDetailsScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import EditUserScreen from "../screens/EditUserScreen";
-import AddPetScreen from '../screens/AddPetScreen';
-import PetMealsScreen from '../screens/PetMealsScreen';
-import AddOrEditMealScreen from '../screens/AddOrEditMealScreen';
-
+import AddPetScreen from "../screens/AddPetScreen";
+import PetMealsScreen from "../screens/PetMealsScreen";
+import AddOrEditMealScreen from "../screens/AddOrEditMealScreen";
 
 const defaultNavigationOptions = {
   headerTitleAlign: "center",
@@ -21,13 +21,14 @@ const defaultNavigationOptions = {
     backgroundColor: Colors.blue,
   },
   headerTintColor: "white",
-}
+};
 /**
  * creating navigation stack by telling it which screens may be inserted to the stack
  */
 const AppNavigator = createStackNavigator(
   {
     [ScreensRouteName.LOGIN_SCREEN]: LoginScreen,
+    [ScreensRouteName.SETTINGS]: SettingsScreen,
     [ScreensRouteName.REGISTER_SCREEN]: RegisterScreen,
     [ScreensRouteName.EDIT_USER_SCREEN]: EditUserScreen,
     [ScreensRouteName.MENU_SCREEN]: MenuScreen,
@@ -39,7 +40,7 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: decideInitialMode(ScreensRouteName.LOGIN_SCREEN),
-    defaultNavigationOptions
+    defaultNavigationOptions,
   }
 );
 

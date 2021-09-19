@@ -34,5 +34,6 @@ export default {
   YES: "Yes",
   NO: "No",
   SCHEDULE_NAME: "Meal name",
+  REST_API_URL: "Rest Api URL",
   TIME: "Time",
 };

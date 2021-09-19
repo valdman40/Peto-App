@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
 
 import { ScreensRouteName } from "../resources/Strings";
 import DbApi from "../DbApi";
@@ -141,11 +142,11 @@ const LoginScreen = (props) => {
 
   // if waiting, it displays timer on screen
   // otherwise it will return nothing so won't display
-  const timer = () =>{
-    if(waiting){
+  const timer = () => {
+    if (waiting) {
       return <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />;
     }
-  }
+  };
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
@@ -167,7 +168,20 @@ const LoginScreen = (props) => {
 };
 
 // screen's header
-LoginScreen.navigationOptions = { headerTitle: Captions.APP_NAME };
+LoginScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: Captions.APP_NAME,
+  headerLeft: (
+    <TouchableOpacity
+      style={{ backgroundColor: Colors.blue, marginLeft: 15 }}
+      onPress={() => {
+        // alert("go to settings");
+        navigation.navigate({ routeName: ScreensRouteName.SETTINGS });
+      }}
+    >
+      <Ionicons size={25} color={Colors.white} name={"settings-sharp"} />
+    </TouchableOpacity>
+  ),
+});
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", alignItems: "center" },
