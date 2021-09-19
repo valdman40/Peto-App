@@ -55,11 +55,15 @@ const PetMealsScreen = (props) => {
   }
 
   const renderMeal = (meal) => {
+    const backgroundColor = meal.repeat_daily ? Colors.white : "rgba(52, 52, 52, 0.1)";
+    let attributeStyle = listAttributeStyle;
+    const color = meal.repeat_daily ? "black" : "grey";
+    attributeStyle = { ...attributeStyle, color };
     return (
-      <TouchableOpacity style={styles.scheduleItem} onPress={() => editMeal(meal)}>
-        <Text style={styles.listAttributeStyle}>{meal.name}</Text>
-        <Text style={styles.listAttributeStyle}>{meal.amount}</Text>
-        <Text style={styles.listAttributeStyle}>{meal.time}</Text>
+      <TouchableOpacity style={{ ...styles.mealItem, backgroundColor }} onPress={() => editMeal(meal)}>
+        <Text style={attributeStyle}>{meal.name}</Text>
+        <Text style={attributeStyle}>{meal.amount}</Text>
+        <Text style={attributeStyle}>{meal.time}</Text>
         <TouchableOpacity
           onPress={() => deletePressed(meal.id)}
           style={{ alignSelf: "center", justifyContent: "center", width: 50, height: 50 }}
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 30 },
   listAttributeStyle,
   headerAttribute: { ...listAttributeStyle, color: Colors.white, fontSize: 20 },
-  scheduleItem: {
+  mealItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "95%",
