@@ -57,6 +57,29 @@ export default class DbApi extends React.Component {
     return this.functionWithTimeOut(3000, returnPromise);
   }
 
+  static async UpdateUserPushNotificationToken(push_notification_token, userId) {
+    const urlBase = PetoStore.getState().Settings.urlBase;
+    const RestApiExtensions = getUrl(urlBase);
+    // const uri = new URL(`${RestApiExtensions.Users.PushToken}/${userId}`);
+    const uri = `${RestApiExtensions.Users.PushToken}/${userId}`;
+    const method = HTTP_METHODS.PATCH;
+    const headers = { Accept: "application/json", "Content-Type": "application/json" };
+    const body = JSON.stringify({ push_notification_token });
+    const requestObject = { method, headers, body };
+    const returnPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(uri, requestObject);
+      let user = response.json();
+      if (response.status == 200) {
+        resolve(user);
+      } else if (response.status == 404) {
+        reject(Messages.USERNAME_PASS_NO_MATCH);
+      } else {
+        reject(Messages.UNKNOWN_ERROR);
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
+
   /**
    * register new user
    * @param {*} name

@@ -19,6 +19,7 @@ import { saveLoggedUser } from "../store/actions/UserActions";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import CacheManager, { UserCache } from "../resources/CacheManager";
+import PushNotificationApi from '../PushNotificationApi';
 
 const LoginScreen = (props) => {
   const [userName, setUserName] = useState("");
@@ -90,7 +91,9 @@ const LoginScreen = (props) => {
    * after login was successful, save the user in store and navigate to next screen
    * @param {*} user
    */
-  const onSuccedLogin = (user) => {
+  const onSuccedLogin = async (user) => {
+    const pushNotificationToken = await PushNotificationApi.registerForPushNotificationsAsync();
+    await DbApi.UpdateUserPushNotificationToken(pushNotificationToken, user.id);
     dispatch(saveLoggedUser(user));
     props.navigation.replace({ routeName: ScreensRouteName.MENU_SCREEN });
   };

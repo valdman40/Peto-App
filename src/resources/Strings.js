@@ -35,6 +35,7 @@ export const getUrl = (urlBase) => {
       GetUser: `${urlBase}/users`,
       RegisterUser: `${urlBase}/users`,
       EditUser: `${urlBase}/users`,
+      PushToken: `${urlBase}/push`
     },
     Pets: {
       GetPet: `${urlBase}/pets`,
