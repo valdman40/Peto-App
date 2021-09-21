@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Alert, TextInput, FlatList, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  TextInput,
+  FlatList,
+  Dimensions,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import { useDispatch } from "react-redux";
 import { Dropdown } from "react-native-material-dropdown-v2";
 import * as Progress from "react-native-progress";
@@ -25,9 +36,21 @@ const PetDetailsScreen = (props) => {
   // let pet = props.navigation.getParam("pet") || defaultPet;
   const [pet, setPet] = useState(defaultPet);
   const [feedingAmount, setFeedingAmount] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState({});
   const dispatch = useDispatch();
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await reloadPetFromDB();
+      console.log(pet);
+    } catch (e) {
+      // never mind if failed..
+    }
+    setRefreshing(false);
+  };
 
   const reloadPetFromDB = async () => {
     // to refresh the pet's details
@@ -110,12 +133,20 @@ const PetDetailsScreen = (props) => {
   };
 
   const containerLeftBar = () => {
-    const color = pet.container_filled < 0.3 ? Colors.red : Colors.black;
+    const lowOnFood = pet.container_filled <= 0.3;
+    const color = lowOnFood ? Colors.red : Colors.black;
     return (
       <View
         style={{ margin: 20, flexDirection: "row", width: "80%", alignSelf: "center", justifyContent: "space-around" }}
       >
-        <Text style={{ alignSelf: "center", fontSize: 20, color }}>Food Container</Text>
+        <View>
+          <Text style={{ alignSelf: "center", fontSize: 20, color }}>Food Container</Text>
+          {lowOnFood && (
+            <TouchableOpacity onPress={() => alert("need to implement food order")}>
+              {<Text style={{ alignSelf: "center", fontSize: 20, color: Colors.lawngreen }}>ORDER FOOD HERE!</Text>}
+            </TouchableOpacity>
+          )}
+        </View>
         <View style={{ transform: [{ rotate: "-90deg" }] }}>
           <Progress.Bar
             progress={pet.container_filled}
@@ -142,11 +173,14 @@ const PetDetailsScreen = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       {goToMealsButton()}
       {containerLeftBar()}
       {feedBox()}
-    </View>
+    </ScrollView>
   );
 };
 
