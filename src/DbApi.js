@@ -356,6 +356,32 @@ export default class DbApi extends React.Component {
     });
     return this.functionWithTimeOut(3000, returnPromise);
   }
+
+   /**
+   * loads pet's meals history
+   * @param {*} petId
+   * @returns
+   */
+    static async GetPetMealsHistory(petId) {
+      const urlBase = PetoStore.getState().Settings.urlBase;
+      const RestApiExtensions = getUrl(urlBase);
+      const uri = `${RestApiExtensions.Meal.GetPetMealsHistory}/${petId}`;
+      const returnPromise = new Promise(async (resolve, reject) => {
+        const response = await fetch(uri);
+        let retval = await response.json();
+        if (retval.length == 0 || response.status == 404) {
+          resolve([]);
+        } else {
+          if (response.status == 200) {
+            resolve(retval);
+          } else {
+            reject(Messages.UNKNOWN_ERROR);
+          }
+        }
+      });
+      return this.functionWithTimeOut(3000, returnPromise);
+    }
+
   /**
    * feeds pet right now
    * @param {*} pet

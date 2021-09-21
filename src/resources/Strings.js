@@ -8,6 +8,7 @@ export const HTTP_METHODS = {
 
 export const ScreensRouteName = {
   LOGIN_SCREEN: "LOGIN_SCREEN",
+  SETTINGS: "SETTINGS",
   REGISTER_SCREEN: "REGISTER_SCREEN",
   EDIT_USER_SCREEN: "EDIT_USER_SCREEN",
   MENU_SCREEN: "MENU_SCREEN",
@@ -16,7 +17,7 @@ export const ScreensRouteName = {
   PET_ADD_SCREEN: "PET_ADD_SCREEN",
   PET_MEAL_SCREEN: "PET_MEAL_SCREEN",
   ADD_EDIT_MEAL_SCREEN: "ADD_EDIT_MEAL_SCREEN",
-  SETTINGS: "SETTINGS",
+  PET_MEAL_HISTORY_SCREEN: "PET_MEAL_HISTORY_SCREEN",
 };
 
 export const ReducersNames = {
@@ -35,7 +36,7 @@ export const getUrl = (urlBase) => {
       GetUser: `${urlBase}/users`,
       RegisterUser: `${urlBase}/users`,
       EditUser: `${urlBase}/users`,
-      UpdateToken: `${urlBase}/updateToken`
+      UpdateToken: `${urlBase}/updateToken`,
     },
     Pets: {
       GetPet: `${urlBase}/pets`,
@@ -49,6 +50,7 @@ export const getUrl = (urlBase) => {
       DeleteMeal: `${urlBase}/meal`,
       InsertMeal: `${urlBase}/meal/pet`,
       GetPetMeals: `${urlBase}/meal/pet`,
+      GetPetMealsHistory: `${urlBase}/meal/history/pet`,
     },
   };
 };

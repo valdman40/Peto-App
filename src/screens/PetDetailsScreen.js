@@ -5,7 +5,7 @@ import { Dropdown } from "react-native-material-dropdown-v2";
 import * as Progress from "react-native-progress";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 
-import { loadPetMeals } from "../store/actions/MealsActions";
+import { loadPetMeals, loadPetMealsHistory } from "../store/actions/MealsActions";
 import { ScreensRouteName } from "../resources/Strings";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
@@ -115,7 +115,56 @@ const PetDetailsScreen = (props) => {
     return (
       <TouchableOpacity onPress={loadAndGoToMeals} style={styles.mealsButton}>
         <View style={{ backgroundColor: Colors.blue, padding: 10, borderRadius: 3 }}>
-          <Text style={{ fontSize: 20, color: Colors.white }}>{Captions.VIEW_PET_MEALS_PLAN}</Text>
+          <Text style={{ fontSize: 20, color: Colors.white }}>{Captions.MEALS_PLAN}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  /**
+   *     
+   * const map = {};
+    map["name"] = "mealSummary.name";
+    // map['time'] = 'mealSummary.time';
+    // map['date'] = 'mealSummary.date';
+    map["amount_of_feeding"] = "amount of feeding";
+    map["amount_have_left"] = "amount have left";
+   */
+  const loadAndGoToMealsHistory = async () => {
+    const mealsHistory = [
+      {
+        name: "meal1",
+        time: "10:00",
+        date: "2020-08-08",
+        amount_of_feeding: "80",
+        amount_have_left: "20",
+        duration_untill_start: "4",
+        duration: "20",
+      },
+      {
+        name: "meal2",
+        time: "11:00",
+        date: "2020-08-08",
+        amount_of_feeding: "60",
+        amount_have_left: "30",
+        duration_untill_start: "7",
+        duration: "30",
+      },
+      
+      
+    ]; // await DbApi.GetPetMealsHistory(pet.id);
+    // mealsHistory.forEach((meal) => {
+    //   meal.time = Shared.fromSqlTime2TimeString(meal.time);
+    // });
+    dispatch(loadPetMealsHistory(mealsHistory));
+    props.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_HISTORY_SCREEN, params: { pet } });
+  };
+
+  const goToMealsHistoryButton = () => {
+    return (
+      <TouchableOpacity onPress={loadAndGoToMealsHistory} style={styles.mealsButton}>
+        <View style={{ backgroundColor: Colors.blue, padding: 10, borderRadius: 3 }}>
+          <Text style={{ fontSize: 20, color: Colors.white }}>{Captions.MEALS_HISTORY}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -168,7 +217,6 @@ const PetDetailsScreen = (props) => {
   const petImage = () => {
     if (pet.image) {
       const uri = pet.image;
-      // "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.6435-9/154993349_10222532609097589_2477911615807969384_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=730e14&_nc_ohc=1eR7X2lr9WMAX8XLQ0F&_nc_ht=scontent.fsdv3-1.fna&oh=a6d39308c3250bdb74b4f41ecd7f33e3&oe=61709BF7";
       return (
         <View style={{ borderWidth: 2 }}>
           <Image style={{ width: 200, height: 200 }} source={{ uri }} />
@@ -183,6 +231,7 @@ const PetDetailsScreen = (props) => {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       {petImage()}
+      {goToMealsHistoryButton()}
       {goToMealsButton()}
       {containerLeftBar()}
       {feedBox()}

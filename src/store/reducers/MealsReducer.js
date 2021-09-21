@@ -3,15 +3,18 @@ import {
   STORE_NEW_MEAL,
   DELETE_MEAL,
   UPDATE_MEAL,
+  LOAD_PET_MEALS_HISTORY,
 } from "../actions/MealsActions";
 
 // const initSched = [
 //   { meal_name: "meal1", amount: 100, meal_time: "01:00", id: 1, pet_id: 1 },\
 // ];
 const initMeals = [];
+const initMealsHistory = [];
 
 const initialState = {
   meals: initMeals,
+  mealsHistory: initMealsHistory,
 };
 
 const mealsReducer = (state = initialState, action) => {
@@ -21,6 +24,11 @@ const mealsReducer = (state = initialState, action) => {
       return {
         ...state,
         meals: action.meals,
+      };
+    case LOAD_PET_MEALS_HISTORY:
+      return {
+        ...state,
+        mealsHistory: action.mealsHistory,
       };
     case STORE_NEW_MEAL:
       return {

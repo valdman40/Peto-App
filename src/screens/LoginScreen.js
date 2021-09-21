@@ -19,7 +19,7 @@ import { saveLoggedUser } from "../store/actions/UserActions";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import CacheManager, { UserCache } from "../resources/CacheManager";
-import PushNotificationApi from '../PushNotificationApi';
+import PushNotificationApi from "../PushNotificationApi";
 
 const LoginScreen = (props) => {
   const [userName, setUserName] = useState("");
@@ -156,8 +156,12 @@ const LoginScreen = (props) => {
       <View style={styles.container}>
         <Image
           // eslint-disable-next-line no-undef
-          source={require("../../assets/tempImage.jpg")}
-          style={{ width: "90%", marginVertical: 20 }}
+          // source={require("../../assets/tempImage.jpg")}
+          source={{
+            uri:
+              "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.6435-9/241216587_893061831630199_5737847693870831032_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=b9115d&_nc_ohc=YJSo2Ylpb2AAX8Y_wF4&tn=BA6iW-wuey--Xsxl&_nc_ht=scontent.fsdv3-1.fna&oh=e7906e94784cf149876204fa1de0bc8a&oe=6170F40E",
+          }}
+          style={{ width: 250, marginVertical: 20, height: 250 }}
         />
         {inputWithText(userName, setUserName, Captions.USER_NAME)}
         {inputWithText(password, setPassword, Captions.PASSWORD, tryToLogin, true)}

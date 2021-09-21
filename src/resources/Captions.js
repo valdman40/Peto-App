@@ -39,5 +39,6 @@ export default {
   GRAMS: "grams",
   FOOD_CONTAINER: "Food Container",
   ORDER_HERE: "ORDER FOOD HERE!",
-  VIEW_PET_MEALS_PLAN: "View pet's meals plan",
+  MEALS_PLAN: "Meals plan",
+  MEALS_HISTORY: "Meals history",
 };

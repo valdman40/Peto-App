@@ -17,3 +17,8 @@ export const DELETE_MEAL = "DELETE_MEAL";
 export const deleteMeal = (mealId) => {
   return { type: DELETE_MEAL, mealId };
 };
+
+export const LOAD_PET_MEALS_HISTORY = "LOAD_PET_MEALS_HISTORY";
+export const loadPetMealsHistory = (mealsHistory) => {
+  return { type: LOAD_PET_MEALS_HISTORY, mealsHistory };
+};
