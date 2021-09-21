@@ -1,19 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  TextInput,
-  FlatList,
-  Dimensions,
-  ScrollView,
-  RefreshControl,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, RefreshControl, Image } from "react-native";
 import { useDispatch } from "react-redux";
 import { Dropdown } from "react-native-material-dropdown-v2";
 import * as Progress from "react-native-progress";
+import { MaterialIcons, Feather } from "@expo/vector-icons";
 
 import { loadPetMeals } from "../store/actions/MealsActions";
 import { ScreensRouteName } from "../resources/Strings";
@@ -45,7 +35,6 @@ const PetDetailsScreen = (props) => {
     setRefreshing(true);
     try {
       await reloadPetFromDB();
-      console.log(pet);
     } catch (e) {
       // never mind if failed..
     }
@@ -108,7 +97,7 @@ const PetDetailsScreen = (props) => {
           style={{ textAlign: "center" }}
           onChangeText={(amount) => setFeedingAmount(amount)}
         />
-        <Text style={{ fontSize: 20 }}>grams</Text>
+        <Text style={{ fontSize: 20 }}>{Captions.GRAMS}</Text>
       </View>
     );
   };
@@ -126,7 +115,7 @@ const PetDetailsScreen = (props) => {
     return (
       <TouchableOpacity onPress={loadAndGoToMeals} style={styles.mealsButton}>
         <View style={{ backgroundColor: Colors.blue, padding: 10, borderRadius: 3 }}>
-          <Text style={{ fontSize: 20, color: Colors.white }}>{"View pet's meals plan"}</Text>
+          <Text style={{ fontSize: 20, color: Colors.white }}>{Captions.VIEW_PET_MEALS_PLAN}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -140,10 +129,14 @@ const PetDetailsScreen = (props) => {
         style={{ margin: 20, flexDirection: "row", width: "80%", alignSelf: "center", justifyContent: "space-around" }}
       >
         <View>
-          <Text style={{ alignSelf: "center", fontSize: 20, color }}>Food Container</Text>
+          <Text style={{ alignSelf: "center", fontSize: 20, color }}>{Captions.FOOD_CONTAINER}</Text>
           {lowOnFood && (
             <TouchableOpacity onPress={() => alert("need to implement food order")}>
-              {<Text style={{ alignSelf: "center", fontSize: 20, color: Colors.lawngreen }}>ORDER FOOD HERE!</Text>}
+              {
+                <Text style={{ alignSelf: "center", fontSize: 20, color: Colors.lawngreen }}>
+                  {Captions.ORDER_HERE}
+                </Text>
+              }
             </TouchableOpacity>
           )}
         </View>
@@ -172,11 +165,24 @@ const PetDetailsScreen = (props) => {
     );
   };
 
+  const petImage = () => {
+    if (pet.image) {
+      const uri = pet.image;
+      // "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.6435-9/154993349_10222532609097589_2477911615807969384_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=730e14&_nc_ohc=1eR7X2lr9WMAX8XLQ0F&_nc_ht=scontent.fsdv3-1.fna&oh=a6d39308c3250bdb74b4f41ecd7f33e3&oe=61709BF7";
+      return (
+        <View style={{ borderWidth: 2 }}>
+          <Image style={{ width: 200, height: 200 }} source={{ uri }} />
+        </View>
+      );
+    }
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
+      {petImage()}
       {goToMealsButton()}
       {containerLeftBar()}
       {feedBox()}
@@ -187,7 +193,29 @@ const PetDetailsScreen = (props) => {
 // screen's header
 PetDetailsScreen.navigationOptions = (navigationData) => {
   const pet = navigationData.navigation.getParam("pet") || defaultPet;
-  return { headerTitle: `${pet.name}'s ${Captions.DETAILS}` };
+  return {
+    headerTitle: `${pet.name}'s ${Captions.DETAILS}`,
+    headerLeft: (
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity
+          style={{ backgroundColor: Colors.blue, marginLeft: 15 }}
+          onPress={() => {
+            navigationData.navigation.pop();
+          }}
+        >
+          <Feather size={25} color={Colors.white} name={"arrow-left"} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ backgroundColor: Colors.blue, marginLeft: 15 }}
+          onPress={() => {
+            alert("can't yet add image, you can send image from facebook to application manager to put it in");
+          }}
+        >
+          <MaterialIcons size={25} color={Colors.white} name={"add-photo-alternate"} />
+        </TouchableOpacity>
+      </View>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({

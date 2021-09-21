@@ -36,4 +36,8 @@ export default {
   SCHEDULE_NAME: "Meal name",
   REST_API_URL: "Rest Api URL",
   TIME: "Time",
+  GRAMS: "grams",
+  FOOD_CONTAINER: "Food Container",
+  ORDER_HERE: "ORDER FOOD HERE!",
+  VIEW_PET_MEALS_PLAN: "View pet's meals plan",
 };
