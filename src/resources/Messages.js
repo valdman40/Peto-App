@@ -24,6 +24,7 @@ export default {
   TIMEOUT: "The request has failed due to timeout",
   UNKNOWN_ERROR: "The request failed for unknown reason",
   DELETE_FAILED: "Delete request has failed",
+  GET_FAILED: "Get request has failed",
   UPDATE_FAILED: "Update request has failed",
   INSERT_FAILED: "Insert request has failed",
   PASSWORD_SAME_AS_OLD: "Entered old password",

@@ -8,7 +8,6 @@ import Colors from "../resources/Colors";
 import { setBaseUrl } from "../store/actions/SettingsActions";
 
 const SettingsScreen = (props) => {
-  alert("hi");
   const urlBase = useSelector((state) => state.Settings.urlBase);
   const dispatch = useDispatch();
   const [url, setUrl] = useState(urlBase);

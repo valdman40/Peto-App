@@ -60,8 +60,7 @@ export default class DbApi extends React.Component {
   static async UpdateUserPushNotificationToken(push_notification_token, userId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getUrl(urlBase);
-    // const uri = new URL(`${RestApiExtensions.Users.PushToken}/${userId}`);
-    const uri = `${RestApiExtensions.Users.PushToken}/${userId}`;
+    const uri = `${RestApiExtensions.Users.UpdateToken}/${userId}`;
     const method = HTTP_METHODS.PATCH;
     const headers = { Accept: "application/json", "Content-Type": "application/json" };
     const body = JSON.stringify({ push_notification_token });
@@ -192,6 +191,34 @@ export default class DbApi extends React.Component {
         resolve(response.json());
       } else {
         reject(Messages.DELETE_FAILED);
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
+
+  /**
+   * delete pet by petId
+   * @param {*} petId
+   * @returns
+   */
+  static async GetPet(petId) {
+    const urlBase = PetoStore.getState().Settings.urlBase;
+    const RestApiExtensions = getUrl(urlBase);
+    const uri = `${RestApiExtensions.Pets.GetPet}/${petId}`;
+    const method = HTTP_METHODS.GET;
+    const requestObject = { method, standartHeaders };
+    let response;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      try {
+        response = await fetch(uri, requestObject);
+      } catch (e) {
+        reject(Messages.FAILED_SERVER_CONNECTION);
+      }
+      if (response.status == 200) {
+        const retval = await response.json();
+        resolve(retval);
+      } else {
+        reject(Messages.GET_FAILED);
       }
     });
     return this.functionWithTimeOut(3000, returnPromise);

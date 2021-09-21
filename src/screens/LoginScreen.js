@@ -79,7 +79,7 @@ const LoginScreen = (props) => {
       setWaiting(true);
       setError("");
       const user = await DbApi.Login(userName, password);
-      onSuccedLogin(user);
+      await onSuccedLogin(user);
     } catch (e) {
       setError(e);
     } finally {

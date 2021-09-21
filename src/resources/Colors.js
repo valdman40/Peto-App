@@ -10,4 +10,6 @@ export default {
   black: "black",
   orange: "orange",
   lawngreen: "#7cfc00",
+  blueTransperet: "rgba(0,102,204,0.5)",
+  dogFoodBrown: "rgba(153,76,0,0.9)"
 };
