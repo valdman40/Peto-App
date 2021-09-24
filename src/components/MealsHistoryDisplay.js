@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ScrollView } from "react-native";
+import Shared from "../Shared";
 
 import Yad2DataDisplay from "./Yad2DataDisplay";
 export default class MealsHistoryDisplay extends Component {
@@ -18,7 +19,7 @@ export default class MealsHistoryDisplay extends Component {
    * @param {*} mealSummary
    */
   getMealSummaryTitle = (mealSummary) => {
-    return `${mealSummary.date} ${mealSummary.time}`;
+    return `${Shared.fromSqlDate2DateString(mealSummary.time)} ${Shared.fromSqlDate2TimeString(mealSummary.time)}`;
   };
 
   getDateString = (dateGiven) => {
@@ -30,17 +31,37 @@ export default class MealsHistoryDisplay extends Component {
     return retval;
   };
 
+  getTimeDifference = (start, end) => {
+    const startDate = Shared.generateDateFromTime(start);
+    const endDate = Shared.generateDateFromTime(end);
+    var diffMs = endDate - startDate; // milliseconds between now & Christmas
+    // var diffDays = Math.floor(diffMs / 86400000); // days
+    // var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+    return diffMins;
+  };
+
   /**
+   * {
+    "amount_eaten": 15,
+    "amount_given": 30,
+    "name": "test",
+    "pet_finished_eating": "15:55:29",
+    "pet_id": 1,
+    "pet_started_eating": "15:55:29",
+    "time": "NaN:NaN"
+}
    * the keys in this map will be displayed as properties of the same values
    * @param {*} mealSummary
    */
   rowDataDisplay = (mealSummary) => {
     const map = {};
     map["name"] = mealSummary.name;
-    map["amount of feeding"] = `${mealSummary.amount_of_feeding} g`;
-    map["amount have left"] = `${mealSummary.amount_have_left} g`;
-    map["duration untill start"] = `${mealSummary.duration_untill_start} min`;
-    map["duration"] = `${mealSummary.duration} min`;
+    map["Amount given"] = `${mealSummary.amount_given} g`;
+    map["Amount eaten"] = `${mealSummary.amount_eaten} g`;
+    map["Time started"] = `${mealSummary.pet_started_eating} min`;
+    map["Time Finished"] = `${mealSummary.pet_finished_eating} min`;
+    map["duration"] = `${this.getTimeDifference(mealSummary.pet_started_eating, mealSummary.pet_finished_eating)} min`;
     return map;
   };
 

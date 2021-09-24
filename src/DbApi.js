@@ -145,12 +145,12 @@ export default class DbApi extends React.Component {
    * @param {*} User_Id
    * @returns
    */
-  static async InsertPet(Name, Type, User_Id) {
+  static async InsertPet(Name, Type, User_Id, Machine_Id) {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getUrl(urlBase);
     const uri = new URL(RestApiExtensions.Pets.InsertPet);
     const method = HTTP_METHODS.PUT;
-    const body = JSON.stringify({ Name, Type, User_Id });
+    const body = JSON.stringify({ Name, Type, User_Id, Machine_Id });
     const headers = { Accept: "application/json", "Content-Type": "application/json" };
     const requestObject = { method, headers, body };
     const returnPromise = new Promise(async (resolve, reject) => {
@@ -357,30 +357,30 @@ export default class DbApi extends React.Component {
     return this.functionWithTimeOut(3000, returnPromise);
   }
 
-   /**
+  /**
    * loads pet's meals history
    * @param {*} petId
    * @returns
    */
-    static async GetPetMealsHistory(petId) {
-      const urlBase = PetoStore.getState().Settings.urlBase;
-      const RestApiExtensions = getUrl(urlBase);
-      const uri = `${RestApiExtensions.Meal.GetPetMealsHistory}/${petId}`;
-      const returnPromise = new Promise(async (resolve, reject) => {
-        const response = await fetch(uri);
-        let retval = await response.json();
-        if (retval.length == 0 || response.status == 404) {
-          resolve([]);
+  static async GetPetMealsHistory(petId) {
+    const urlBase = PetoStore.getState().Settings.urlBase;
+    const RestApiExtensions = getUrl(urlBase);
+    const uri = `${RestApiExtensions.Meal.GetPetMealsHistory}/${petId}`;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(uri);
+      let retval = await response.json();
+      if (retval.length == 0 || response.status == 404) {
+        resolve([]);
+      } else {
+        if (response.status == 200) {
+          resolve(retval);
         } else {
-          if (response.status == 200) {
-            resolve(retval);
-          } else {
-            reject(Messages.UNKNOWN_ERROR);
-          }
+          reject(Messages.UNKNOWN_ERROR);
         }
-      });
-      return this.functionWithTimeOut(3000, returnPromise);
-    }
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
 
   /**
    * feeds pet right now

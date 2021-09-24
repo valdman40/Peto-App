@@ -13,6 +13,7 @@ const AddPetScreen = () => {
   const dispatch = useDispatch();
   const [petName, setPetName] = useState("");
   const [type, setType] = useState("");
+  const [machineId, setMachineId] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
@@ -51,8 +52,7 @@ const AddPetScreen = () => {
       setMessage("");
       setError("");
       validateInput();
-      const newPet = await DbApi.InsertPet(petName, type, loggedUser.id);
-      console.log(newPet);
+      const newPet = await DbApi.InsertPet(petName, type, loggedUser.id, machineId);
       dispatch(storeNewPet(newPet));
       setMessage(Messages.REGISTER_PET_SUCCESS);
     } catch (e) {
@@ -90,57 +90,11 @@ const AddPetScreen = () => {
     );
   };
 
-  let dropDownPicker;
-
-  const d = () => {
-    const items = [
-      { label: "1", value: 1, hidden: false },
-      { label: "2", value: 2, hidden: false },
-      { label: "3", value: 3, hidden: false },
-      { label: "4", value: 4, hidden: false },
-      { label: "5", value: 5, hidden: false },
-      { label: "6", value: 6, hidden: false },
-    ];
-    return (
-      <View>
-        
-      </View>
-      // <View
-      //   style={{
-      //     flexDirection: "row",
-      //     justifyContent: "space-between",
-      //     width: "90%",
-      //     alignSelf: "center",
-      //     alignItems: "center",
-      //   }}
-      // >
-      //   <Text style={{ textAlignVertical: "bottom", fontSize: 20 }}>{Captions.TYPE}</Text>
-        // <DropDownPicker
-        //   items={items}
-        //   // defaultValue={this.searchedDesktopAppraiserId}
-        //   controller={(instance) => (dropDownPicker = instance)}
-        //   containerStyle={{ height: 70, width: "60%" }}
-        //   // placeholder={Captions.ALL}
-        //   style={{ backgroundColor: "white", marginTop: 15 }}
-        //   itemStyle={{ justifyContent: "flex-end" }}
-        //   dropDownStyle={{ backgroundColor: "#fafafa" }}
-        //   arrowStyle={{ alignSelf: "flex-start" }}
-        //   // scrollViewProps={{contentContainerStyle: {flexGrow: 1}}}
-        //   onChangeItem={(type) => setType(type.value)}
-      //   // />
-      //   <DropDownPicker
-      //   items={items}
-      //   containerStyle={{height: 40}}
-      // />
-      // </View>
-    );
-  };
-
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.container}>
         {inputWithText(petName, setPetName, Captions.PET_NAME)}
-        {/* {inputWithText(type, setType, Captions.PET_TYPE)} */}
-        {d()}
+        {inputWithText(type, setType, Captions.PET_TYPE)}
+        {inputWithText(machineId, setMachineId, Captions.MACHINE_ID)}
         <View style={{ margin: 20 }}>{AddPetButton()}</View>
         {displayMessage()}
         {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}

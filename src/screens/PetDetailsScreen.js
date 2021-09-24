@@ -15,9 +15,13 @@ import DbApi from "../DbApi";
 import Shared from "../Shared";
 
 const defaultPet = {
-  name: "debugger",
   id: 1,
-  container_filled: 0.7,
+  name: "Tokyo",
+  type: "dog",
+  user_id: 1,
+  container_filled: 0.8,
+  image:
+    "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.6435-9/154993349_10222532609097589_2477911615807969384_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=730e14&_nc_ohc=1eR7X2lr9WMAX8XLQ0F&_nc_ht=scontent.fsdv3-1.fna&oh=a6d39308c3250bdb74b4f41ecd7f33e3&oe=61709BF7",
 };
 
 const buttonSize = 100;
@@ -43,8 +47,8 @@ const PetDetailsScreen = (props) => {
 
   const reloadPetFromDB = async () => {
     // to refresh the pet's details
-    const x = await DbApi.GetPet(pet.id);
-    setPet(x);
+    const petFromDb = await DbApi.GetPet(pet.id);
+    setPet(petFromDb);
   };
 
   useEffect(() => {
@@ -131,30 +135,11 @@ const PetDetailsScreen = (props) => {
     map["amount_have_left"] = "amount have left";
    */
   const loadAndGoToMealsHistory = async () => {
-    const mealsHistory = [
-      {
-        name: "meal1",
-        time: "10:00",
-        date: "2020-08-08",
-        amount_of_feeding: "80",
-        amount_have_left: "20",
-        duration_untill_start: "4",
-        duration: "20",
-      },
-      {
-        name: "meal2",
-        time: "11:00",
-        date: "2020-08-08",
-        amount_of_feeding: "60",
-        amount_have_left: "30",
-        duration_untill_start: "7",
-        duration: "30",
-      },
-      
-      
-    ]; // await DbApi.GetPetMealsHistory(pet.id);
+    const mealsHistory = await DbApi.GetPetMealsHistory(pet.id);
     // mealsHistory.forEach((meal) => {
+    //   console.log(meal.time);
     //   meal.time = Shared.fromSqlTime2TimeString(meal.time);
+    //   console.log(meal.time);
     // });
     dispatch(loadPetMealsHistory(mealsHistory));
     props.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_HISTORY_SCREEN, params: { pet } });
@@ -225,6 +210,15 @@ const PetDetailsScreen = (props) => {
     }
   };
 
+  const machineId = () => {
+    return (
+      <View style={{ flexDirection: "row", width: "80%", justifyContent: "space-around", alignSelf: "center" }}>
+        <Text style={{ fontSize: 20 }}>Machine id:</Text>
+        <Text style={{ fontSize: 20 }}>{pet.machine_id}</Text>
+      </View>
+    );
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.container}
@@ -235,6 +229,7 @@ const PetDetailsScreen = (props) => {
       {goToMealsButton()}
       {containerLeftBar()}
       {feedBox()}
+      {machineId()}
     </ScrollView>
   );
 };

@@ -30,6 +30,7 @@ export default {
   LOGIN: "Login",
   PET_NAME: "Pet name",
   PET_TYPE: "Type",
+  MACHINE_ID: "Machine Id",
   DISCONNECT: "Disconnect",
   YES: "Yes",
   NO: "No",

@@ -28,8 +28,6 @@ export const ReducersNames = {
   Settings: "Settings",
 };
 
-const urlBase = "http://10.0.0.9:5000";
-
 export const getUrl = (urlBase) => {
   return {
     Users: {
@@ -53,27 +51,6 @@ export const getUrl = (urlBase) => {
       GetPetMealsHistory: `${urlBase}/meal/history/pet`,
     },
   };
-};
-
-export const RestApiExtensions = {
-  Users: {
-    GetUser: `${urlBase}/users`,
-    RegisterUser: `${urlBase}/users`,
-    EditUser: `${urlBase}/users`,
-  },
-  Pets: {
-    GetPet: `${urlBase}/pets`,
-    GetUserPets: `${urlBase}/pets/user`,
-    DeletePet: `${urlBase}/pets`,
-    InsertPet: `${urlBase}/pets`,
-    FeedPet: `${urlBase}/pets/feed`,
-  },
-  Meal: {
-    UpdateMeal: `${urlBase}/meal`,
-    DeleteMeal: `${urlBase}/meal`,
-    InsertMeal: `${urlBase}/meal/pet`,
-    GetPetMeals: `${urlBase}/meal/pet`,
-  },
 };
 
 /**
