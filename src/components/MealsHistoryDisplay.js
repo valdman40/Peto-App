@@ -22,35 +22,21 @@ export default class MealsHistoryDisplay extends Component {
     return `${Shared.fromSqlDate2DateString(mealSummary.time)} ${Shared.fromSqlDate2TimeString(mealSummary.time)}`;
   };
 
-  getDateString = (dateGiven) => {
-    let retval = "";
-    if (dateGiven) {
-      var date = new Date(dateGiven);
-      retval = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-    }
-    return retval;
-  };
-
-  getTimeDifference = (start, end) => {
+  /**
+   * returns minutes between start to end
+   * @param {*} start 
+   * @param {*} end 
+   * @returns 
+   */
+  getMinutesDifference = (start, end) => {
     const startDate = Shared.generateDateFromTime(start);
     const endDate = Shared.generateDateFromTime(end);
-    var diffMs = endDate - startDate; // milliseconds between now & Christmas
-    // var diffDays = Math.floor(diffMs / 86400000); // days
-    // var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+    var diffMs = endDate - startDate; 
+    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
     return diffMins;
   };
 
   /**
-   * {
-    "amount_eaten": 15,
-    "amount_given": 30,
-    "name": "test",
-    "pet_finished_eating": "15:55:29",
-    "pet_id": 1,
-    "pet_started_eating": "15:55:29",
-    "time": "NaN:NaN"
-}
    * the keys in this map will be displayed as properties of the same values
    * @param {*} mealSummary
    */
@@ -61,7 +47,7 @@ export default class MealsHistoryDisplay extends Component {
     map["Amount eaten"] = `${mealSummary.amount_eaten} g`;
     map["Time started"] = `${mealSummary.pet_started_eating} min`;
     map["Time Finished"] = `${mealSummary.pet_finished_eating} min`;
-    map["duration"] = `${this.getTimeDifference(mealSummary.pet_started_eating, mealSummary.pet_finished_eating)} min`;
+    map["duration"] = `${this.getMinutesDifference(mealSummary.pet_started_eating, mealSummary.pet_finished_eating)} min`;
     return map;
   };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Messages from "./resources/Messages";
-import { getUrl, HTTP_METHODS } from "../src/resources/Strings";
+import { getRestApi, HTTP_METHODS } from "../src/resources/Strings";
 import PetoStore from "./store/PetoStore";
 
 const standartHeaders = { Accept: "application/json", "Content-Type": "application/json" };
@@ -37,7 +37,7 @@ export default class DbApi extends React.Component {
    */
   static async Login(username, password) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = new URL(RestApiExtensions.Users.GetUser);
     const method = HTTP_METHODS.POST;
     const headers = { Accept: "application/json", "Content-Type": "application/json" };
@@ -59,7 +59,7 @@ export default class DbApi extends React.Component {
 
   static async UpdateUserPushNotificationToken(push_notification_token, userId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Users.UpdateToken}/${userId}`;
     const method = HTTP_METHODS.PATCH;
     const headers = { Accept: "application/json", "Content-Type": "application/json" };
@@ -87,7 +87,7 @@ export default class DbApi extends React.Component {
    */
   static async RegisterUser(username, password, name) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = new URL(RestApiExtensions.Users.RegisterUser);
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify({ Username: username, Password: password, Name: name });
@@ -119,7 +119,7 @@ export default class DbApi extends React.Component {
    */
   static async EditUser(Username, New_Password, Name, id) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Users.EditUser}/${id}`;
     const method = HTTP_METHODS.PATCH;
     const body = JSON.stringify({ Username, New_Password, Name });
@@ -147,7 +147,7 @@ export default class DbApi extends React.Component {
    */
   static async InsertPet(Name, Type, User_Id, Machine_Id) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = new URL(RestApiExtensions.Pets.InsertPet);
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify({ Name, Type, User_Id, Machine_Id });
@@ -176,7 +176,7 @@ export default class DbApi extends React.Component {
    */
   static async DeletePet(petId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.DeletePet}/${petId}`;
     const method = HTTP_METHODS.DELETE;
     const requestObject = { method, standartHeaders };
@@ -203,7 +203,7 @@ export default class DbApi extends React.Component {
    */
   static async GetPet(petId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.GetPet}/${petId}`;
     const method = HTTP_METHODS.GET;
     const requestObject = { method, standartHeaders };
@@ -232,7 +232,7 @@ export default class DbApi extends React.Component {
    */
   static async InsertMeal(meal, pet_id) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.InsertMeal}/${pet_id}`;
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify(meal);
@@ -257,7 +257,7 @@ export default class DbApi extends React.Component {
 
   static async UpdateMeal(updatedMeal) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.UpdateMeal}/${updatedMeal.id}`;
     const method = HTTP_METHODS.PATCH;
     console.log({ updatedMeal });
@@ -287,7 +287,7 @@ export default class DbApi extends React.Component {
    */
   static async DeleteSchedule(mealId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.DeleteMeal}/${mealId}`;
     const method = HTTP_METHODS.DELETE;
     const requestObject = { method, standartHeaders };
@@ -314,7 +314,7 @@ export default class DbApi extends React.Component {
    */
   static async LoadUserPets(userId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.GetUserPets}/${userId}`;
     const returnPromise = new Promise(async (resolve, reject) => {
       const response = await fetch(uri);
@@ -339,7 +339,7 @@ export default class DbApi extends React.Component {
    */
   static async GetPetMeals(petId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.GetPetMeals}/${petId}`;
     const returnPromise = new Promise(async (resolve, reject) => {
       const response = await fetch(uri);
@@ -364,7 +364,7 @@ export default class DbApi extends React.Component {
    */
   static async GetPetMealsHistory(petId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.GetPetMealsHistory}/${petId}`;
     const returnPromise = new Promise(async (resolve, reject) => {
       const response = await fetch(uri);
@@ -389,7 +389,7 @@ export default class DbApi extends React.Component {
    */
   static async FeedPet(pet, Amount) {
     const urlBase = PetoStore.getState().Settings.urlBase;
-    const RestApiExtensions = getUrl(urlBase);
+    const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.FeedPet}/${pet.id}`;
     const method = HTTP_METHODS.PUT;
     const headers = { Accept: "application/json", "Content-Type": "application/json" };
@@ -399,11 +399,7 @@ export default class DbApi extends React.Component {
       const response = await fetch(uri, requestObject);
       if (response.status == 200) {
         resolve();
-      }
-      // else if (response.status == 404) {
-      //   reject(Messages.USERNAME_PASS_NO_MATCH);
-      // }
-      else {
+      } else {
         reject(Messages.UNKNOWN_ERROR);
       }
     });

@@ -125,22 +125,8 @@ const PetDetailsScreen = (props) => {
     );
   };
 
-  /**
-   *     
-   * const map = {};
-    map["name"] = "mealSummary.name";
-    // map['time'] = 'mealSummary.time';
-    // map['date'] = 'mealSummary.date';
-    map["amount_of_feeding"] = "amount of feeding";
-    map["amount_have_left"] = "amount have left";
-   */
   const loadAndGoToMealsHistory = async () => {
     const mealsHistory = await DbApi.GetPetMealsHistory(pet.id);
-    // mealsHistory.forEach((meal) => {
-    //   console.log(meal.time);
-    //   meal.time = Shared.fromSqlTime2TimeString(meal.time);
-    //   console.log(meal.time);
-    // });
     dispatch(loadPetMealsHistory(mealsHistory));
     props.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_HISTORY_SCREEN, params: { pet } });
   };
@@ -289,7 +275,6 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     backgroundColor: Colors.white,
     justifyContent: "center",
-    // padding: 10,
     // android
     elevation: 8,
     // ios

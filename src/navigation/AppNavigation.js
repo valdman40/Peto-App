@@ -18,9 +18,7 @@ import PetMealsHistoryScreen from "../screens/PetMealsHistoryScreen";
 
 const defaultNavigationOptions = {
   headerTitleAlign: "center",
-  headerStyle: {
-    backgroundColor: Colors.blue,
-  },
+  headerStyle: { backgroundColor: Colors.blue },
   headerTintColor: "white",
 };
 /**
@@ -38,7 +36,7 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.PET_ADD_SCREEN]: AddPetScreen,
     [ScreensRouteName.PET_MEAL_SCREEN]: PetMealsScreen,
     [ScreensRouteName.ADD_EDIT_MEAL_SCREEN]: AddOrEditMealScreen,
-    [ScreensRouteName.PET_MEAL_HISTORY_SCREEN]: PetMealsHistoryScreen
+    [ScreensRouteName.PET_MEAL_HISTORY_SCREEN]: PetMealsHistoryScreen,
   },
   {
     initialRouteName: decideInitialMode(ScreensRouteName.LOGIN_SCREEN),

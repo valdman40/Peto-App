@@ -40,9 +40,4 @@ export default class Shared {
     const time = this.fromDate2DateString(d);
     return time;
   }
-
-
-
-
-
 }
