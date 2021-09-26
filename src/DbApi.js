@@ -30,6 +30,29 @@ export default class DbApi extends React.Component {
     });
   }
 
+  static async SendRequest(
+    uri,
+    method = HTTP_METHODS.GET,
+    body = {},
+    headers = { Accept: "application/json", "Content-Type": "application/json" }
+  ) {
+    let ob = { method, headers };
+    if (method != HTTP_METHODS.GET) {
+      ob.body = body;
+    }
+    const requestObject = ob;
+    const returnPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch(uri, requestObject);
+      const retval = await response.json();
+      if (response.status <= 201) {
+        resolve(retval);
+      } else {
+        reject(retval.message);
+      }
+    });
+    return this.functionWithTimeOut(3000, returnPromise);
+  }
+
   /**
    * try to login
    * @param {*} username
@@ -40,21 +63,8 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = new URL(RestApiExtensions.Users.GetUser);
     const method = HTTP_METHODS.POST;
-    const headers = { Accept: "application/json", "Content-Type": "application/json" };
     const body = JSON.stringify({ Username: username, Password: password });
-    const requestObject = { method, headers, body };
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri, requestObject);
-      let user = response.json();
-      if (response.status == 200) {
-        resolve(user);
-      } else if (response.status == 404) {
-        reject(Messages.USERNAME_PASS_NO_MATCH);
-      } else {
-        reject(Messages.UNKNOWN_ERROR);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method, body);
   }
 
   static async UpdateUserPushNotificationToken(push_notification_token, userId) {
@@ -62,23 +72,9 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Users.UpdateToken}/${userId}`;
     const method = HTTP_METHODS.PATCH;
-    const headers = { Accept: "application/json", "Content-Type": "application/json" };
     const body = JSON.stringify({ push_notification_token });
-    const requestObject = { method, headers, body };
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri, requestObject);
-      let user = response.json();
-      if (response.status == 200) {
-        resolve(user);
-      } else if (response.status == 404) {
-        reject(Messages.USERNAME_PASS_NO_MATCH);
-      } else {
-        reject(Messages.UNKNOWN_ERROR);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method, body);
   }
-
   /**
    * register new user
    * @param {*} name
@@ -91,22 +87,7 @@ export default class DbApi extends React.Component {
     const uri = new URL(RestApiExtensions.Users.RegisterUser);
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify({ Username: username, Password: password, Name: name });
-    const headers = { Accept: "application/json", "Content-Type": "application/json" };
-    const requestObject = { method, headers, body };
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri, requestObject);
-      let retval = response.json();
-      if (response.status == 200) {
-        resolve(retval);
-      } else {
-        if (response.status == 409) {
-          reject(Messages.USERNAME_EXIST);
-        } else {
-          reject(Messages.UNKNOWN_ERROR);
-        }
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method, body);
   }
 
   /**
@@ -123,18 +104,7 @@ export default class DbApi extends React.Component {
     const uri = `${RestApiExtensions.Users.EditUser}/${id}`;
     const method = HTTP_METHODS.PATCH;
     const body = JSON.stringify({ Username, New_Password, Name });
-    const headers = { Accept: "application/json", "Content-Type": "application/json" };
-    const requestObject = { method, headers, body };
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri, requestObject);
-      let retval = response.json();
-      if (response.status == 201) {
-        resolve(retval);
-      } else {
-        reject(Messages.UNKNOWN_ERROR);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method, body);
   }
 
   /**
@@ -151,22 +121,7 @@ export default class DbApi extends React.Component {
     const uri = new URL(RestApiExtensions.Pets.InsertPet);
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify({ Name, Type, User_Id, Machine_Id });
-    const headers = { Accept: "application/json", "Content-Type": "application/json" };
-    const requestObject = { method, headers, body };
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri, requestObject);
-      let retval = response.json();
-      if (response.status == 201) {
-        resolve(retval);
-      } else {
-        if (response.status == 409) {
-          reject(Messages.PETNAME_EXIST);
-        } else {
-          reject(Messages.UNKNOWN_ERROR);
-        }
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method, body);
   }
 
   /**
@@ -179,21 +134,7 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.DeletePet}/${petId}`;
     const method = HTTP_METHODS.DELETE;
-    const requestObject = { method, standartHeaders };
-    let response;
-    const returnPromise = new Promise(async (resolve, reject) => {
-      try {
-        response = await fetch(uri, requestObject);
-      } catch (e) {
-        reject(Messages.FAILED_SERVER_CONNECTION);
-      }
-      if (response.status == 200) {
-        resolve(response.json());
-      } else {
-        reject(Messages.DELETE_FAILED);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method);
   }
 
   /**
@@ -206,22 +147,7 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.GetPet}/${petId}`;
     const method = HTTP_METHODS.GET;
-    const requestObject = { method, standartHeaders };
-    let response;
-    const returnPromise = new Promise(async (resolve, reject) => {
-      try {
-        response = await fetch(uri, requestObject);
-      } catch (e) {
-        reject(Messages.FAILED_SERVER_CONNECTION);
-      }
-      if (response.status == 200) {
-        const retval = await response.json();
-        resolve(retval);
-      } else {
-        reject(Messages.GET_FAILED);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method);
   }
 
   /**
@@ -236,23 +162,7 @@ export default class DbApi extends React.Component {
     const uri = `${RestApiExtensions.Meal.InsertMeal}/${pet_id}`;
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify(meal);
-    const headers = { Accept: "application/json", "Content-Type": "application/json" };
-    const requestObject = { method, headers, body };
-    let response;
-    const returnPromise = new Promise(async (resolve, reject) => {
-      try {
-        response = await fetch(uri, requestObject);
-      } catch (e) {
-        reject(Messages.FAILED_SERVER_CONNECTION);
-      }
-      if (response.status == 200) {
-        const retval = await response.json();
-        resolve(retval);
-      } else {
-        reject(Messages.INSERT_FAILED);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method, body);
   }
 
   static async UpdateMeal(updatedMeal) {
@@ -260,24 +170,8 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.UpdateMeal}/${updatedMeal.id}`;
     const method = HTTP_METHODS.PATCH;
-    console.log({ updatedMeal });
     const body = JSON.stringify(updatedMeal);
-    const headers = { Accept: "application/json", "Content-Type": "application/json" };
-    const requestObject = { method, headers, body };
-    let response;
-    const returnPromise = new Promise(async (resolve, reject) => {
-      try {
-        response = await fetch(uri, requestObject);
-      } catch (e) {
-        reject(Messages.FAILED_SERVER_CONNECTION);
-      }
-      if (response.status == 200) {
-        resolve();
-      } else {
-        reject(Messages.UPDATE_FAILED);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method, body);
   }
 
   /**
@@ -285,26 +179,12 @@ export default class DbApi extends React.Component {
    * @param {*} mealId
    * @returns
    */
-  static async DeleteSchedule(mealId) {
+  static async DeleteMeal(mealId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.DeleteMeal}/${mealId}`;
     const method = HTTP_METHODS.DELETE;
-    const requestObject = { method, standartHeaders };
-    let response;
-    const returnPromise = new Promise(async (resolve, reject) => {
-      try {
-        response = await fetch(uri, requestObject);
-      } catch (e) {
-        reject(Messages.FAILED_SERVER_CONNECTION);
-      }
-      if (response.status == 200) {
-        resolve(response.json());
-      } else {
-        reject(Messages.DELETE_FAILED);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method);
   }
 
   /**
@@ -316,20 +196,7 @@ export default class DbApi extends React.Component {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.GetUserPets}/${userId}`;
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri);
-      let retval = response.json();
-      if (retval.length == 0) {
-        reject(Messages.NO_PETS);
-      } else {
-        if (response.status == 200) {
-          resolve(retval);
-        } else {
-          reject(Messages.UNKNOWN_ERROR);
-        }
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri);
   }
 
   /**
@@ -341,20 +208,7 @@ export default class DbApi extends React.Component {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.GetPetMeals}/${petId}`;
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri);
-      let retval = await response.json();
-      if (retval.length == 0 || response.status == 404) {
-        resolve([]);
-      } else {
-        if (response.status == 200) {
-          resolve(retval);
-        } else {
-          reject(Messages.UNKNOWN_ERROR);
-        }
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri);
   }
 
   /**
@@ -366,20 +220,7 @@ export default class DbApi extends React.Component {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.GetPetMealsHistory}/${petId}`;
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri);
-      let retval = await response.json();
-      if (retval.length == 0 || response.status == 404) {
-        resolve([]);
-      } else {
-        if (response.status == 200) {
-          resolve(retval);
-        } else {
-          reject(Messages.UNKNOWN_ERROR);
-        }
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri);
   }
 
   /**
@@ -392,17 +233,7 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.FeedPet}/${pet.id}`;
     const method = HTTP_METHODS.PUT;
-    const headers = { Accept: "application/json", "Content-Type": "application/json" };
     const body = JSON.stringify({ Amount });
-    const requestObject = { method, headers, body };
-    const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri, requestObject);
-      if (response.status == 200) {
-        resolve();
-      } else {
-        reject(Messages.UNKNOWN_ERROR);
-      }
-    });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.SendRequest(uri, method, body);
   }
 }

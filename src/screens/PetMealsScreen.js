@@ -33,7 +33,7 @@ const PetMealsScreen = (props) => {
 
   const deleteMeal_ = async (mealId) => {
     try {
-      await DbApi.DeleteSchedule(mealId);
+      await DbApi.DeleteMeal(mealId);
       dispatch(deleteMeal(mealId));
     } catch (e) {
       alert(e);

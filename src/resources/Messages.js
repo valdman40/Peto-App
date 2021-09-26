@@ -5,7 +5,7 @@ export default {
   NO_MEALS: "pet has no meals",
   ARE_YOU_SURE_DELETE_PET: "are you sure you want to delete this pet?",
   ARE_YOU_SURE_DELETE_MEAL: "are you sure you want to delete this meal?",
-  FAILED_SERVER_CONNECTION: "failed to connect with the server",
+  FAILED_SERVER_CONNECTION: "No connection with server",
   USERNAME_EXIST: "Username already exist",
   PETNAME_EXIST: "user has already pet with this name",
   REGISTER_MESSAGE: "New to Peto? register here",
