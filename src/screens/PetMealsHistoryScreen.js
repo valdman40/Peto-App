@@ -7,7 +7,7 @@ import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
 import { ScreensRouteName } from "../resources/Strings";
 import { deleteMeal } from "../store/actions/MealsActions";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 import DbApi from "../DbApi";
 import MealsHistoryDisplay from "../components/MealsHistoryDisplay";
 
@@ -27,7 +27,19 @@ const PetMealsHistoryScreen = (props) => {
 // screen's header
 PetMealsHistoryScreen.navigationOptions = (navigationData) => {
   const pet = navigationData.navigation.getParam("pet") || { name: "debugger's pet" };
-  return { headerTitle: `${pet.name}'s History` };
+  return {
+    headerTitle: `${pet.name}'s History`,
+    headerRight: (
+      <TouchableOpacity
+        style={{ backgroundColor: Colors.blue, marginRight: 15 }}
+        onPress={() =>
+          navigationData.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_HISTORY_GRAPH_SCREEN, params: pet })
+        }
+      >
+        <AntDesign size={25} color={Colors.white} name={"linechart"} />
+      </TouchableOpacity>
+    ),
+  };
 };
 
 const listAttributeStyle = {

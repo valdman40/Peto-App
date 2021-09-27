@@ -188,7 +188,6 @@ LoginScreen.navigationOptions = ({ navigation }) => ({
     <TouchableOpacity
       style={{ backgroundColor: Colors.blue, marginLeft: 15 }}
       onPress={() => {
-        // alert("go to settings");
         navigation.navigate({ routeName: ScreensRouteName.SETTINGS });
       }}
     >

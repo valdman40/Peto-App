@@ -3,8 +3,6 @@ import Messages from "./resources/Messages";
 import { getRestApi, HTTP_METHODS } from "../src/resources/Strings";
 import PetoStore from "./store/PetoStore";
 
-const standartHeaders = { Accept: "application/json", "Content-Type": "application/json" };
-
 export default class DbApi extends React.Component {
   /**
    * executes function with timout timer, if exceeded time it will "reject" the request

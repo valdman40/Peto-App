@@ -19,19 +19,20 @@ export default class MealsHistoryDisplay extends Component {
    * @param {*} mealSummary
    */
   getMealSummaryTitle = (mealSummary) => {
+    // alert(Shared.fromSqlDate2DateString(mealSummary.time));
     return `${Shared.fromSqlDate2DateString(mealSummary.time)} ${Shared.fromSqlDate2TimeString(mealSummary.time)}`;
   };
 
   /**
    * returns minutes between start to end
-   * @param {*} start 
-   * @param {*} end 
-   * @returns 
+   * @param {*} start
+   * @param {*} end
+   * @returns
    */
   getMinutesDifference = (start, end) => {
     const startDate = Shared.generateDateFromTime(start);
     const endDate = Shared.generateDateFromTime(end);
-    var diffMs = endDate - startDate; 
+    var diffMs = endDate - startDate;
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
     return diffMins;
   };
@@ -47,7 +48,10 @@ export default class MealsHistoryDisplay extends Component {
     map["Amount eaten"] = `${mealSummary.amount_eaten} g`;
     map["Time started"] = `${mealSummary.pet_started_eating} min`;
     map["Time Finished"] = `${mealSummary.pet_finished_eating} min`;
-    map["duration"] = `${this.getMinutesDifference(mealSummary.pet_started_eating, mealSummary.pet_finished_eating)} min`;
+    map["duration"] = `${this.getMinutesDifference(
+      mealSummary.pet_started_eating,
+      mealSummary.pet_finished_eating
+    )} min`;
     return map;
   };
 

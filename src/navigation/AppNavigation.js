@@ -15,6 +15,7 @@ import AddPetScreen from "../screens/AddPetScreen";
 import PetMealsScreen from "../screens/PetMealsScreen";
 import AddOrEditMealScreen from "../screens/AddOrEditMealScreen";
 import PetMealsHistoryScreen from "../screens/PetMealsHistoryScreen";
+import MealsHistoryGraphScreen from "../screens/MealsHistoryGraphScreen";
 
 const defaultNavigationOptions = {
   headerTitleAlign: "center",
@@ -37,6 +38,7 @@ const AppNavigator = createStackNavigator(
     [ScreensRouteName.PET_MEAL_SCREEN]: PetMealsScreen,
     [ScreensRouteName.ADD_EDIT_MEAL_SCREEN]: AddOrEditMealScreen,
     [ScreensRouteName.PET_MEAL_HISTORY_SCREEN]: PetMealsHistoryScreen,
+    [ScreensRouteName.PET_MEAL_HISTORY_GRAPH_SCREEN]: MealsHistoryGraphScreen,
   },
   {
     initialRouteName: decideInitialMode(ScreensRouteName.LOGIN_SCREEN),

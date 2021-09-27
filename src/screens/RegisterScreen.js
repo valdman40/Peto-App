@@ -5,7 +5,6 @@ import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
-import {} from "../store/actions/PetsActions";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
