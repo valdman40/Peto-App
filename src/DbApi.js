@@ -28,7 +28,15 @@ export default class DbApi extends React.Component {
     });
   }
 
-  static async SendRequest(
+  /**
+   * sends http requests
+   * @param {*} uri path of api
+   * @param {*} method type of request
+   * @param {*} body body of request
+   * @param {*} headers 
+   * @returns 
+   */
+  static async SendHttpReqeust(
     uri,
     method = HTTP_METHODS.GET,
     body = {},
@@ -62,7 +70,7 @@ export default class DbApi extends React.Component {
     const uri = new URL(RestApiExtensions.Users.GetUser);
     const method = HTTP_METHODS.POST;
     const body = JSON.stringify({ Username: username, Password: password });
-    return this.SendRequest(uri, method, body);
+    return this.SendHttpReqeust(uri, method, body);
   }
 
   static async UpdateUserPushNotificationToken(push_notification_token, userId) {
@@ -71,7 +79,7 @@ export default class DbApi extends React.Component {
     const uri = `${RestApiExtensions.Users.UpdateToken}/${userId}`;
     const method = HTTP_METHODS.PATCH;
     const body = JSON.stringify({ push_notification_token });
-    return this.SendRequest(uri, method, body);
+    return this.SendHttpReqeust(uri, method, body);
   }
   /**
    * register new user
@@ -85,7 +93,7 @@ export default class DbApi extends React.Component {
     const uri = new URL(RestApiExtensions.Users.RegisterUser);
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify({ Username: username, Password: password, Name: name });
-    return this.SendRequest(uri, method, body);
+    return this.SendHttpReqeust(uri, method, body);
   }
 
   /**
@@ -102,7 +110,7 @@ export default class DbApi extends React.Component {
     const uri = `${RestApiExtensions.Users.EditUser}/${id}`;
     const method = HTTP_METHODS.PATCH;
     const body = JSON.stringify({ Username, New_Password, Name });
-    return this.SendRequest(uri, method, body);
+    return this.SendHttpReqeust(uri, method, body);
   }
 
   /**
@@ -119,7 +127,7 @@ export default class DbApi extends React.Component {
     const uri = new URL(RestApiExtensions.Pets.InsertPet);
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify({ Name, Type, User_Id, Machine_Id });
-    return this.SendRequest(uri, method, body);
+    return this.SendHttpReqeust(uri, method, body);
   }
 
   /**
@@ -132,7 +140,7 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.DeletePet}/${petId}`;
     const method = HTTP_METHODS.DELETE;
-    return this.SendRequest(uri, method);
+    return this.SendHttpReqeust(uri, method);
   }
 
   /**
@@ -145,7 +153,7 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.GetPet}/${petId}`;
     const method = HTTP_METHODS.GET;
-    return this.SendRequest(uri, method);
+    return this.SendHttpReqeust(uri, method);
   }
 
   /**
@@ -160,7 +168,7 @@ export default class DbApi extends React.Component {
     const uri = `${RestApiExtensions.Meal.InsertMeal}/${pet_id}`;
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify(meal);
-    return this.SendRequest(uri, method, body);
+    return this.SendHttpReqeust(uri, method, body);
   }
 
   static async UpdateMeal(updatedMeal) {
@@ -169,7 +177,7 @@ export default class DbApi extends React.Component {
     const uri = `${RestApiExtensions.Meal.UpdateMeal}/${updatedMeal.id}`;
     const method = HTTP_METHODS.PATCH;
     const body = JSON.stringify(updatedMeal);
-    return this.SendRequest(uri, method, body);
+    return this.SendHttpReqeust(uri, method, body);
   }
 
   /**
@@ -182,7 +190,7 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.DeleteMeal}/${mealId}`;
     const method = HTTP_METHODS.DELETE;
-    return this.SendRequest(uri, method);
+    return this.SendHttpReqeust(uri, method);
   }
 
   /**
@@ -194,7 +202,7 @@ export default class DbApi extends React.Component {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Pets.GetUserPets}/${userId}`;
-    return this.SendRequest(uri);
+    return this.SendHttpReqeust(uri);
   }
 
   /**
@@ -206,7 +214,7 @@ export default class DbApi extends React.Component {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.GetPetMeals}/${petId}`;
-    return this.SendRequest(uri);
+    return this.SendHttpReqeust(uri);
   }
 
   /**
@@ -218,7 +226,7 @@ export default class DbApi extends React.Component {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.GetPetMealsHistory}/${petId}`;
-    return this.SendRequest(uri);
+    return this.SendHttpReqeust(uri);
   }
 
   /**
@@ -232,6 +240,6 @@ export default class DbApi extends React.Component {
     const uri = `${RestApiExtensions.Pets.FeedPet}/${pet.id}`;
     const method = HTTP_METHODS.PUT;
     const body = JSON.stringify({ Amount });
-    return this.SendRequest(uri, method, body);
+    return this.SendHttpReqeust(uri, method, body);
   }
 }

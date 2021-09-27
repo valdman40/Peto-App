@@ -47,6 +47,11 @@ export default class Yad2DataDisplay extends Component {
     return (
       <View style={{ width: "95%", alignSelf: "center" }}>
         <ScrollView style={{}}>
+          {/* {this.props.data.map((row) => {
+            return this.renderRow(this.props.rowDataDisplay(row), this.props.getTitle(row), () =>
+              this.props.onFilePress(row)
+            );
+          })} */}
           <FlatList
             {...this.props}
             keyExtractor={(item, index) => index.toString()}

@@ -30,15 +30,14 @@ export default class Shared {
   }
 
   static fromSqlDate2TimeString(sqlDate) {
-    sqlDate = sqlDate.replace("-", "/");
+    sqlDate = sqlDate.replace(new RegExp("-", "g"), '/')
     const d = new Date(sqlDate);
     const time = this.fromDate2TimeString(d);
     return time;
   }
 
   static fromSqlDate2DateString(sqlDate) {
-    sqlDate = sqlDate.replace("-", "/");
-    console.log(sqlDate);
+    sqlDate = sqlDate.replace(new RegExp("-", "g"), '/')
     const d = new Date(sqlDate);
     const time = this.fromDate2DateString(d);
     return time;

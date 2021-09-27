@@ -19,7 +19,6 @@ export default class MealsHistoryDisplay extends Component {
    * @param {*} mealSummary
    */
   getMealSummaryTitle = (mealSummary) => {
-    // alert(Shared.fromSqlDate2DateString(mealSummary.time));
     return `${Shared.fromSqlDate2DateString(mealSummary.time)} ${Shared.fromSqlDate2TimeString(mealSummary.time)}`;
   };
 
