@@ -73,6 +73,12 @@ export default class DbApi extends React.Component {
     return this.SendHttpReqeust(uri, method, body);
   }
 
+  /**
+   * update users token in DB
+   * @param {*} push_notification_token 
+   * @param {*} userId 
+   * @returns 
+   */
   static async UpdateUserPushNotificationToken(push_notification_token, userId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
@@ -116,10 +122,12 @@ export default class DbApi extends React.Component {
   /**
    * insert pet to db
    * insert petId and userId to table that connects them
-   * @param {*} Name
-   * @param {*} Type
-   * @param {*} User_Id
-   * @returns
+   * also changes the machine_id properly
+   * @param {*} Name 
+   * @param {*} Type 
+   * @param {*} User_Id 
+   * @param {*} Machine_Id 
+   * @returns 
    */
   static async InsertPet(Name, Type, User_Id, Machine_Id) {
     const urlBase = PetoStore.getState().Settings.urlBase;
@@ -131,7 +139,7 @@ export default class DbApi extends React.Component {
   }
 
   /**
-   * delete pet by petId
+   * delete pet by petId (make it unactive)
    * @param {*} petId
    * @returns
    */
@@ -171,6 +179,11 @@ export default class DbApi extends React.Component {
     return this.SendHttpReqeust(uri, method, body);
   }
 
+  /**
+   * updates meal in DB
+   * @param {*} updatedMeal 
+   * @returns 
+   */
   static async UpdateMeal(updatedMeal) {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);

@@ -24,7 +24,6 @@ import {} from "../store/actions/PetsActions";
 import DbApi from "../DbApi";
 import Shared from "../Shared";
 
-
 const buttonSize = 100;
 
 const PetDetailsScreen = (props) => {
@@ -127,9 +126,13 @@ const PetDetailsScreen = (props) => {
   };
 
   const loadAndGoToMealsHistory = async () => {
-    const mealsHistory = await DbApi.GetPetMealsHistory(pet.id);
-    dispatch(loadPetMealsHistory(mealsHistory));
-    props.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_HISTORY_SCREEN, params: { pet } });
+    try {
+      const mealsHistory = await DbApi.GetPetMealsHistory(pet.id);
+      dispatch(loadPetMealsHistory(mealsHistory));
+      props.navigation.navigate({ routeName: ScreensRouteName.PET_MEAL_HISTORY_SCREEN, params: { pet } });
+    } catch (e) {
+      alert(e);
+    }
   };
 
   const goToMealsHistoryButton = () => {

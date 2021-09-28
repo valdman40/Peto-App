@@ -10,6 +10,10 @@ Notifications.setNotificationHandler({
 });
 
 export default class PushNotificationApi {
+  /**
+   * registers mobile machine to notification channel 
+   * @returns token
+   */
   static async registerForPushNotificationsAsync() {
     let token;
     const { status: existingStatus } = await Notifications.getPermissionsAsync();

@@ -7,6 +7,7 @@ import debugReducer from "./reducers/DebugModeReducer";
 import settingsReducer from "./reducers/SettingsReducer";
 import { ReducersNames } from "../resources/Strings";
 
+// combine all reducers into 1 combined
 const rootReducer = combineReducers({
   [ReducersNames.Debug]: debugReducer,
   [ReducersNames.User]: userReducer,
