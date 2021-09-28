@@ -13,7 +13,7 @@ import DbApi from "../DbApi";
 const PetMealsScreen = (props) => {
   const dispatch = useDispatch();
   const meals = useSelector((state) => state.Meals.meals);
-  const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
+  const pet = props.navigation.getParam("pet");
   const listHeader = () => {
     return (
       <View style={styles.headerContainer}>
@@ -28,7 +28,7 @@ const PetMealsScreen = (props) => {
   };
 
   const addMealPressed = () => {
-    props.navigation.navigate({ routeName: ScreensRouteName.ADD_EDIT_MEAL_SCREEN, params: pet });
+    props.navigation.navigate({ routeName: ScreensRouteName.ADD_EDIT_MEAL_SCREEN, params: { pet } });
   };
 
   const deleteMeal_ = async (mealId) => {

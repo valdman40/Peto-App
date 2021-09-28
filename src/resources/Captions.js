@@ -13,7 +13,7 @@ export default {
   // greetings
   GOOD_MORNING: "Good morning",
   GOOD_AFTERNOON: "Good afternoon",
-  GOOD_EVNING: "Good evning",
+  GOOD_EVNING: "Good evening",
   GOOD_NIGHT: "Good night",
 
   NAME: "Name",

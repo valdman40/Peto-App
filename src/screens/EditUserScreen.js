@@ -13,8 +13,8 @@ const EditUserScreen = () => {
   const loggedUser = useSelector((state) => state.User.loggedUser);
 
   const [name, setName] = useState(loggedUser.name);
-  const [newPassword, setNewPassword] = useState(loggedUser.password);
-  const [confirmPassword, setConfirmPassword] = useState(loggedUser.password);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
@@ -30,7 +30,7 @@ const EditUserScreen = () => {
   const inputWithText = (input, inputSetter, inputDescription, secret = false) => {
     return (
       <View style={{ margin: 10, flexDirection: "row", justifyContent: "space-between", width: "100%", padding: 10 }}>
-        <Text style={{ fontSize: 20 }}>{inputDescription}</Text>
+        <Text style={{ fontSize: 18 }}>{inputDescription}</Text>
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input}

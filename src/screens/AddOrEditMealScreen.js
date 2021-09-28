@@ -24,7 +24,8 @@ import { storeNewMeal, updateMeal } from "../store/actions/MealsActions";
 import Shared from "../Shared";
 
 const AddOrEditMealScreen = (props) => {
-  const pet = props.navigation.getParam("pet") || { name: "debugger's pet", id: 1 };
+  const pet = props.navigation.getParam("pet");
+  console.log(pet);
   const meal = props.navigation.getParam("meal") || { name: "", amount: 0, time: "00:00", repeat_daily: 1, id: 0 };
   const dispatch = useDispatch();
   const [name, setName] = useState(meal.name);

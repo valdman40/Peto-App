@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { MaterialCommunityIcons, FontAwesome, FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
 
 import Captions from "../resources/Captions";
@@ -55,6 +55,10 @@ const MenuScreen = (props) => {
     props.navigation.navigate({ routeName: ScreensRouteName.EDIT_USER_SCREEN });
   };
 
+  const moveToSettings = () => {
+    props.navigation.navigate({ routeName: ScreensRouteName.SETTINGS });
+  };
+
   /**
    * the behavior we want to have when user presses back button
    */
@@ -92,7 +96,7 @@ const MenuScreen = (props) => {
       title: Captions.SETTINGS,
       ms: 400,
       icon: <Ionicons name={"settings"} color={"rgb(0, 128, 255)"} size={30} />,
-      onPress: () => {},
+      onPress: moveToSettings,
     },
   ];
 

@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, RefreshControl, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  ScrollView,
+  RefreshControl,
+  Image,
+  Linking,
+} from "react-native";
 import { useDispatch } from "react-redux";
 import { Dropdown } from "react-native-material-dropdown-v2";
 import * as Progress from "react-native-progress";
@@ -14,21 +24,12 @@ import {} from "../store/actions/PetsActions";
 import DbApi from "../DbApi";
 import Shared from "../Shared";
 
-const defaultPet = {
-  id: 1,
-  name: "Tokyo",
-  type: "dog",
-  user_id: 1,
-  container_filled: 0.8,
-  image:
-    "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.6435-9/154993349_10222532609097589_2477911615807969384_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=730e14&_nc_ohc=1eR7X2lr9WMAX8XLQ0F&_nc_ht=scontent.fsdv3-1.fna&oh=a6d39308c3250bdb74b4f41ecd7f33e3&oe=61709BF7",
-};
 
 const buttonSize = 100;
 
 const PetDetailsScreen = (props) => {
   // let pet = props.navigation.getParam("pet") || defaultPet;
-  const [pet, setPet] = useState(defaultPet);
+  const [pet, setPet] = useState({});
   const [feedingAmount, setFeedingAmount] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [items, setItems] = useState([]);
@@ -59,7 +60,7 @@ const PetDetailsScreen = (props) => {
     }
     setItems(x);
     setSelectedItem(x[0].value);
-    setPet(props.navigation.getParam("pet") || defaultPet);
+    setPet(props.navigation.getParam("pet"));
   }, []);
 
   const feedPet = async () => {
@@ -141,6 +142,17 @@ const PetDetailsScreen = (props) => {
     );
   };
 
+  const goToFoodStore = () => {
+    const url = "https://www.kolbopet.co.il/category/dogs/dryfoodfordogs/";
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.log("Don't know how to open URI: " + url);
+      }
+    });
+  };
+
   const containerLeftBar = () => {
     const lowOnFood = pet.container_filled <= 0.3;
     const color = lowOnFood ? Colors.red : Colors.black;
@@ -151,7 +163,7 @@ const PetDetailsScreen = (props) => {
         <View>
           <Text style={{ alignSelf: "center", fontSize: 20, color }}>{Captions.FOOD_CONTAINER}</Text>
           {lowOnFood && (
-            <TouchableOpacity onPress={() => alert("need to implement food order")}>
+            <TouchableOpacity onPress={goToFoodStore}>
               {
                 <Text style={{ alignSelf: "center", fontSize: 20, color: Colors.lawngreen }}>
                   {Captions.ORDER_HERE}
