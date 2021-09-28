@@ -50,9 +50,9 @@ const PetsScreen = (props) => {
    * move to pet details screen
    * @param {*} petId
    */
-  function moveToPetDetailsScreen(pet) {
-    // in future, instead of bringing pet from userPets, we should look in db for the pet so it will be updated
-    props.navigation.navigate({ routeName: ScreensRouteName.PET_DETAILS_SCREEN, params: { pet } });
+  async function moveToPetDetailsScreen(pet) {
+    const rate = await DbApi.GetPetRating(pet.id); // we want pet's health rate
+    props.navigation.navigate({ routeName: ScreensRouteName.PET_DETAILS_SCREEN, params: { pet, rate } });
   }
 
   const renderPet = (pet) => {

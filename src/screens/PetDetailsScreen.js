@@ -13,26 +13,26 @@ import {
 import { useDispatch } from "react-redux";
 import { Dropdown } from "react-native-material-dropdown-v2";
 import * as Progress from "react-native-progress";
-import { MaterialIcons, Feather } from "@expo/vector-icons";
+import { MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 
 import { loadPetMeals, loadPetMealsHistory } from "../store/actions/MealsActions";
 import { ScreensRouteName } from "../resources/Strings";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
-import {} from "../store/actions/PetsActions";
 import DbApi from "../DbApi";
 import Shared from "../Shared";
 
 const buttonSize = 100;
 
 const PetDetailsScreen = (props) => {
-  // let pet = props.navigation.getParam("pet") || defaultPet;
+  // let pet = props.navigation.getParam("pet");
   const [pet, setPet] = useState({});
   const [feedingAmount, setFeedingAmount] = useState(0);
+  const [healthRate, setHealthRate] = useState(5);
   const [refreshing, setRefreshing] = useState(false);
-  const [items, setItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState({});
+  // const [selectedItem, setSelectedItem] = useState({});
+  const [disableFeedNow, setDisableFeedNow] = useState(false);
   const dispatch = useDispatch();
 
   const onRefresh = async () => {
@@ -51,23 +51,40 @@ const PetDetailsScreen = (props) => {
     setPet(petFromDb);
   };
 
+  const amountsOfFood = [
+    { value: 0 },
+    { value: 10 },
+    { value: 20 },
+    { value: 30 },
+    { value: 40 },
+    { value: 50 },
+    { value: 60 },
+    { value: 70 },
+    { value: 80 },
+    { value: 90 },
+    { value: 100 },
+  ];
+
+  const ratings = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
+
   useEffect(() => {
-    const x = [];
-    for (let i = 1; i <= 10; i++) {
-      const value = 10 * i;
-      x.push({ value });
-    }
-    setItems(x);
-    setSelectedItem(x[0].value);
-    setPet(props.navigation.getParam("pet"));
+    const petFromParams = props.navigation.getParam("pet");
+    const rateFromParams = props.navigation.getParam("rate");
+    setPet(petFromParams);
+    setHealthRate(rateFromParams);
   }, []);
 
   const feedPet = async () => {
     let message = "";
     try {
+      setDisableFeedNow(true);
       await DbApi.FeedPet(pet, feedingAmount);
       message = "Feeding request sent";
+      setTimeout(() => {
+        setDisableFeedNow(false);
+      }, 5000);
     } catch (e) {
+      setDisableFeedNow(false);
       message = e.message;
     } finally {
       //
@@ -84,24 +101,24 @@ const PetDetailsScreen = (props) => {
 
   const feedButton = () => {
     return (
-      <TouchableOpacity style={styles.circleButton} onPress={feedPet}>
+      <TouchableOpacity style={{ ...styles.circleButton }} onPress={feedPet} disabled={disableFeedNow}>
         <Text style={{ fontSize: 18 }}>Feed Now</Text>
       </TouchableOpacity>
     );
   };
 
-  const amountDropDown = () => {
+  const amountDropDown = (items, value, setter, caption) => {
     return (
       <View style={styles.amountDropDownContainer}>
         <Dropdown
           data={items}
           containerStyle={{ height: 70 }}
-          value={feedingAmount}
+          value={value}
           itemTextStyle={{ textAlign: "center" }}
           style={{ textAlign: "center" }}
-          onChangeText={(amount) => setFeedingAmount(amount)}
+          onChangeText={(value) => setter(value)}
         />
-        <Text style={{ fontSize: 20 }}>{Captions.GRAMS}</Text>
+        <Text style={{ fontSize: 20, margin: 10 }}>{caption}</Text>
       </View>
     );
   };
@@ -118,7 +135,7 @@ const PetDetailsScreen = (props) => {
   const goToMealsButton = () => {
     return (
       <TouchableOpacity onPress={loadAndGoToMeals} style={styles.mealsButton}>
-        <View style={{ backgroundColor: Colors.blue, padding: 10, borderRadius: 3 }}>
+        <View style={{ padding: 10, borderRadius: 3 }}>
           <Text style={{ fontSize: 20, color: Colors.white }}>{Captions.MEALS_PLAN}</Text>
         </View>
       </TouchableOpacity>
@@ -138,7 +155,7 @@ const PetDetailsScreen = (props) => {
   const goToMealsHistoryButton = () => {
     return (
       <TouchableOpacity onPress={loadAndGoToMealsHistory} style={styles.mealsButton}>
-        <View style={{ backgroundColor: Colors.blue, padding: 10, borderRadius: 3 }}>
+        <View style={{ padding: 10, borderRadius: 3 }}>
           <Text style={{ fontSize: 20, color: Colors.white }}>{Captions.MEALS_HISTORY}</Text>
         </View>
       </TouchableOpacity>
@@ -193,7 +210,7 @@ const PetDetailsScreen = (props) => {
       <View style={{ margin: 10, width: "80%", justifyContent: "center" }}>
         <Text style={{ textAlign: "center", fontSize: 20 }}>Instant feed</Text>
         <View style={styles.feedBoxInnerContainer}>
-          {amountDropDown()}
+          {amountDropDown(amountsOfFood, feedingAmount, setFeedingAmount, Captions.GRAMS)}
           {feedButton()}
         </View>
       </View>
@@ -201,14 +218,48 @@ const PetDetailsScreen = (props) => {
   };
 
   const petImage = () => {
+    const imageSize = 130;
     if (pet.image) {
       const uri = pet.image;
       return (
-        <View style={{ borderWidth: 2 }}>
-          <Image style={{ width: 200, height: 200 }} source={{ uri }} />
+        <View style={{ borderWidth: 2, margin: 5 }}>
+          <Image style={{ width: imageSize, height: imageSize }} source={{ uri }} />
         </View>
       );
     }
+  };
+
+  const saveRating = async () => {
+    const date = new Date().toISOString().slice(0, 19).replace("T", " ");
+    try {
+      await DbApi.SavePetRating(pet.id, date, healthRate);
+      alert(Captions.SAVED);
+    } catch (e) {
+      alert(e);
+    }
+  };
+
+  const petHelathRate = () => {
+    return (
+      <View style={{ margin: 5 }}>
+        <Text style={{ fontSize: 18, margin: 10 }}>How is {pet.name} today?</Text>
+        <View style={{ flexDirection: "row", alignSelf: "center", justifyContent: "center", alignItems: "center" }}>
+          {amountDropDown(ratings, healthRate, setHealthRate, "")}
+          <TouchableOpacity onPress={saveRating}>
+            <Entypo size={40} color={Colors.black} name={"save"} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  const petImageHealth = () => {
+    return (
+      <View style={{ flexDirection: "row" }}>
+        {petImage()}
+        {petHelathRate()}
+      </View>
+    );
   };
 
   const machineId = () => {
@@ -225,11 +276,13 @@ const PetDetailsScreen = (props) => {
       contentContainerStyle={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
-      {petImage()}
+      {petImageHealth()}
+      {/* {petImage()}
+      {petHelathRate()} */}
+      {feedBox()}
       {goToMealsHistoryButton()}
       {goToMealsButton()}
       {containerLeftBar()}
-      {feedBox()}
       {machineId()}
     </ScrollView>
   );
@@ -237,7 +290,18 @@ const PetDetailsScreen = (props) => {
 
 // screen's header
 PetDetailsScreen.navigationOptions = (navigationData) => {
-  const pet = navigationData.navigation.getParam("pet") || defaultPet;
+  const pet = navigationData.navigation.getParam("pet");
+  // const pet = {
+  //   id: 1,
+  //   name: "Tokyo",
+  //   type: "dog",
+  //   user_id: 1,
+  //   container_filled: 0.657,
+  //   image:
+  //     "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.6435-9/154993349_10222532609097589_2477911615807969384_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=730e14&_nc_ohc=1eR7X2lr9WMAX8XLQ0F&_nc_ht=scontent.fsdv3-1.fna&oh=a6d39308c3250bdb74b4f41ecd7f33e3&oe=61709BF7",
+  //   machine_id: "54321",
+  //   active: 1,
+  // };
   return {
     headerTitle: `${pet.name}'s ${Captions.DETAILS}`,
     headerLeft: (
@@ -264,7 +328,12 @@ PetDetailsScreen.navigationOptions = (navigationData) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "space-around" },
+  container: {
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "space-around",
+    height: Dimensions.get("window").height,
+  },
   title: { fontSize: 30 },
   circleButton: {
     margin: 5,
@@ -286,10 +355,13 @@ const styles = StyleSheet.create({
   },
   loginButton: { color: "white", fontSize: 18, textAlign: "center", margin: 10, padding: 5, paddingHorizontal: 30 },
   mealsButton: {
+    width: Dimensions.get("window").width * 0.5,
+    alignItems: "center",
     borderWidth: 0.3,
     borderRadius: 3,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.blue,
     justifyContent: "center",
+    margin: 5,
     // android
     elevation: 8,
     // ios
@@ -308,7 +380,6 @@ const styles = StyleSheet.create({
   amountDropDownContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: "40%",
     alignSelf: "center",
     justifyContent: "space-around",
   },

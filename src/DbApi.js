@@ -33,8 +33,8 @@ export default class DbApi extends React.Component {
    * @param {*} uri path of api
    * @param {*} method type of request
    * @param {*} body body of request
-   * @param {*} headers 
-   * @returns 
+   * @param {*} headers
+   * @returns
    */
   static async SendHttpReqeust(
     uri,
@@ -75,9 +75,9 @@ export default class DbApi extends React.Component {
 
   /**
    * update users token in DB
-   * @param {*} push_notification_token 
-   * @param {*} userId 
-   * @returns 
+   * @param {*} push_notification_token
+   * @param {*} userId
+   * @returns
    */
   static async UpdateUserPushNotificationToken(push_notification_token, userId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
@@ -123,11 +123,11 @@ export default class DbApi extends React.Component {
    * insert pet to db
    * insert petId and userId to table that connects them
    * also changes the machine_id properly
-   * @param {*} Name 
-   * @param {*} Type 
-   * @param {*} User_Id 
-   * @param {*} Machine_Id 
-   * @returns 
+   * @param {*} Name
+   * @param {*} Type
+   * @param {*} User_Id
+   * @param {*} Machine_Id
+   * @returns
    */
   static async InsertPet(Name, Type, User_Id, Machine_Id) {
     const urlBase = PetoStore.getState().Settings.urlBase;
@@ -181,8 +181,8 @@ export default class DbApi extends React.Component {
 
   /**
    * updates meal in DB
-   * @param {*} updatedMeal 
-   * @returns 
+   * @param {*} updatedMeal
+   * @returns
    */
   static async UpdateMeal(updatedMeal) {
     const urlBase = PetoStore.getState().Settings.urlBase;
@@ -203,6 +203,23 @@ export default class DbApi extends React.Component {
     const RestApiExtensions = getRestApi(urlBase);
     const uri = `${RestApiExtensions.Meal.DeleteMeal}/${mealId}`;
     const method = HTTP_METHODS.DELETE;
+    return this.SendHttpReqeust(uri, method);
+  }
+
+  static async SavePetRating(pet_id, date, rate) {
+    const urlBase = PetoStore.getState().Settings.urlBase;
+    const RestApiExtensions = getRestApi(urlBase);
+    const uri = `${RestApiExtensions.Pets.Rating}/${pet_id}`;
+    const method = HTTP_METHODS.PUT;
+    const body = JSON.stringify({ rate, pet_id, date });
+    return this.SendHttpReqeust(uri, method, body);
+  }
+
+  static async GetPetRating(petId) {
+    const urlBase = PetoStore.getState().Settings.urlBase;
+    const RestApiExtensions = getRestApi(urlBase);
+    const uri = `${RestApiExtensions.Pets.Rating}/${petId}`;
+    const method = HTTP_METHODS.GET;
     return this.SendHttpReqeust(uri, method);
   }
 

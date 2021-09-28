@@ -43,6 +43,7 @@ export const getRestApi = (urlBase) => {
       DeletePet: `${urlBase}/pets`,
       InsertPet: `${urlBase}/pets`,
       FeedPet: `${urlBase}/pets/feed`,
+      Rating: `${urlBase}/pets/rating`,
     },
     Meal: {
       UpdateMeal: `${urlBase}/meal`,

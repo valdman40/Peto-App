@@ -16,6 +16,7 @@ function fixLTR() {
     Expo.Updates.reload();
   }
 }
+console.disableYellowBox = true;
 
 export default function App() {
   fixLTR();

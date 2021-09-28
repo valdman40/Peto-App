@@ -42,4 +42,5 @@ export default {
   ORDER_HERE: "ORDER FOOD HERE!",
   MEALS_PLAN: "Meals plan",
   MEALS_HISTORY: "Meals history",
+  SAVED: "saved",
 };
