@@ -30,7 +30,7 @@ const AddPetScreen = () => {
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input}
-          style={{ width: 200, fontSize: 25 }}
+          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: 1 }}
           placeholder={""}
           placeholderTextColor={Colors.grey}
           maxLength={25}
@@ -92,12 +92,12 @@ const AddPetScreen = () => {
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.container}>
-        {inputWithText(petName, setPetName, Captions.PET_NAME)}
-        {inputWithText(type, setType, Captions.PET_TYPE)}
-        {inputWithText(machineId, setMachineId, Captions.MACHINE_ID)}
-        <View style={{ margin: 20 }}>{AddPetButton()}</View>
-        {displayMessage()}
-        {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
+      {inputWithText(petName, setPetName, Captions.PET_NAME)}
+      {inputWithText(type, setType, Captions.PET_TYPE)}
+      {inputWithText(machineId, setMachineId, Captions.MACHINE_ID)}
+      <View style={{ margin: 20 }}>{AddPetButton()}</View>
+      {displayMessage()}
+      {waiting && <ActivityIndicator size={"large"} color={Colors.blue} style={{ alignSelf: "center" }} />}
     </ScrollView>
   );
 };
@@ -108,7 +108,7 @@ AddPetScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", paddingTop: 10, height: '100%' },
+  container: { flex: 1, backgroundColor: "#fff", alignItems: "center", paddingTop: 10, height: "100%" },
   title: { fontSize: 30 },
   addButton: { color: "white", fontSize: 18, textAlign: "center", margin: 10, padding: 5, paddingHorizontal: 30 },
 });

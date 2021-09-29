@@ -34,7 +34,7 @@ const EditUserScreen = () => {
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input}
-          style={{ width: 200, fontSize: 25 }}
+          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: 1 }}
           placeholder={""}
           placeholderTextColor={Colors.grey}
           maxLength={25}

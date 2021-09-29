@@ -9,9 +9,10 @@ import {
   ActivityIndicator,
   ScrollView,
   CheckBox,
+  Platform,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { Dropdown } from "react-native-material-dropdown-v2";
 import DatePicker from "react-native-datepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -25,7 +26,6 @@ import Shared from "../Shared";
 
 const AddOrEditMealScreen = (props) => {
   const pet = props.navigation.getParam("pet");
-  console.log(pet);
   const meal = props.navigation.getParam("meal") || { name: "", amount: 0, time: "00:00", repeat_daily: 1, id: 0 };
   const dispatch = useDispatch();
   const [name, setName] = useState(meal.name);
@@ -53,7 +53,7 @@ const AddOrEditMealScreen = (props) => {
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input.toString()}
-          style={{ width: 200, fontSize: 25 }}
+          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: 1 }}
           placeholder={""}
           placeholderTextColor={Colors.grey}
           maxLength={25}
@@ -169,23 +169,54 @@ const AddOrEditMealScreen = (props) => {
   };
 
   const repeatDaily = () => {
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          margin: 10,
-          alignItems: "center",
-          width: "95%",
-          alignSelf: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Text style={{ fontSize: 20 }}>{Captions.REPEAT}</Text>
-        <View style={{ width: "50%" }}>
-          <CheckBox value={repeat_daily} onValueChange={setRepeat_daily} style={{ alignSelf: "flex-start" }} />
+    if (Platform.OS != "ios") {
+      return (
+        <View
+          style={{
+            flexDirection: "row",
+            margin: 10,
+            alignItems: "center",
+            width: "95%",
+            alignSelf: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={{ fontSize: 20 }}>{Captions.REPEAT}</Text>
+          <View style={{ width: "50%" }}>
+            <CheckBox
+              value={repeat_daily}
+              onValueChange={setRepeat_daily}
+              style={{ alignSelf: "flex-start" }}
+              disabled={false}
+            />
+          </View>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View
+          style={{
+            flexDirection: "row",
+            margin: 10,
+            alignItems: "center",
+            width: "95%",
+            alignSelf: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={{ fontSize: 20 }}>{Captions.REPEAT}</Text>
+          <View style={{ width: "50%" }}>
+            <TouchableOpacity onPress={() => setRepeat_daily(!repeat_daily)}>
+              <MaterialIcons
+                size={25}
+                color={Colors.green}
+                name={repeat_daily ? "check-box" : "check-box-outline-blank"}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
   };
 
   const inputTime = () => {
@@ -221,7 +252,6 @@ const AddOrEditMealScreen = (props) => {
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.container}>
       {inputWithText(name, setName, Captions.SCHEDULE_NAME)}
-      {/* {inputWithText(time, setTime, Captions.TIME, "numeric")} */}
       {inputTime()}
       {amountDropDown()}
       {repeatDaily()}
