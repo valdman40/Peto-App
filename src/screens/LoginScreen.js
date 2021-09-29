@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -61,7 +62,12 @@ const LoginScreen = (props) => {
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input}
-          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: 1 }}
+          style={{
+            width: 200,
+            fontSize: 25,
+            borderBottomColor: "grey",
+            borderBottomWidth: Platform.OS == "ios" ? 1 : 0,
+          }}
           placeholder={""}
           placeholderTextColor={Colors.grey}
           maxLength={25}

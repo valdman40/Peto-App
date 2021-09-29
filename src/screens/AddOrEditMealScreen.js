@@ -11,10 +11,10 @@ import {
   CheckBox,
   Platform,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { Dropdown } from "react-native-material-dropdown-v2";
-import DatePicker from "react-native-datepicker";
+// import DatePicker from "react-native-datepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import DbApi from "../DbApi";
@@ -26,7 +26,7 @@ import Shared from "../Shared";
 
 const AddOrEditMealScreen = (props) => {
   const pet = props.navigation.getParam("pet");
-  const meal = props.navigation.getParam("meal") || { name: "", amount: 0, time: "00:00", repeat_daily: 1, id: 0 };
+  const meal = props.navigation.getParam("meal") || { name: "", amount: 10, time: "00:00", repeat_daily: 1, id: 0 };
   const dispatch = useDispatch();
   const [name, setName] = useState(meal.name);
   const [amount, setAmount] = useState(meal.amount);
@@ -53,7 +53,12 @@ const AddOrEditMealScreen = (props) => {
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input.toString()}
-          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: 1 }}
+          style={{
+            width: 200,
+            fontSize: 25,
+            borderBottomColor: "grey",
+            borderBottomWidth: Platform.OS == "ios" ? 1 : 0,
+          }}
           placeholder={""}
           placeholderTextColor={Colors.grey}
           maxLength={25}
@@ -128,12 +133,19 @@ const AddOrEditMealScreen = (props) => {
     );
   };
 
+  const amountsOfFood = [
+    { value: 10 },
+    { value: 20 },
+    { value: 30 },
+    { value: 40 },
+    { value: 50 },
+    { value: 60 },
+    { value: 70 },
+    { value: 80 },
+    { value: 90 },
+    { value: 100 },
+  ];
   const amountDropDown = () => {
-    const items = [];
-    for (let i = 1; i <= 10; i++) {
-      const value = 10 * i;
-      items.push({ value });
-    }
     return (
       <View
         style={{
@@ -155,7 +167,7 @@ const AddOrEditMealScreen = (props) => {
           }}
         >
           <Dropdown
-            data={items}
+            data={amountsOfFood}
             containerStyle={{ height: 70 }}
             value={amount}
             itemTextStyle={{ textAlign: "center" }}
@@ -230,7 +242,7 @@ const AddOrEditMealScreen = (props) => {
           >
             <AntDesign size={25} color={Colors.blue} name={"clockcircle"} />
             <Text style={{ fontSize: 20 }}>{time}</Text>
-            {clockOpen && (
+            {clockOpen && Platform.OS != "ios" && (
               <DateTimePicker
                 testID="dateTimePicker"
                 value={Shared.generateDateFromTime(time)}
@@ -243,6 +255,21 @@ const AddOrEditMealScreen = (props) => {
                 }}
               />
             )}
+            {clockOpen && Platform.OS == "ios" && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                style={{ width: 400 }}
+                value={Shared.generateDateFromTime(time)}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={(input) => {
+                  console.log(input);
+                  // setClockOpen(false);
+                  // setTime(Shared.fromDate2TimeString(input.nativeEvent.timestamp));
+                }}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -252,7 +279,8 @@ const AddOrEditMealScreen = (props) => {
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.container}>
       {inputWithText(name, setName, Captions.SCHEDULE_NAME)}
-      {inputTime()}
+      {Platform.OS == "ios" && inputWithText(time, setTime, Captions.TIME)}
+      {Platform.OS != "ios" && inputTime()}
       {amountDropDown()}
       {repeatDaily()}
       <View style={{ margin: 20 }}>{SubmitButton()}</View>

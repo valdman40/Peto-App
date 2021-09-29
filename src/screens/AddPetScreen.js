@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, ActivityIndicator, ScrollView } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ActivityIndicator, ScrollView, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import DbApi from "../DbApi";
@@ -30,7 +30,7 @@ const AddPetScreen = () => {
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input}
-          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: 1 }}
+          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: Platform.OS == "ios" ? 1 : 0, }}
           placeholder={""}
           placeholderTextColor={Colors.grey}
           maxLength={25}

@@ -28,7 +28,7 @@ const buttonSize = 100;
 const PetDetailsScreen = (props) => {
   // let pet = props.navigation.getParam("pet");
   const [pet, setPet] = useState({});
-  const [feedingAmount, setFeedingAmount] = useState(0);
+  const [feedingAmount, setFeedingAmount] = useState(10);
   const [healthRate, setHealthRate] = useState(5);
   const [refreshing, setRefreshing] = useState(false);
   // const [selectedItem, setSelectedItem] = useState({});
@@ -52,7 +52,6 @@ const PetDetailsScreen = (props) => {
   };
 
   const amountsOfFood = [
-    { value: 0 },
     { value: 10 },
     { value: 20 },
     { value: 30 },

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Alert, TextInput, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Alert, TextInput, ActivityIndicator, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import DbApi from "../DbApi";
@@ -13,8 +13,8 @@ const EditUserScreen = () => {
   const loggedUser = useSelector((state) => state.User.loggedUser);
 
   const [name, setName] = useState(loggedUser.name);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
@@ -34,7 +34,12 @@ const EditUserScreen = () => {
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input}
-          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: 1 }}
+          style={{
+            width: 200,
+            fontSize: 25,
+            borderBottomColor: "grey",
+            borderBottomWidth: Platform.OS == "ios" ? 1 : 0,
+          }}
           placeholder={""}
           placeholderTextColor={Colors.grey}
           maxLength={25}
@@ -64,7 +69,7 @@ const EditUserScreen = () => {
       setError("");
       validateUserInput();
       await DbApi.EditUser(loggedUser.username, newPassword, name, loggedUser.id);
-      dispatch(saveLoggedUser({...loggedUser, password: newPassword, name}))
+      dispatch(saveLoggedUser({ ...loggedUser, password: newPassword, name }));
       setMessage(Messages.EDIT_USER_SUCCESS);
     } catch (e) {
       setError(e);
