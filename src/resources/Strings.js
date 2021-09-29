@@ -44,6 +44,7 @@ export const getRestApi = (urlBase) => {
       InsertPet: `${urlBase}/pets`,
       FeedPet: `${urlBase}/pets/feed`,
       Rating: `${urlBase}/pets/rating`,
+      Graph: `${urlBase}/pets/graph`,
     },
     Meal: {
       UpdateMeal: `${urlBase}/meal`,

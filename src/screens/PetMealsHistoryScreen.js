@@ -6,6 +6,7 @@ import Colors from "../resources/Colors";
 import { ScreensRouteName } from "../resources/Strings";
 import { AntDesign } from "@expo/vector-icons";
 import MealsHistoryDisplay from "../components/MealsHistoryDisplay";
+import DbApi from "../DbApi";
 
 const PetMealsHistoryScreen = (props) => {
   const mealsHistory = useSelector((state) => state.Meals.mealsHistory);
@@ -19,6 +20,14 @@ const PetMealsHistoryScreen = (props) => {
   return <View>{history()}</View>;
 };
 
+const buildAndGoToGraph = async (props, pet) => {
+  const graphStats = await DbApi.GetPetHealthGraph(pet.id);
+  props.navigation.navigate({
+    routeName: ScreensRouteName.PET_MEAL_HISTORY_GRAPH_SCREEN,
+    params: { pet, graphStats },
+  });
+};
+
 // screen's header
 PetMealsHistoryScreen.navigationOptions = (navigationData) => {
   const pet = navigationData.navigation.getParam("pet") || { name: "debugger's pet" };
@@ -27,11 +36,8 @@ PetMealsHistoryScreen.navigationOptions = (navigationData) => {
     headerRight: (
       <TouchableOpacity
         style={{ backgroundColor: Colors.blue, marginRight: 15 }}
-        onPress={() => {
-          navigationData.navigation.navigate({
-            routeName: ScreensRouteName.PET_MEAL_HISTORY_GRAPH_SCREEN,
-            params: { pet },
-          });
+        onPress={async () => {
+          buildAndGoToGraph(navigationData, pet);
         }}
       >
         <AntDesign size={25} color={Colors.white} name={"linechart"} />

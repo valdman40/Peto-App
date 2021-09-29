@@ -223,6 +223,14 @@ export default class DbApi extends React.Component {
     return this.SendHttpReqeust(uri, method);
   }
 
+  static async GetPetHealthGraph(petId) {
+    const urlBase = PetoStore.getState().Settings.urlBase;
+    const RestApiExtensions = getRestApi(urlBase);
+    const uri = `${RestApiExtensions.Pets.Graph}/${petId}`;
+    const method = HTTP_METHODS.GET;
+    return this.SendHttpReqeust(uri, method);
+  }
+
   /**
    * loads user's pets
    * @param {*} userId
