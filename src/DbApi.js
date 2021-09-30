@@ -11,7 +11,7 @@ export default class DbApi extends React.Component {
    * @param {*} message message to diaply when timout
    * @returns
    */
-  static functionWithTimeOut(ms, promise, message = Messages.FAILED_SERVER_CONNECTION) {
+  static functionWithTimeOut(ms, promise, message = Messages.TIMEOUT) {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
         reject(message);
@@ -48,15 +48,21 @@ export default class DbApi extends React.Component {
     }
     const requestObject = ob;
     const returnPromise = new Promise(async (resolve, reject) => {
-      const response = await fetch(uri, requestObject);
-      const retval = await response.json();
-      if (response.status <= 201) {
+      let response;
+      let retval;
+      try {
+        response = await fetch(uri, requestObject);
+        retval = await response.json();
+      } catch (e) {
+        reject(e);
+      }
+      if (response && response.status <= 201) {
         resolve(retval);
       } else {
         reject(retval.message);
       }
     });
-    return this.functionWithTimeOut(6000, returnPromise);
+    return this.functionWithTimeOut(5000, returnPromise);
   }
 
   /**

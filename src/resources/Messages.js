@@ -21,13 +21,13 @@ export default {
   NOT_VALID_TIME: "Not valid time",
   PASSWORD_SHORT: "Password should be at least 4 characters long",
   PASSWORDS_DONT_MATCH: "Password does not match confirmed password",
-  TIMEOUT: "The request has failed due to timeout",
+  TIMEOUT: "The request has failed due timeout",
   UNKNOWN_ERROR: "The request failed for unknown reason",
   DELETE_FAILED: "Delete request has failed",
   GET_FAILED: "Get request has failed",
   UPDATE_FAILED: "Update request has failed",
   INSERT_FAILED: "Insert request has failed",
   PASSWORD_SAME_AS_OLD: "Entered old password",
-  DISCONNECT_QUESTION: 'Are you sure you want to disconnect?',
-  CHANGE_SUCCESS: 'Changes saved successfully'
+  DISCONNECT_QUESTION: "Are you sure you want to disconnect?",
+  CHANGE_SUCCESS: "Changes saved successfully",
 };
