@@ -70,7 +70,6 @@ const RegisterScreen = () => {
       await DbApi.RegisterUser(userName, password, name);
       setMessage(Messages.REGISTER_SUCCESS);
     } catch (e) {
-      console.log(e);
       setError(e);
     } finally {
       setWaiting(false);

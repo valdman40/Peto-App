@@ -40,7 +40,7 @@ const LoginScreen = (props) => {
         setUserName(user.username);
         setPassword(user.password);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     })();
   };
@@ -87,7 +87,6 @@ const LoginScreen = (props) => {
       const user = await DbApi.Login(userName, password);
       await onSuccedLogin(user);
     } catch (e) {
-      console.log({ e });
       setError(e);
     } finally {
       setWaiting(false);

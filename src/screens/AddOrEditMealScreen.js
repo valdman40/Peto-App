@@ -103,7 +103,6 @@ const AddOrEditMealScreen = (props) => {
       setMessage(message);
       Alert.alert(`${"alert"}`, `${message}`, [{ text: `${Captions.CONFIRM}`, onPress: () => props.navigation.pop() }]);
     } catch (e) {
-      console.log(e);
       setError(e);
     } finally {
       setWaiting(false);
@@ -268,7 +267,7 @@ const AddOrEditMealScreen = (props) => {
                 is24Hour={true}
                 display="default"
                 onChange={(input) => {
-                  console.log(input);
+                  // console.log(input);
                   // setClockOpen(false);
                   // setTime(Shared.fromDate2TimeString(input.nativeEvent.timestamp));
                 }}

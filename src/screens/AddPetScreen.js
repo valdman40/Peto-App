@@ -56,24 +56,15 @@ const AddPetScreen = () => {
   };
 
   const validateInput = () => {
-    // if (!Shared.onlyLettersOrNumbers(petName)) {
-    //   throw "not valid name";
-    // }
-    // if (petName.length < 2) {
-    //   throw Messages.PETNAME_SHORT;
-    // }
-    // if (!Shared.onlyLettersOrNumbers(type)) {
-    //   throw "not valid type";
-    // }
-    // if (type.length < 2) {
-    //   throw Messages.PETTYPE_SHORT;
-    // }
-    // if (!Shared.onlyLettersOrNumbers(machineId)) {
-    //   throw "not valid machineId";
-    // }
-    // if (machineId.length < 2) {
-    //   throw Messages.PETMACHINEID_SHORT;
-    // }
+    if (petName.length < 2) {
+      throw Messages.PETNAME_SHORT;
+    }
+    if (type.length < 2) {
+      throw Messages.PETTYPE_SHORT;
+    }
+    if (machineId.length < 2) {
+      throw Messages.PETMACHINEID_SHORT;
+    }
     const validate = Shared.onlyLettersOrNumbers([petName, type, machineId]);
     if (validate.valid == false) {
       throw `${validate.element} is not valid`;
