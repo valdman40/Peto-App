@@ -3,7 +3,7 @@ import { SET_BASE_URL } from "../actions/SettingsActions";
 import CacheManager, { SettingsCache } from "../../resources/CacheManager";
 
 const initialState = {
-  urlBase: "http://10.0.0.9:5000",
+  urlBase: "http://40.76.233.140:5000",
 };
 
 const tryToGetUrlFromCache = async () => {

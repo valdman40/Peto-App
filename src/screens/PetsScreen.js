@@ -51,8 +51,12 @@ const PetsScreen = (props) => {
    * @param {*} petId
    */
   async function moveToPetDetailsScreen(pet) {
-    const rate = await DbApi.GetPetRating(pet.id); // we want pet's health rate
-    props.navigation.navigate({ routeName: ScreensRouteName.PET_DETAILS_SCREEN, params: { pet, rate } });
+    try {
+      const rate = await DbApi.GetPetRating(pet.id); // we want pet's health rate
+      props.navigation.navigate({ routeName: ScreensRouteName.PET_DETAILS_SCREEN, params: { pet, rate } });
+    } catch (e) {
+      alert(e);
+    }
   }
 
   const renderPet = (pet) => {
@@ -86,7 +90,13 @@ const PetsScreen = (props) => {
 // screen's header
 PetsScreen.navigationOptions = { headerTitle: Captions.PETS };
 
-const listAttributeStyle = { fontSize: 18, paddingHorizontal: 10, width: "30%", textAlign: "center", alignSelf: "center" };
+const listAttributeStyle = {
+  fontSize: 18,
+  paddingHorizontal: 10,
+  width: "30%",
+  textAlign: "center",
+  alignSelf: "center",
+};
 const deleteButtonStyle = { fontSize: 30, paddingHorizontal: 20, textAlignVertical: "center", borderWidth: 1 };
 
 const styles = StyleSheet.create({
@@ -104,7 +114,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   delete: deleteButtonStyle,
-  add: {...deleteButtonStyle, borderWidth: 0, color: Colors.lawngreen},
+  add: { ...deleteButtonStyle, borderWidth: 0, color: Colors.lawngreen },
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",

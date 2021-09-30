@@ -56,7 +56,7 @@ export default class DbApi extends React.Component {
         reject(retval.message);
       }
     });
-    return this.functionWithTimeOut(3000, returnPromise);
+    return this.functionWithTimeOut(6000, returnPromise);
   }
 
   /**

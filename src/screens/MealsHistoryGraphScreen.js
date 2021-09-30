@@ -69,7 +69,7 @@ const MealsHistoryGraphScreen = (props) => {
               color: (opacity = 1) => `rgba(0,0,102, ${opacity})`,
             },
           ],
-          legend: ["Given", "Eaten"],
+          legend: [`${Captions.GIVEN}`, `${Captions.EATEN}`],
         }}
         width={Dimensions.get("window").width}
         height={300}
@@ -94,7 +94,7 @@ const MealsHistoryGraphScreen = (props) => {
               color: (opacity = 1) => `rgba(0,255,128, ${opacity})`,
             },
           ],
-          legend: ["Health"],
+          legend: [`${Captions.HEALTH}`],
         }}
         width={Dimensions.get("window").width}
         height={200}
@@ -114,10 +114,8 @@ const MealsHistoryGraphScreen = (props) => {
 MealsHistoryGraphScreen.navigationOptions = (navigationData) => {
   const pet = navigationData.navigation.getParam("pet");
   return {
-    headerTitle: `${pet.name}'s Meals Graph`,
+    headerTitle: `${pet.name}'s ${Captions.MEALS_GRAPH}`,
   };
 };
-
-const styles = StyleSheet.create({});
 
 export default MealsHistoryGraphScreen;

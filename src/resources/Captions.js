@@ -43,4 +43,10 @@ export default {
   MEALS_PLAN: "Meals plan",
   MEALS_HISTORY: "Meals history",
   SAVED: "saved",
+  MEALS_GRAPH: "Meals Graph",
+  GIVEN: "Given",
+  EATEN: "Eaten",
+  HEALTH: "Health",
+  FEED_NOW: "Feed Now",
+  INSTANT_FEED: "Instant feed",
 };

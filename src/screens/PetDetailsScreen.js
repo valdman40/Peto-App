@@ -101,7 +101,7 @@ const PetDetailsScreen = (props) => {
   const feedButton = () => {
     return (
       <TouchableOpacity style={{ ...styles.circleButton }} onPress={feedPet} disabled={disableFeedNow}>
-        <Text style={{ fontSize: 18 }}>Feed Now</Text>
+        <Text style={{ fontSize: 18 }}>{Captions.FEED_NOW}</Text>
       </TouchableOpacity>
     );
   };
@@ -207,7 +207,7 @@ const PetDetailsScreen = (props) => {
   const feedBox = () => {
     return (
       <View style={{ margin: 10, width: "80%", justifyContent: "center" }}>
-        <Text style={{ textAlign: "center", fontSize: 20 }}>Instant feed</Text>
+        <Text style={{ textAlign: "center", fontSize: 20 }}>{Captions.INSTANT_FEED}</Text>
         <View style={styles.feedBoxInnerContainer}>
           {amountDropDown(amountsOfFood, feedingAmount, setFeedingAmount, Captions.GRAMS)}
           {feedButton()}
@@ -264,7 +264,7 @@ const PetDetailsScreen = (props) => {
   const machineId = () => {
     return (
       <View style={{ flexDirection: "row", width: "80%", justifyContent: "space-around", alignSelf: "center" }}>
-        <Text style={{ fontSize: 20 }}>Machine id:</Text>
+        <Text style={{ fontSize: 20 }}>{Captions.MACHINE_ID}:</Text>
         <Text style={{ fontSize: 20 }}>{pet.machine_id}</Text>
       </View>
     );
@@ -276,8 +276,6 @@ const PetDetailsScreen = (props) => {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       {petImageHealth()}
-      {/* {petImage()}
-      {petHelathRate()} */}
       {feedBox()}
       {goToMealsHistoryButton()}
       {goToMealsButton()}
@@ -290,17 +288,6 @@ const PetDetailsScreen = (props) => {
 // screen's header
 PetDetailsScreen.navigationOptions = (navigationData) => {
   const pet = navigationData.navigation.getParam("pet");
-  // const pet = {
-  //   id: 1,
-  //   name: "Tokyo",
-  //   type: "dog",
-  //   user_id: 1,
-  //   container_filled: 0.657,
-  //   image:
-  //     "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.6435-9/154993349_10222532609097589_2477911615807969384_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=730e14&_nc_ohc=1eR7X2lr9WMAX8XLQ0F&_nc_ht=scontent.fsdv3-1.fna&oh=a6d39308c3250bdb74b4f41ecd7f33e3&oe=61709BF7",
-  //   machine_id: "54321",
-  //   active: 1,
-  // };
   return {
     headerTitle: `${pet.name}'s ${Captions.DETAILS}`,
     headerLeft: (
