@@ -46,7 +46,12 @@ const AppNavigator = createStackNavigator(
   }
 );
 
-// if i'm in dev mode, put whatwever i chose, else put login screen
+/**
+ * if i'm in dev mode, put whatwever i chose, else put login screen
+ * exists in case i'll forget changing back to login when i release the app
+ * @param {*} screenChosen 
+ * @returns 
+ */
 function decideInitialMode(screenChosen) {
   let retval = ScreensRouteName.LOGIN_SCREEN;
   // eslint-disable-next-line no-undef

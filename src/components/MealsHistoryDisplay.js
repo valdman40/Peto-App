@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { ScrollView } from "react-native";
 import Shared from "../Shared";
-
 import Yad2DataDisplay from "./Yad2DataDisplay";
+
+// displays history by my choosing of elements, easy to change
 export default class MealsHistoryDisplay extends Component {
   constructor(props) {
     super(props);

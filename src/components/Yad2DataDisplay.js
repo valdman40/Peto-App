@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, ScrollView, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 
+// I copycat display i liked that was similar to yad2 application gui
 export default class Yad2DataDisplay extends Component {
   constructor(props) {
     super(props);
