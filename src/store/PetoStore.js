@@ -7,7 +7,7 @@ import debugReducer from "./reducers/DebugModeReducer";
 import settingsReducer from "./reducers/SettingsReducer";
 import { ReducersNames } from "../resources/Strings";
 
-// combine all reducers into 1 combined
+// combine all reducers into 1 combined reducer
 const rootReducer = combineReducers({
   [ReducersNames.Debug]: debugReducer,
   [ReducersNames.User]: userReducer,
@@ -16,6 +16,6 @@ const rootReducer = combineReducers({
   [ReducersNames.Settings]: settingsReducer,
 });
 
-// here we store components's states
+// create a store which holds the combined reducer
 const store = createStore(rootReducer);
 export default store;
