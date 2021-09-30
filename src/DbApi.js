@@ -39,22 +39,29 @@ export default class DbApi extends React.Component {
   static async SendHttpReqeust(
     uri,
     method = HTTP_METHODS.GET,
-    body = {},
+    body = null,
     headers = { Accept: "application/json", "Content-Type": "application/json" }
   ) {
-    let ob = { method, headers };
-    if (method != HTTP_METHODS.GET) {
-      ob.body = body;
-    }
-    const requestObject = ob;
     const returnPromise = new Promise(async (resolve, reject) => {
       let response;
       let retval;
       try {
+        let ob = { method, headers };
+        if (method != HTTP_METHODS.GET) {
+          // if method is not GET, i excpect it to have body
+          if (body) {
+            ob.body = body;
+          } else {
+            reject(Messages.EXPECTED_BODY);
+            return;
+          }
+        }
+        const requestObject = ob;
         response = await fetch(uri, requestObject);
         retval = await response.json();
       } catch (e) {
         reject(e);
+        return;
       }
       if (response && response.status <= 201) {
         resolve(retval);
@@ -62,7 +69,7 @@ export default class DbApi extends React.Component {
         reject(retval.message);
       }
     });
-    return this.functionWithTimeOut(5000, returnPromise);
+    return this.functionWithTimeOut(6000, returnPromise);
   }
 
   /**

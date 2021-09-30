@@ -5,6 +5,7 @@ import DbApi from "../DbApi";
 import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
+import Shared from "../Shared";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
@@ -41,9 +42,9 @@ const RegisterScreen = () => {
   };
 
   const validateUserInput = () => {
-    if (userName.length < 2) {
-        throw Messages.USERNAME_SHORT;
-      }
+    if (name.length < 2) {
+      throw Messages.NAME_SHORT;
+    }
     if (userName.length < 4) {
       throw Messages.USERNAME_SHORT;
     }
@@ -52,6 +53,11 @@ const RegisterScreen = () => {
     }
     if (password !== confirmPassword) {
       throw Messages.PASSWORDS_DONT_MATCH;
+    }
+
+    const validate = Shared.onlyLettersOrNumbers([userName, name]);
+    if (validate.valid == false) {
+      throw `${validate.element} is not valid`;
     }
   };
 

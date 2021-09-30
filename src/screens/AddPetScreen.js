@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, ActivityIndicator, ScrollView, Platform } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import DbApi from "../DbApi";
@@ -7,6 +16,7 @@ import Captions from "../resources/Captions";
 import Messages from "../resources/Messages";
 import Colors from "../resources/Colors";
 import { storeNewPet } from "../store/actions/PetsActions";
+import Shared from "../Shared";
 
 const AddPetScreen = () => {
   const loggedUser = useSelector((state) => state.User.loggedUser);
@@ -30,7 +40,12 @@ const AddPetScreen = () => {
         <TextInput
           onChangeText={(newInput) => inputSetter(newInput)}
           value={input}
-          style={{ width: 200, fontSize: 25, borderBottomColor: "grey", borderBottomWidth: Platform.OS == "ios" ? 1 : 0, }}
+          style={{
+            width: 200,
+            fontSize: 25,
+            borderBottomColor: "grey",
+            borderBottomWidth: Platform.OS == "ios" ? 1 : 0,
+          }}
           placeholder={""}
           placeholderTextColor={Colors.grey}
           maxLength={25}
@@ -41,8 +56,27 @@ const AddPetScreen = () => {
   };
 
   const validateInput = () => {
-    if (petName.length < 2) {
-      throw Messages.PETNAME_SHORT;
+    // if (!Shared.onlyLettersOrNumbers(petName)) {
+    //   throw "not valid name";
+    // }
+    // if (petName.length < 2) {
+    //   throw Messages.PETNAME_SHORT;
+    // }
+    // if (!Shared.onlyLettersOrNumbers(type)) {
+    //   throw "not valid type";
+    // }
+    // if (type.length < 2) {
+    //   throw Messages.PETTYPE_SHORT;
+    // }
+    // if (!Shared.onlyLettersOrNumbers(machineId)) {
+    //   throw "not valid machineId";
+    // }
+    // if (machineId.length < 2) {
+    //   throw Messages.PETMACHINEID_SHORT;
+    // }
+    const validate = Shared.onlyLettersOrNumbers([petName, type, machineId]);
+    if (validate.valid == false) {
+      throw `${validate.element} is not valid`;
     }
   };
 
@@ -56,7 +90,6 @@ const AddPetScreen = () => {
       dispatch(storeNewPet(newPet));
       setMessage(Messages.REGISTER_PET_SUCCESS);
     } catch (e) {
-      console.log(e);
       setError(e);
     } finally {
       setWaiting(false);

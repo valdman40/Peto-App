@@ -71,10 +71,14 @@ const AddOrEditMealScreen = (props) => {
 
   const validateInput = () => {
     if (name.length < 2) {
-      throw Messages.MEAL_NAME_SHORT;
+      throw Messages.NAME_SHORT;
     }
     if (!/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(time)) {
       throw Messages.NOT_VALID_TIME;
+    }
+    const validate = Shared.onlyLettersOrNumbers([name]);
+    if (validate.valid == false) {
+      throw `${validate.element} is not valid`;
     }
   };
 

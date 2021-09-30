@@ -1,9 +1,8 @@
 export default class Shared {
-
   /**
    * adds '0' before digit that is lower than 10
-   * @param {*} x 
-   * @returns 
+   * @param {*} x
+   * @returns
    */
   static addZeroIfBelow10(x) {
     return x < 10 ? `0${x}` : x;
@@ -11,18 +10,18 @@ export default class Shared {
 
   /**
    * returns Date object out of sql time
-   * @param {*} sqlTime 
-   * @returns 
+   * @param {*} sqlTime
+   * @returns
    */
   static generateDateFromTime(sqlTime) {
     const d = new Date(`01 Jan 1970 ${sqlTime} GMT+0200`);
     return d;
   }
 
-    /**
+  /**
    * returns time string to display date ob
-   * @param {*} date 
-   * @returns 
+   * @param {*} date
+   * @returns
    */
   static fromDate2TimeString(date) {
     var hours = this.addZeroIfBelow10(date.getHours());
@@ -33,8 +32,8 @@ export default class Shared {
 
   /**
    * returns date string to display date ob
-   * @param {*} date 
-   * @returns 
+   * @param {*} date
+   * @returns
    */
   static fromDate2DateString(date) {
     var year = this.addZeroIfBelow10(date.getUTCFullYear());
@@ -46,8 +45,8 @@ export default class Shared {
 
   /**
    * returns Time string to display out of Time got from sql
-   * @param {*} sqlTime 
-   * @returns 
+   * @param {*} sqlTime
+   * @returns
    */
   static fromSqlTime2TimeString(sqlTime) {
     const d = this.generateDateFromTime(sqlTime);
@@ -57,8 +56,8 @@ export default class Shared {
 
   /**
    * returns Time string to display out of date got from sql
-   * @param {*} sqlDate 
-   * @returns 
+   * @param {*} sqlDate
+   * @returns
    */
   static fromSqlDate2TimeString(sqlDate) {
     sqlDate = sqlDate.replace(new RegExp("-", "g"), "/");
@@ -69,13 +68,27 @@ export default class Shared {
 
   /**
    * returns Date string to display out of date got from sql
-   * @param {*} sqlDate 
-   * @returns 
+   * @param {*} sqlDate
+   * @returns
    */
   static fromSqlDate2DateString(sqlDate) {
     sqlDate = sqlDate.replace(new RegExp("-", "g"), "/");
     const d = new Date(sqlDate);
     const time = this.fromDate2DateString(d);
     return time;
+  }
+
+  /**
+   * check that arr has only elements with digits and numbers
+   * @param {*} arr
+   * @returns
+   */
+  static onlyLettersOrNumbers(arr) {
+    for (const i in arr) {
+      if (!arr[i].match("^[A-Za-z0-9]+$")) {
+        return { valid: false, element: arr[i] };
+      }
+    }
+    return { valid: true };
   }
 }
