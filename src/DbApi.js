@@ -219,6 +219,13 @@ export default class DbApi extends React.Component {
     return this.SendHttpReqeust(uri, method);
   }
 
+  /**
+   * saves health rate
+   * @param {*} pet_id 
+   * @param {*} date 
+   * @param {*} rate 
+   * @returns 
+   */
   static async SavePetRating(pet_id, date, rate) {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
@@ -228,6 +235,11 @@ export default class DbApi extends React.Component {
     return this.SendHttpReqeust(uri, method, body);
   }
 
+  /**
+   * get health rate
+   * @param {*} petId 
+   * @returns 
+   */
   static async GetPetRating(petId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);
@@ -236,6 +248,14 @@ export default class DbApi extends React.Component {
     return this.SendHttpReqeust(uri, method);
   }
 
+  /**
+   * get all stats relevant for pet's health graph:
+   * 1. amount given for each day
+   * 2. amount eaten for each day
+   * 3. rating of health for each day
+   * @param {*} petId 
+   * @returns 
+   */
   static async GetPetHealthGraph(petId) {
     const urlBase = PetoStore.getState().Settings.urlBase;
     const RestApiExtensions = getRestApi(urlBase);

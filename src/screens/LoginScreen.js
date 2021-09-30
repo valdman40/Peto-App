@@ -31,9 +31,6 @@ const LoginScreen = (props) => {
   const dispatch = useDispatch();
 
   const loadUserFromCache = () => {
-    // CacheManager.cleanCache(UserCache.name); // if we want to clear cache
-    // the reason i made this function inside another loadUserFromCache
-    // is for the reason this function cant be async so i bypass it
     (async () => {
       try {
         const user = await CacheManager.loadEntrieValue(UserCache.name, UserCache.types.lastLoggedUser);
